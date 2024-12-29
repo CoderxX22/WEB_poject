@@ -6,22 +6,26 @@ import healthIcon from './pngwing.com.png';
 import healthImage from './Statuscope.jpg';
 
 const Navbar = () => {
+  // State to toggle dark mode
   const [darkMode, setDarkMode] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // For dropdown visibility
 
-  // Toggle dark mode
+  // State to manage dropdown visibility
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Function to toggle dark mode
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle('dark'); // Add/remove 'dark' class from <html>
   };
 
-  // Toggle dropdown
+  // Function to toggle dropdown visibility
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
   return (
     <>
+      {/* Main wrapper with dynamic background for light/dark mode */}
       <div className={`relative min-h-screen bg-gray-50 dark:bg-gray-800`}>
         {/* Navbar Section */}
         <nav className="bg-blue-600 dark:bg-gray-900 shadow-md relative z-50">
@@ -31,7 +35,7 @@ const Navbar = () => {
               <img
                 src={healthIcon}
                 alt="logo"
-                className="w-8 h-8"
+                className="w-8 h-8 filter dark:invert-0 invert" // Invert color for light mode
               />
               <span className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
                 HealthVisualizer
@@ -40,6 +44,7 @@ const Navbar = () => {
 
             {/* Navigation Links */}
             <ul className="flex items-center space-x-6">
+              {/* Info Link */}
               <li>
                 <a
                   href="#info"
@@ -50,6 +55,7 @@ const Navbar = () => {
                   Info
                 </a>
               </li>
+              {/* Contact Link */}
               <li>
                 <a
                   href="#contact"
@@ -60,6 +66,7 @@ const Navbar = () => {
                   Contact
                 </a>
               </li>
+              {/* Dropdown Menu for Health */}
               <li className="relative group">
                 <a
                   href="#"
@@ -69,6 +76,7 @@ const Navbar = () => {
                 >
                   Health ▼
                 </a>
+                {/* Dropdown Options */}
                 <ul
                   className="absolute left-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
                 >
@@ -89,6 +97,7 @@ const Navbar = () => {
                   </li>
                 </ul>
               </li>
+              {/* Login Link */}
               <li>
                 <a
                   href="#login"
@@ -99,6 +108,7 @@ const Navbar = () => {
                   Login
                 </a>
               </li>
+              {/* Dark Mode Toggle Button */}
               <li>
                 <button
                   onClick={toggleDarkMode}
@@ -119,14 +129,14 @@ const Navbar = () => {
             className="w-full h-[60vh] bg-cover bg-center"
             style={{
               backgroundImage: `url(${healthImage})`,
-              filter: "blur(2px)",
+              filter: "blur(2px)", // Adds a blur effect
               zIndex: 1,
             }}
           >
             <div className="w-full h-full bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-800"></div>
           </div>
 
-          {/* Content Section */}
+          {/* Overlay Content Section */}
           <div className="absolute top-2/3 w-full text-center z-10">
             <h1 className="text-6xl font-extrabold mb-6">
               <span className="text-gray-800 dark:text-gray-100">Welcome to</span>{' '}
@@ -138,7 +148,7 @@ const Navbar = () => {
             </p>
             <button
               className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 hover:scale-110"
-              onClick={() => document.getElementById('info').scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('info').scrollIntoView({ behavior: 'smooth' })} // Smooth scroll to Info section
             >
               About us
             </button>

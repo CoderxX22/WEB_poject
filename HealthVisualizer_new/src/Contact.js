@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import phoneLogo from './phone-call.png';
-
+import phoneLogo from './phone-call.png'; // Import the phone icon
 
 const Contact = () => {
+    // State to manage form data
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -10,6 +10,7 @@ const Contact = () => {
         phone: "",
     });
 
+    // Handle input changes and update the corresponding field in state
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -18,9 +19,9 @@ const Contact = () => {
         }));
     };
 
+    // Handle form submission (currently logs the data to console)
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission, like sending data to a server
         console.log("Form Data:", formData);
     };
 
@@ -30,23 +31,20 @@ const Contact = () => {
             className="h-screen bg-gray-100 dark:bg-gray-800 flex flex-col justify-center items-center"
         >
             <div className="max-w-screen-xl w-full px-6 py-8 flex flex-col lg:flex-row items-center gap-4">
-                {/* Left Section: Info */}
+                {/* Left Section: Contact Info and Introduction */}
                 <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">
                     <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-8">
                         Contact Section
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300 mt-4">
-                    <i>Feel free to reach out to us for any inquiries or support. We're here to help!<br /><br />
-                    Whether you have questions about our services, need assistance with an ongoing<br />
-                    issue or simply want to share your feedback, don’t hesitate to get in touch.<br />
-                    Our team is dedicated to providing prompt and friendly support to ensure your experience with us is exceptional.<br />
-                    Let us know how we can assist you today!
-                    </i></p>
+                        {/* Brief message introducing the contact section */}
+                        <i>Feel free to reach out to us for any inquiries or support...</i>
+                    </p>
 
-                    {/* Phone Logo and Fake Phone Number */}
+                    {/* Display phone logo and contact number */}
                     <div className="inline-flex items-center space-x-2 bg-gray-400 dark:bg-gray-800 p-3 rounded-lg shadow-md">
                         <img
-                            src={phoneLogo} // Update this path to match your file location
+                            src={phoneLogo} // Phone icon
                             alt="Phone Icon"
                             className="w-8 h-8 mr-2 filter invert dark:invert-1"
                         />
@@ -57,7 +55,7 @@ const Contact = () => {
                 {/* Right Section: Contact Form */}
                 <div className="w-full lg:w-1/2 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
                     <form onSubmit={handleSubmit}>
-                        {/* Row 1: First Name and Last Name */}
+                        {/* First Name and Last Name Inputs */}
                         <div className="flex gap-4 mb-4">
                             <div className="w-1/2">
                                 <label
@@ -95,7 +93,7 @@ const Contact = () => {
                             </div>
                         </div>
 
-                        {/* Row 2: Email */}
+                        {/* Email Input */}
                         <div className="mb-4">
                             <label
                                 htmlFor="email"
@@ -114,7 +112,7 @@ const Contact = () => {
                             />
                         </div>
 
-                        {/* Row 3: Choose a Doctor */}
+                        {/* Doctor Selection Dropdown */}
                         <div className="mb-4">
                             <label
                                 htmlFor="doctor"
@@ -136,7 +134,7 @@ const Contact = () => {
                             </select>
                         </div>
 
-                        {/* Row 4: Free Text Input */}
+                        {/* Message Text Area */}
                         <div className="mb-4">
                             <label
                                 htmlFor="message"
