@@ -21,14 +21,12 @@ const Login = () => {
   // Handle failed Google login
   const handleGoogleLoginError = () => {
     console.log("Google login failed");
-    // Add error handling logic here
   };
 
   // Handle form submission for login or signup
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log(isLogin ? "Logging in..." : "Signing up...");
-    // Add login or signup logic here
   };
 
   return (
@@ -36,7 +34,7 @@ const Login = () => {
       id="login"
       className="h-screen bg-gray-200 dark:bg-gray-700 flex flex-col justify-center items-center"
     >
-      <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-100">
+      <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-200">
         {isLogin ? "Log In" : "Sign Up"} {/* Dynamic title based on isLogin */}
       </h2>
       <p className="text-gray-600 dark:text-gray-300 mt-4 text-center px-6">

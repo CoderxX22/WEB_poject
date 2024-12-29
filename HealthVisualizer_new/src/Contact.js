@@ -33,16 +33,19 @@ const Contact = () => {
             <div className="max-w-screen-xl w-full px-6 py-8 flex flex-col lg:flex-row items-center gap-4">
                 {/* Left Section: Contact Info and Introduction */}
                 <div className="w-full lg:w-1/2 mb-8 lg:mb-0 text-center lg:text-left">
-                    <h2 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-8">
+                    <h2 className="text-5xl font-bold text-blue-800 dark:text-blue-200 mb-8">
                         Contact Section
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300 mt-4">
                         {/* Brief message introducing the contact section */}
-                        <i>Feel free to reach out to us for any inquiries or support...</i>
+                        <i>If you have any questions or need further assistance, feel free to get in touch with us.<br />
+                        We're here to help you with any inquiries you may have. Reach out to us via email<br />
+                        phone or through the contact form on our website, and we'll respond as soon as possible.<br /><br />
+                        Your feedback and questions are important to us!<br /></i>
                     </p>
 
                     {/* Display phone logo and contact number */}
-                    <div className="inline-flex items-center space-x-2 bg-gray-400 dark:bg-gray-800 p-3 rounded-lg shadow-md">
+                    <div className="inline-flex items-center space-x-2 bg-gray-400 dark:bg-gray-600 p-3 rounded-lg shadow-md">
                         <img
                             src={phoneLogo} // Phone icon
                             alt="Phone Icon"
