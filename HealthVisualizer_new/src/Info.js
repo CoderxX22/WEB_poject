@@ -1,7 +1,7 @@
 import React from "react";
-import doctor1 from "./doctor1.jpeg";  // Doctor 1 image
-import doctor2 from "./doctor2.jpg";   // Doctor 2 image
-import doctor3 from "./doctor3.jpeg";  // Doctor 3 image
+const doctor1 = "/doctor1.jpeg";  // Doctor 1 image
+const doctor2 = "/doctor2.jpg";   // Doctor 2 image
+const doctor3 = "/doctor3.jpeg";  // Doctor 3 image
 
 const Info = () => {
     return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import phoneLogo from './phone-call.png'; // Import the phone icon
+const phoneLogo = '/phone-call.png'; // Import the phone icon
 
 const Contact = () => {
     // State to manage form data

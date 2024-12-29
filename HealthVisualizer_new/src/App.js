@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Info from './Info.js';
 import Contact from './Contact.js';
 import Login from './Login.js';
-import healthIcon from './pngwing.com.png';
-import healthImage from './Statuscope.jpg';
+const healthIcon = '/pngwing.com.png';
+const healthImage = '/Statuscope.jpg';
 
 const Navbar = () => {
   // State to toggle dark mode
