@@ -39,7 +39,7 @@ const Navbar = () => {
                 alt="logo"
                 className="w-8 h-8 filter dark:invert-0 invert" // Invert color for light mode
               />
-              <span className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
+              <span href="#app" className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
                 HealthVisualizer
               </span>
             </div>
@@ -112,15 +112,12 @@ const Navbar = () => {
               </li>
               {/* Dark Mode Toggle Switch */}
               <li>
-              <div
-                onClick={toggleDarkMode}
-                className={`w-12 h-6 flex items-center bg-gray-200 dark:bg-gray-700 rounded-full p-1 cursor-pointer transition-all duration-300 
-                            ${darkMode ? 'justify-end' : 'justify-start'}`}
-              >
                 <div
-                  className="w-5 h-5 bg-white dark:bg-gray-400 rounded-full shadow-md transform transition-transform duration-300"
-                ></div>
-              </div>
+                  onClick={toggleDarkMode}
+                  className={`w-12 h-6 flex items-center bg-gray-200 dark:bg-gray-700 rounded-full p-1 cursor-pointer transition-all duration-300 
+                              ${darkMode ? 'justify-end' : 'justify-start'}`}>
+                  <div className="w-5 h-5 bg-white dark:bg-gray-400 rounded-full shadow-md transform transition-transform duration-300"></div>
+                </div>
               </li>
             </ul>
           </div>
