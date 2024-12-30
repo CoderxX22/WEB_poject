@@ -7,7 +7,7 @@ const Info = () => {
     return (
         <section
             id="info"
-            className="h-screen bg-white dark:bg-gray-900 flex flex-col justify-center items-center px-6 py-12">
+            className="h-auto md:h-auto lg:h-screen bg-white dark:bg-gray-900 flex flex-col justify-center items-center px-6 py-12">
             {/* Header */}
             <h2 className="text-5xl font-bold text-blue-800 dark:text-blue-200 mb-8">
                 <u>About our team</u> {/* Title of the section */}
@@ -66,7 +66,7 @@ const Info = () => {
                         <h3 className="text-lg font-bold mb-2">Dr. Kenneth Brown</h3>
                         <p className="text-sm mb-4">Dermatologist</p>
                         <p className="text-sm">Contact: +1 555-654-3210</p>
-                        <p className="text-sm">Email: emily.brown@example.com</p>
+                        <p className="text-sm">Email: kenneth.brown@example.com</p>
                     </div>
                 </div>
             </div>

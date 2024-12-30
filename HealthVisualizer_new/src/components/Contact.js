@@ -28,7 +28,7 @@ const Contact = () => {
     return (
         <section
             id="contact"
-            className="h-screen bg-gray-100 dark:bg-gray-800 flex flex-col justify-center items-center"
+            className="h-auto md:h-auto lg:h-screen bg-gray-100 dark:bg-gray-800 flex flex-col justify-center items-center"
         >
             <div className="max-w-screen-xl w-full px-6 py-8 flex flex-col lg:flex-row items-center gap-4">
                 {/* Left Section: Contact Info and Introduction */}
