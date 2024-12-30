@@ -1,22 +1,38 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { auth } from './firebase';
 
 const Login = () => {
   // State variables to toggle between login/signup and store role/special input values
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState(""); // State for role selection (Doctor, Instructor, Patient)
   const [specialInput, setSpecialInput] = useState(""); // State for the special input based on role
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   // Toggle between login and signup forms
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
 
+  const handleLogin = async (e) => { // Login via Firebase Authentication
+    e.preventDefault();
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      console.log('User logged in successfully!');
+      // Redirect user to dashboard or another page
+      navigateToRole();
+    } catch (err) {
+      setError(err.message);  // Handle login errors
+    }
+  };
+
   // Handle successful Google login
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Google login successful", credentialResponse);
     navigateToRole();
-    // Add logic for handling login here
+    // Add logic for handling Google login here
   };
 
   // Handle failed Google login
@@ -33,9 +49,9 @@ const Login = () => {
 
   const navigateToRole = () => {
     if (role === "Doctor") {
-      window.location.href = "/doctor"; // אם רופא, נעבור לדף של רופא
+      window.location.href = "/doctor"; // Navigate to Doctor's page
     } else if (role === "Patient") {
-      window.location.href = "/patient"; // אם מטופל, נעבור לדף של מטופל
+      window.location.href = "/patient"; // Navigate to Patient's page
     } else {
       console.log("Role not selected or invalid");
     }
@@ -84,6 +100,8 @@ const Login = () => {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} // Set email in state
               className="w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -98,6 +116,8 @@ const Login = () => {
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} // Set password in state
               className="w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -125,12 +145,12 @@ const Login = () => {
                 Role
               </label>
               <select
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)} // Update role state
-                  className="w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)} // Update role state
+                className="w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
                 <option value="">--Select a Role--</option>
                 <option value="Doctor">Doctor</option>
                 <option value="Instructor">Instructor</option>
@@ -144,23 +164,23 @@ const Login = () => {
                 License Number
               </label>
               <input
-                  type="text"
-                  id="specialInput"
-                  value={specialInput}
-                  onChange={(e) => setSpecialInput(e.target.value)} // Handle input change
-                  disabled={role === "Patient" || role === ""} // Disable input for Patient role
-                  className={`w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 ${
-                    role === "Patient" || role === ""
-                      ? "cursor-not-allowed bg-gray-300 text-gray-400" // Disabled state
-                      : "dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  }`}
-                  placeholder={
-                    role === "Patient" || role === ""
-                      ? "Disabled for this role" // Placeholder when disabled
-                      : "Enter Number"
-                  }
-                  required
-                />
+                type="text"
+                id="specialInput"
+                value={specialInput}
+                onChange={(e) => setSpecialInput(e.target.value)} // Handle input change
+                disabled={role === "Patient" || role === ""} // Disable input for Patient role
+                className={`w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 ${
+                  role === "Patient" || role === ""
+                    ? "cursor-not-allowed bg-gray-300 text-gray-400" // Disabled state
+                    : "dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                }`}
+                placeholder={
+                  role === "Patient" || role === ""
+                    ? "Disabled for this role" // Placeholder when disabled
+                    : "Enter Number"
+                }
+                required
+              />
             </div>
           )}
           {/* Submit Button */}

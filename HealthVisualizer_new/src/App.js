@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Info from './Info.js';
-import Contact from './Contact.js';
-import Login from './Login.js';
-import PatientScreen from './PatientScreen';
-import DoctorScreen from './DoctorScreen';
+import Info from './components/Info.js';
+import Contact from './components/Contact.js';
+import Login from './components/Login.js';
+import PatientScreen from './components/PatientScreen.js';
+import DoctorScreen from './components/DoctorScreen.js';
 const healthIcon = '/pngwing.com.png';
 const healthImage = '/Statuscope.jpg';
 
