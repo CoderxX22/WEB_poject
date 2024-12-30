@@ -15,6 +15,7 @@ const Login = () => {
   // Handle successful Google login
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Google login successful", credentialResponse);
+    navigateToRole();
     // Add logic for handling login here
   };
 
@@ -27,6 +28,17 @@ const Login = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log(isLogin ? "Logging in..." : "Signing up...");
+    navigateToRole();
+  };
+
+  const navigateToRole = () => {
+    if (role === "Doctor") {
+      window.location.href = "/doctor"; // אם רופא, נעבור לדף של רופא
+    } else if (role === "Patient") {
+      window.location.href = "/patient"; // אם מטופל, נעבור לדף של מטופל
+    } else {
+      console.log("Role not selected or invalid");
+    }
   };
 
   return (

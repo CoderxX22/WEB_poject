@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Info from './Info.js';
 import Contact from './Contact.js';
 import Login from './Login.js';
+import PatientScreen from './PatientScreen';
+import DoctorScreen from './DoctorScreen';
 const healthIcon = '/pngwing.com.png';
 const healthImage = '/Statuscope.jpg';
 
