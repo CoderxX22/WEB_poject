@@ -110,15 +110,17 @@ const Navbar = () => {
                   Login
                 </a>
               </li>
-              {/* Dark Mode Toggle Button */}
+              {/* Dark Mode Toggle Switch */}
               <li>
-                <button
-                  onClick={toggleDarkMode}
-                  className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-full px-3 py-1 shadow 
-                            hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200"
-                >
-                  {darkMode ? 'Light Mode' : 'Dark Mode'}
-                </button>
+              <div
+                onClick={toggleDarkMode}
+                className={`w-12 h-6 flex items-center bg-gray-200 dark:bg-gray-700 rounded-full p-1 cursor-pointer transition-all duration-300 
+                            ${darkMode ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className="w-5 h-5 bg-white dark:bg-gray-400 rounded-full shadow-md transform transition-transform duration-300"
+                ></div>
+              </div>
               </li>
             </ul>
           </div>
