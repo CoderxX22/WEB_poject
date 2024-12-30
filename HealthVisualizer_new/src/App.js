@@ -102,18 +102,18 @@ const Navbar = () => {
                 <ul
                   className="absolute left-0 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
                 >
-                  <li className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700">
-                    <a href="#option1" className="block text-gray-700 dark:text-gray-300">
+                  <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                    <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                       Statistics
                     </a>
                   </li>
-                  <li className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700">
-                    <a href="#option2" className="block text-gray-700 dark:text-gray-300">
+                  <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                    <a href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                       Charts
                     </a>
                   </li>
-                  <li className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700">
-                    <a href="#option2" className="block text-gray-700 dark:text-gray-300">
+                  <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                    <a href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                       Update data
                     </a>
                   </li>
