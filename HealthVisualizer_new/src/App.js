@@ -64,12 +64,16 @@ const Navbar = () => {
 
             {/* Navigation Links */}
             <ul
-              className={`lg:flex items-center space-x-6 ${menuOpen ? 'block' : 'hidden'} lg:block`}
+              className={`lg:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block`}
             >
               {/* Info Link */}
               <li>
                 <a
                   href="#info"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('info').scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                             before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                             before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
@@ -81,6 +85,10 @@ const Navbar = () => {
               <li>
                 <a
                   href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                             before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                             before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
@@ -123,6 +131,10 @@ const Navbar = () => {
               <li>
                 <a
                   href="#login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
+                  }}
                   className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                             before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                             before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
@@ -144,11 +156,15 @@ const Navbar = () => {
 
             {/* Mobile Dropdown */}
             {menuOpen && (
-              <div className="lg:hidden absolute top-16 left-0 right-0 bg-blue-600 dark:bg-gray-900 shadow-md z-50">
+              <div className="lg:hidden absolute top-12 left-0 right-0 bg-blue-600 dark:bg-gray-900 shadow-md z-50">
                 <ul className="flex flex-col items-center space-y-4 py-4">
                   <li>
                     <a
                       href="#info"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('info').scrollIntoView({ behavior: 'smooth' });
+                      }}
                       className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                     >
                       Info
@@ -157,6 +173,10 @@ const Navbar = () => {
                   <li>
                     <a
                       href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                      }}
                       className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                     >
                       Contact
@@ -173,6 +193,10 @@ const Navbar = () => {
                   <li>
                     <a
                       href="#login"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
+                      }}
                       className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                     >
                       Login
