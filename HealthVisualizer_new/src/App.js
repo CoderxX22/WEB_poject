@@ -182,13 +182,38 @@ const Navbar = () => {
                       Contact
                     </a>
                   </li>
-                  <li>
-                    <a
-                      href="#health"
-                      className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
+                  {/* Dropdown Menu for Health */}
+                  <li className="relative">
+                    <button
+                      onClick={toggleDropdown} // Toggle dropdown visibility
+                      className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
                     >
-                      Health
-                    </a>
+                      Health {!dropdownOpen || !menuOpen ? '▼' : '▲'}
+                    </button>
+                    {/* Dropdown Options */}
+                    {dropdownOpen && ( // Conditionally render the dropdown based on state
+                      <ul
+                        className="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg transition-all duration-300 z-50"
+                      >
+                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                          <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                            Statistics
+                          </a>
+                        </li>
+                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                          <a href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                            Charts
+                          </a>
+                        </li>
+                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                          <a href="#option3" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                            Update data
+                          </a>
+                        </li>
+                      </ul>
+                    )}
                   </li>
                   <li>
                     <a
