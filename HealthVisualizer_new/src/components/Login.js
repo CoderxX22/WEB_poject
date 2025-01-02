@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { auth } from './firebase';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
 
 const Login = () => {
   // State variables to toggle between login/signup and store role/special input values
@@ -19,12 +21,25 @@ const Login = () => {
   const handleLogin = async (e) => { // Login via Firebase Authentication
     e.preventDefault();
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPasswaord(email, password,role);
       console.log('User logged in successfully!');
       // Redirect user to dashboard or another page
-      navigateToRole();
+      navigateToRole(role);
     } catch (err) {
       setError(err.message);  // Handle login errors
+    }
+  };
+
+  const handleSignup = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password,role);
+      console.log("Signed up successfully:", userCredential.user);
+  
+      // Save user data or navigate to the dashboard
+      navigateToRole(role);
+    } catch (err) {
+      setError(err.message); // Display error
+      console.error("Signup error:", err);
     }
   };
 
@@ -122,6 +137,8 @@ const Login = () => {
               required
             />
           </div>
+
+          
           {/* Fields for Signup Only */}
           {!isLogin && (
             <div className="mb-4">
@@ -191,6 +208,7 @@ const Login = () => {
                 ? "bg-blue-500 hover:bg-blue-600 focus:ring-blue-400"
                 : "bg-green-500 hover:bg-green-600 focus:ring-green-400"
             }`}
+            onClick={isLogin ? handleLogin : handleSignup}
           >
             {isLogin ? "Log In" : "Sign Up"}
           </button>
