@@ -75,7 +75,7 @@ const Login = () => {
   return (
     <section
       id="login"
-      className="h-auto md:h-auto lg:h-screen bg-gray-200 dark:bg-gray-700 flex flex-col justify-center items-center"
+      className="h-auto md:h-auto lg:min-h-screen bg-gray-200 dark:bg-gray-700 flex flex-col justify-center items-center"
     >
       <h2 className="text-4xl font-bold text-blue-800 dark:text-blue-200">
         {isLogin ? "Log In" : "Sign Up"} {/* Dynamic title based on isLogin */}

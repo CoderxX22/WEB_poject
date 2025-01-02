@@ -21,7 +21,7 @@ const Info = () => {
             </p>
 
             {/* Cards displaying doctor information */}
-            <div className="relative lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="relative lg:2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 {/* Card 1: Dr. Jane Smith */}
                 <div className="relative group">
                     <img
