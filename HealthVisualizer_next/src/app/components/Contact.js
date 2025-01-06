@@ -74,7 +74,7 @@ const Contact = () => {
                                     value={formData.firstName}
                                     onChange={handleChange}
                                     placeholder="Write your name here..."
-                                    className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
                             <div className="w-1/2">
@@ -91,7 +91,7 @@ const Contact = () => {
                                     value={formData.lastName}
                                     onChange={handleChange}
                                     placeholder="Write your last name here..."
-                                    className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
                         </div>
@@ -111,7 +111,7 @@ const Contact = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Write your email here..."
-                                className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
@@ -128,7 +128,7 @@ const Contact = () => {
                                 name="doctor"
                                 value={formData.doctor}
                                 onChange={handleChange}
-                                className="w-full mt-2 px-2 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full mt-2 px-2 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="">Select a doctor</option>
                                 <option value="drSmith">Dr. Smith</option>
@@ -150,7 +150,7 @@ const Contact = () => {
                                 name="message"
                                 value={formData.message}
                                 onChange={handleChange}
-                                className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                                 rows="4"
                                 placeholder="Write your message here..."
                             ></textarea>
