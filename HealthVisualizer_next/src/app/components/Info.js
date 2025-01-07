@@ -9,7 +9,7 @@ const Info = () => {
             id="info"
             className="h-auto md:h-auto lg:h-screen bg-white dark:bg-gray-900 flex flex-col justify-center items-center px-6 py-12">
             {/* Header */}
-            <h2 className="text-5xl font-bold text-blue-800 dark:text-blue-200 mb-8">
+            <h2 className="text-5xl font-bold text-blue-800 dark:text-blue-200 mb-8 text-center md:text-center sm:text-center">
                 <u>About our team</u> {/* Title of the section */}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-center mb-8">
