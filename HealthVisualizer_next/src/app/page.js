@@ -13,18 +13,10 @@ const MainPage = () => {
   // State to toggle dark mode
   const [darkMode, setDarkMode] = useState(false);
 
-  // State to manage the dropdown visibility
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
   // Function to toggle dark mode
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle('dark'); // Add/remove 'dark' class from <html>
-  };
-
-  // Function to toggle dropdown visibility
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
   };
 
   return (

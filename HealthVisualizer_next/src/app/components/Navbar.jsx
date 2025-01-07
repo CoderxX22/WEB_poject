@@ -19,6 +19,14 @@ const Navbar = () => {
         setMenuOpen(!menuOpen);
     };
 
+    // State to manage the dropdown visibility
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    // Function to toggle dropdown visibility
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
+    };
+
     return (
     <nav className="bg-blue-600 dark:bg-gray-900 shadow-md relative z-50">
             <div className="flex justify-between items-center w-full px-4 md:px-10 lg:px-16 py-3">
@@ -165,6 +173,7 @@ const Navbar = () => {
                         </a>
                     </li>
                     {/* Dropdown Menu for Health */}
+                    {/* Dropdown Menu for Health */}
                     <li className="relative">
                         <button
                         onClick={toggleDropdown} // Toggle dropdown visibility
@@ -176,9 +185,7 @@ const Navbar = () => {
                         </button>
                         {/* Dropdown Options */}
                         {dropdownOpen && ( // Conditionally render the dropdown based on state
-                        <ul
-                            className="absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg transition-all duration-300 z-50"
-                        >
+                        <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg transition-all duration-300 z-50">
                             <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
                             <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                 Statistics
