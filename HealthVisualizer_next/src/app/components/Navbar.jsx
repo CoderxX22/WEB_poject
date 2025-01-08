@@ -46,7 +46,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Hamburger Icon for small screens */}
-                <div className="lg:hidden flex items-center space-x-3" onClick={toggleMenu}>
+                <div className="md:hidden lg:hidden flex items-center space-x-3" onClick={toggleMenu}>
                 <button className="text-white text-2xl">
                     {menuOpen ? 'X' : '☰'}
                 </button>
@@ -54,7 +54,7 @@ const Navbar = () => {
 
                 {/* Navigation Links */}
                 <ul
-                className={`lg:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block`}
+                className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block md:block`}
                 >
                 {/* Info Link */}
                 <li>
@@ -173,25 +173,25 @@ const Navbar = () => {
                         </a>
                     </li>
                     {/* Dropdown Menu for Health */}
-                    {/* Dropdown Menu for Health */}
                     <li className="relative">
                         <button
                         onClick={toggleDropdown} // Toggle dropdown visibility
-                        className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                        className="relative flex justify-center w-full text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 
+                                    transition-transform duration-200 
                                     before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                                    before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                    before:transition-all before:duration-300"
                         >
                         Health {!dropdownOpen || !menuOpen ? '▼' : '▲'}
                         </button>
                         {/* Dropdown Options */}
                         {dropdownOpen && ( // Conditionally render the dropdown based on state
-                        <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg transition-all duration-300 z-50">
-                            <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                        <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-500 dark:bg-gray-800 transition-all duration-300 z-50">
+                            <li className="px-7 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
                             <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                 Statistics
                             </a>
                             </li>
-                            <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                            <li className="px-9 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
                             <a href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                 Charts
                             </a>
