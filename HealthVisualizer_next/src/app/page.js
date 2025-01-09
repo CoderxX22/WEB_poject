@@ -1,11 +1,8 @@
 "use client"
-
 import React, { useState } from 'react';
 import Info from './components/Info.js';
 import Contact from './components/Contact.js';
 import Login from './components/Login.js';
-import PatientScreen from './pages/PatientScreen.js';
-import DoctorScreen from './pages/DoctorScreen.js';
 import Navbar from './components/Navbar.jsx';
 const healthImage = '/Statuscope.jpg';
 
