@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
+import DarkMode from './DarkMode';
 const healthIcon = '/pngwing.com.png';
 
 const Navbar = () => {
-    // State to toggle dark mode
-    const [darkMode, setDarkMode] = useState(false);
-
-    // Function to toggle dark mode
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-        document.documentElement.classList.toggle('dark'); // Add/remove 'dark' class from <html>
-    };
+    
 
      // State for the hamburger menu toggle
     const [menuOpen, setMenuOpen] = useState(false);
@@ -133,15 +127,7 @@ const Navbar = () => {
                     </a>
                 </li>
                 {/* Dark Mode Toggle Switch */}
-                <li>
-                    <div
-                    onClick={toggleDarkMode}
-                    className={`w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 cursor-pointer transition-all duration-300 
-                                ${darkMode ? 'justify-end' : 'justify-start'}`}
-                    >
-                    <div className="w-5 h-5 bg-white dark:bg-gray-400 rounded-full shadow-md transform transition-transform duration-300"></div>
-                    </div>
-                </li>
+                <DarkMode />
                 </ul>
 
                 {/* Mobile Dropdown */}
@@ -216,15 +202,7 @@ const Navbar = () => {
                         Login
                         </a>
                     </li>
-                    <li>
-                        <div
-                        onClick={toggleDarkMode}
-                        className={`w-12 h-6 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full p-1 cursor-pointer transition-all duration-300 
-                                    ${darkMode ? 'justify-end' : 'justify-start'}`}
-                        >
-                        <div className="w-5 h-5 bg-white dark:bg-gray-400 rounded-full shadow-md transform transition-transform duration-300"></div>
-                        </div>
-                    </li>
+                    <DarkMode />
                     </ul>
                 </div>
                 )}
