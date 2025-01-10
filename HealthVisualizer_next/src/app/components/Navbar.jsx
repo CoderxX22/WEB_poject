@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import DarkMode from './DarkMode';
+import Link from 'next/link';
+
 const healthIcon = '/pngwing.com.png';
 
 const Navbar = () => {
@@ -95,7 +97,7 @@ const Navbar = () => {
                     className="absolute left-0 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
                     >
                     <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                        <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                        <a href="/StatisticsScreen" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                         Statistics
                         </a>
                     </li>
