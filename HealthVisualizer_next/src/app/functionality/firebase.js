@@ -1,6 +1,6 @@
 // Import necessary Firebase modules
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -13,10 +13,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Authentication
-const auth = getAuth(app);
-
-export { auth }; // Export the auth object for use in components
-export default app;
+export const db = getFirestore(app);
