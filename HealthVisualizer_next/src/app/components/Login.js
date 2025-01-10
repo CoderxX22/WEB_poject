@@ -79,6 +79,8 @@ const Login = () => {
       window.location.href = "/DoctorScreen";
     } else if (role === "Patient") {
       window.location.href = "/PatientScreen";
+     } else if (role === "Instructor") {
+        window.location.href = "/InstructorScreen";
     } else {
       console.log("Role not selected or invalid");
     }

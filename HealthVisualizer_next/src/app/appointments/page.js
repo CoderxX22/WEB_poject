@@ -1,8 +1,7 @@
 "use client";
 import React from 'react';
 
-
-const DoctorScreen = () => {
+const AppointmentsScreen = () => {
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
       {/* Navbar Section */}
@@ -82,33 +81,75 @@ const DoctorScreen = () => {
 
         {/* Overlay Content Section */}
         <div className="absolute top-2/3 w-full text-center z-10 px-4">
-          <h1 className="text-6xl font-extrabold mb-6 text-white dark:text-gray-100">
-            Welcome, <span className="text-blue-600 dark:text-blue-400">Dr. Smith</span>
+          <h1 className="text-blue-700 text-6xl font-extrabold mb-6 text-white dark:text-gray-100">
+            Appointments
           </h1>
           <p className="text-lg text-gray-800 dark:text-gray-300 leading-relaxed mb-6">
-            You can manage patient appointments, track progress, and provide the best care for your patients.
+            Welcome to the appointments page, here you can see upcoming and past appointments
           </p>
-          <button
-          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 hover:scale-110"
-          onClick={() => window.location.href = '/appointments'} 
-          >
-          View Appointments
-        </button>
         </div>
       </div>
 
-      {/* Appointments Section */}
-      <section id="appointments" className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
+      {/* Appointments List Section */}
+      <section id="appointments-list" className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Upcoming Appointments</h2>
         {/* Example Appointments */}
-        <div className="space-y-4">
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">John Doe</h3>
-            <p className="text-gray-600 dark:text-gray-400">Scheduled: January 2, 2024 at 10:00 AM</p>
+        <div className="space-y-6">
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">John Doe</h3>
+              <p className="text-gray-600 dark:text-gray-400">Scheduled: January 2, 2024 at 10:00 AM</p>
+            </div>
+            <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300">
+              Reschedule
+            </button>
           </div>
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Jane Smith</h3>
-            <p className="text-gray-600 dark:text-gray-400">Scheduled: January 3, 2024 at 2:00 PM</p>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Jane Smith</h3>
+              <p className="text-gray-600 dark:text-gray-400">Scheduled: January 3, 2024 at 2:00 PM</p>
+            </div>
+            <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300">
+              Reschedule
+            </button>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Alice Cooper</h3>
+              <p className="text-gray-600 dark:text-gray-400">Scheduled: January 5, 2024 at 9:30 AM</p>
+            </div>
+            <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300">
+              Reschedule
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Past Appointments Section */}
+      <section className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
+        <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Past Appointments</h2>
+        {/* Example Past Appointments */}
+        <div className="space-y-6">
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">David Lee</h3>
+              <p className="text-gray-600 dark:text-gray-400">Completed: December 28, 2023 at 11:00 AM</p>
+            </div>
+            <button className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-all duration-300">
+              View Details
+            </button>
+          </div>
+
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Sarah Brown</h3>
+              <p className="text-gray-600 dark:text-gray-400">Completed: December 27, 2023 at 3:00 PM</p>
+            </div>
+            <button className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-all duration-300">
+              View Details
+            </button>
           </div>
         </div>
       </section>
@@ -116,4 +157,4 @@ const DoctorScreen = () => {
   );
 };
 
-export default DoctorScreen;
+export default AppointmentsScreen;
