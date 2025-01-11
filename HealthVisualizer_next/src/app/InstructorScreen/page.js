@@ -1,94 +1,31 @@
 "use client";
 import React from 'react';
+import Overlay from '../components/Overlay';
+import Navbar from '../components/Navbar';
 
 const InstructorsScreen = () => {
+
+  const links = [
+    { href: "/home", name: "Dashboard" },
+    { href: "instructorswithpatients", name: "Connect with Patients" },
+    { href: "/courses", name: "Courses" },
+    { href: "#logout", name: "Logout" },
+  ];
+
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
       {/* Navbar Section */}
-      <nav className="bg-blue-600 dark:bg-gray-900 shadow-md relative z-50">
-        <div className="flex justify-between items-center w-full px-4 md:px-10 lg:px-16 py-3">
-          {/* Logo Section with Icon and Text */}
-          <div className="flex items-center space-x-3 ml-5">
-            <img
-              src="/pngwing.com.png"
-              alt="logo"
-              className="w-8 h-8 filter dark:invert-0 invert"
-            />
-            <span className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
-              HealthVisualizer
-            </span>
-          </div>
-
-          {/* Navigation Links */}
-          <ul className="flex items-center space-x-6">
-            <li>
-              <a
-                href="/home"
-                className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
-                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                            before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
-              >
-                Dashboard
-              </a>
-            </li>
-            <li>
-              <a
-                href="instructorswithpatients"
-                className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
-                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                            before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
-              >
-                Connect with Patients
-              </a>
-            </li>
-            <li>
-              <a
-                href="/courses"
-                className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
-                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                            before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
-              >
-                Courses
-              </a>
-            </li>
-            <li>
-              <a
-                href="#logout"
-                className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
-                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                            before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
-              >
-                Logout
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar links={links} />
 
       {/* Main Content Section */}
-      <div className="relative">
-        {/* Background Section */}
-        <div
-          className="w-full h-[60vh] bg-cover bg-center"
-          style={{
-            backgroundImage: `url('/Statuscope.jpg')`,
-            filter: "blur(2px)",
-            zIndex: 1,
-          }}
-        >
-          <div className="w-full h-full bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-800"></div>
-        </div>
-
-        {/* Overlay Content Section */}
-        <div className="absolute top-2/3 w-full text-center z-10 px-4">
-          <h1 className="text-6xl font-extrabold mb-6 text-white dark:text-gray-100">
-            Welcome, <span className="text-blue-600 dark:text-blue-400">Instructors</span>
-          </h1>
-          <p className="text-lg text-gray-800 dark:text-gray-300 leading-relaxed mb-6">
-            Manage your courses, schedule, and communicate with your patients.
-          </p>
-        </div>
-      </div>
+      <Overlay
+        backgroundImage="/Statuscope.jpg"
+        spanText1="Welcome,"
+        spanText2="Instructors"
+        paragraphText="Manage your courses, schedule, and communicate with your patients."
+        buttonText=""
+        onClick={null} // No button or action specified
+      />
 
       {/* Patients Section */}
       <section id="patients" className="py-12 px-4 bg-gray-50 dark:bg-gray-800">

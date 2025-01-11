@@ -70,7 +70,7 @@ const PieChart = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4">
-      <h2 className="text-xl font-semibold mb-4">2024 Medical Conditions Chart</h2>
+      <h2 className="text-xl text-black mb-4 text-center">2024 Medical Conditions Chart</h2>
       <Pie data={data} options={options} />
     </div>
   );

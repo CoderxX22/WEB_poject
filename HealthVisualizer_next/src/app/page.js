@@ -1,9 +1,10 @@
 "use client"
 import React, { useState } from 'react';
-import Info from './components/Info.js';
-import Contact from './components/Contact.js';
-import Login from './components/Login.js';
-import Navbar from './components/Navbar.jsx';
+import Info from './components/InfoSection.jsx';
+import Contact from './components/ContactSection.jsx';
+import Login from './components/LoginSection.jsx';
+import Header from './components/Header.jsx';
+import Overlay from './components/Overlay.jsx';
 const healthImage = '/Statuscope.jpg';
 
 const MainPage = () => {
@@ -21,39 +22,16 @@ const MainPage = () => {
       {/* Main wrapper with dynamic background for light/dark mode */}
       <div className="relative min-h-screen md:h-auto sm:h-auto bg-gray-50 dark:bg-gray-800">
         {/* Navbar Section */}
-        <Navbar />
+        <Header />
         {/* Main Content Section */}
-        <div className="relative">
-          {/* Background Section */}
-          <div
-            className="w-full h-[60vh] bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${healthImage})`,
-              filter: 'blur(2px)', // Adds a blur effect
-              zIndex: 1,
-            }}
-          >
-            <div className="w-full h-full bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-800"></div>
-          </div>
-
-          {/* Overlay Content Section */}
-          <div className="absolute top-2/3 w-full text-center px-4 z-10">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6">
-              <span className="text-gray-800 dark:text-gray-100">Welcome to</span>{' '}
-              <span className="text-blue-600 dark:text-blue-400">HealthVisualizer</span>
-            </h1>
-            <p className="text-sm md:text-base lg:text-lg text-gray-800 dark:text-gray-300 leading-relaxed mb-4 md:mb-6">
-              Welcome to the health advisor website, you are welcome to check your health status
-              <br /> and get the best advice from our professional doctors.
-            </p>
-            <button
-              className="px-4 py-2 md:px-6 md:py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 hover:scale-110"
-              onClick={() => document.getElementById('info').scrollIntoView({ behavior: 'smooth' })} // Smooth scroll to Info section
-            >
-              About us
-            </button>
-          </div>
-        </div>
+        <Overlay
+            backgroundImage={healthImage}
+            paragraphText={["Welcome to the health advisor website, you are welcome to check your health status",<br key="line-break" />,"and get the best advice from our professional doctors."]}
+            spanText1="Welcome to"
+            spanText2="HealthVisualizer"
+            buttonText="About us"
+            onClick={() => document.getElementById('info').scrollIntoView({ behavior: 'smooth' })}
+        />
       </div>
       {/* Info Section */}
       <Info />
