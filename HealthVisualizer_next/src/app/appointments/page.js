@@ -19,7 +19,7 @@ const AppointmentsScreen = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/doctorbg.avif"
         spanText1=""
         spanText2="Appointments"
         paragraphText="Welcome to the appointments page, here you can see upcoming and past appointments"

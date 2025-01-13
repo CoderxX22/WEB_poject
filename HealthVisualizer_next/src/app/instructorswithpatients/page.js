@@ -19,7 +19,7 @@ const InstructorsWithPatients = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/instructorbg.jpg"
         spanText1="Connect with"
         spanText2="Patients"
         paragraphText="Get in touch with your patients to provide guidance and support."

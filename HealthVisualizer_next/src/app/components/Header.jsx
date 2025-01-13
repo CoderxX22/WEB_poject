@@ -33,12 +33,9 @@ const Header = () => {
                     alt="logo"
                     className="w-8 h-8 filter dark:invert-0 invert" // Invert color for light mode
                 />
-                <span
-                    href="#app"
-                    className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110"
-                >
-                    HealthVisualizer
-                </span>
+                    <Link href="/" className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
+                        HealthVisualizer
+                    </Link>
                 </div>
 
                 {/* Hamburger Icon for small screens */}
@@ -97,7 +94,13 @@ const Header = () => {
                     className="absolute left-0 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
                     >
                     <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                        <a href="/StatisticsScreen" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                        <a href="statistics"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                document.getElementById('statistics').scrollIntoView({ behavior: 'smooth' });
+                                }}
+                            className="block text-gray-200 hover:text-blue-800 dark:text-gray-300"                       
+                        >
                         Statistics
                         </a>
                     </li>
@@ -116,11 +119,7 @@ const Header = () => {
                 {/* Login Link */}
                 <li>
                     <a
-                    href="#login"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
-                    }}
+                    href="/LoginScreen"
                     className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                 before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
@@ -175,7 +174,12 @@ const Header = () => {
                         {dropdownOpen && ( // Conditionally render the dropdown based on state
                         <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-500 dark:bg-gray-800 transition-all duration-300 z-50">
                             <li className="px-7 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                            <a href="#option1" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                            <a href="#option1" 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                 className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                 Statistics
                             </a>
                             </li>
@@ -194,11 +198,7 @@ const Header = () => {
                     </li>
                     <li>
                         <a
-                        href="#login"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
-                        }}
+                        href="/LoginScreen"
                         className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                         >
                         Login

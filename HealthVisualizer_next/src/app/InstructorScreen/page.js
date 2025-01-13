@@ -19,7 +19,7 @@ const InstructorsScreen = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/instructorbg.jpg"
         spanText1="Welcome,"
         spanText2="Instructors"
         paragraphText="Manage your courses, schedule, and communicate with your patients."

@@ -31,12 +31,9 @@ const Navbar = ({links}) => {
                         alt="logo"
                         className="w-8 h-8 filter dark:invert-0 invert" // Invert color for light mode
                     />
-                    <span
-                        href="#app"
-                        className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110"
-                    >
+                    <Link href="/" className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
                         HealthVisualizer
-                    </span>
+                    </Link>
                 </div>
 
                 {/* Hamburger Icon for small screens */}

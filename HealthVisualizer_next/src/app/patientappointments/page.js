@@ -19,7 +19,7 @@ const PatientAppointments = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/waitingroom1.jpg"
         spanText1="My Appointments"
         spanText2="Patient"
         paragraphText="Here are your upcoming appointments with your doctors."

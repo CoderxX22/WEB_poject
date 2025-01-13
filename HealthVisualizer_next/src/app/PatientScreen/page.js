@@ -19,7 +19,7 @@ const PatientScreen = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/waitingroom1.jpg"
         spanText1="Welcome, "
         spanText2="Patient"
         paragraphText="You can view your upcoming appointments, track your health status, and manage your personal information."

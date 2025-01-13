@@ -19,7 +19,7 @@ const DoctorScreen = () => {
 
       {/* Main Content Section */}
       <Overlay
-          backgroundImage="/Statuscope.jpg"
+          backgroundImage="/doctorbg.avif"
           paragraphText="You can manage patient appointments, track progress, and provide the best care for your patients."
           spanText1="Welcome,"
           spanText2="Dr. Smith"

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Info from './components/InfoSection.jsx';
 import Contact from './components/ContactSection.jsx';
-import Login from './components/LoginSection.jsx';
+import StatisticsSection from './components/StatisticsSection.jsx';
 import Header from './components/Header.jsx';
 import Overlay from './components/Overlay.jsx';
 const healthImage = '/Statuscope.jpg';
@@ -38,7 +38,7 @@ const MainPage = () => {
       {/* Contact Section */}
       <Contact />
       {/* Login Section */}
-      <Login />
+      <StatisticsSection />
     </>
   );
 };

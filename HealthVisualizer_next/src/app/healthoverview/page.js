@@ -19,7 +19,7 @@ const HealthOverview = () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/waitingroom1.jpg"
         spanText1="Health Overview,"
         spanText2="Patient"
         paragraphText="Here you can see an overview of your current health metrics and progress."

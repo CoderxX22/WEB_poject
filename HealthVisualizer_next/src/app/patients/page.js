@@ -32,7 +32,7 @@ const PatientsList= () => {
 
       {/* Main Content Section */}
       <Overlay
-        backgroundImage="/Statuscope.jpg"
+        backgroundImage="/doctorbg.avif"
         spanText1="Patient List"
         spanText2=""
         paragraphText="Welcome to patients list, here you can search for patients and watch patients details."

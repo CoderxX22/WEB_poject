@@ -19,7 +19,7 @@ const Courses = () => {
 
       {/* Main Content Section */}
       <Overlay 
-        backgroundImage="/Statuscope.jpg" 
+        backgroundImage="/instructorbg.jpg"
         paragraphText="Choose a course to recommend to your patients." 
         spanText1="Available" 
         spanText2="Courses" 
