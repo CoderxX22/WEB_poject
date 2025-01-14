@@ -93,7 +93,7 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className="h-auto md:h-auto lg:min-h-screen bg-gray-200 dark:bg-gray-700 flex flex-col justify-center items-center">
+      <div className="min-h-screen bg-gray-200 dark:bg-gray-700 flex flex-col justify-center items-center">
         <h2 className="text-5xl font-bold text-blue-800 dark:text-blue-200">
           {isLogin ? "Log In" : "Sign Up"}
         </h2>

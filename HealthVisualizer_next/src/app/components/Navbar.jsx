@@ -31,7 +31,7 @@ const Navbar = ({links}) => {
                         alt="logo"
                         className="w-8 h-8 filter dark:invert-0 invert" // Invert color for light mode
                     />
-                    <Link href="/" className="text-xl font-bold text-white dark:text-blue-400 hover:text-black dark:hover:text-gray-200 transition-all hover:scale-110">
+                    <Link href="/" className="text-xl font-bold text-white dark:text-blue-400 lg:hover:text-black lg:dark:hover:text-gray-200 lg:transition-all lg:hover:scale-110">
                         HealthVisualizer
                     </Link>
                 </div>
