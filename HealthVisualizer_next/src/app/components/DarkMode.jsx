@@ -3,19 +3,27 @@ import React, { useEffect, useState } from 'react';
 const DarkMode = () => {
   const [darkMode, setDarkMode] = useState(false);
 
-  // Initialize dark mode state based on localStorage
   useEffect(() => {
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode === 'true') {
-      setDarkMode(true);
-      document.body.classList.add('dark');
-    } else {
+    // Always reset to light mode on server start
+    if (!sessionStorage.getItem('sessionInitialized')) {
+      // Mark session as initialized to prevent resetting on navigation
+      sessionStorage.setItem('sessionInitialized', 'true');
       setDarkMode(false);
       document.body.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false'); // Clear any previous dark mode state
+    } else {
+      // Retain dark mode state within the same session
+      const savedMode = localStorage.getItem('darkMode');
+      if (savedMode === 'true') {
+        setDarkMode(true);
+        document.body.classList.add('dark');
+      } else {
+        setDarkMode(false);
+        document.body.classList.remove('dark');
+      }
     }
   }, []);
 
-  // Toggle dark mode and persist to localStorage
   const toggleDarkMode = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
