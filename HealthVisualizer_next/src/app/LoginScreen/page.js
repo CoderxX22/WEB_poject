@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { db } from "../functionality/firebase"; // Correct relative path
-import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
+import { handleFormSubmit, navigateToRole } from "../functionality/loginlogic";
 import SignupForm from "../components/SignupForm";
 import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
@@ -19,90 +18,18 @@ const Login = () => {
     setIsLogin(!isLogin);
   };
 
-  const handleFormSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-  
-    if (isLogin) {
-      console.log("Logging in...");
-      try {
-        const usersRef = collection(db, "users");
-        const q = query(usersRef, where("email", "==", email));
-        const querySnapshot = await getDocs(q);
-        
-        if (!querySnapshot.empty) {
-          // User exists in Firestore
-          console.log("User found in Firestore!");
-          const userDoc = querySnapshot.docs[0];
-          const userData = userDoc.data();
-          const userRole = userData?.role;
-          const userPass = userData?.password;
-          const userName = userData?.fullName;
-          const userConn = userData?.connected;
-
-          if(userPass != password){
-            alert("The Password is incorrect");
-          }else if (!userConn){
-            const userDocRef = doc(db, "users", userDoc.id);
-            await updateDoc(userDocRef, { connected: true });
-            if (userRole) {
-              console.log(`User role: ${userRole}`);
-              navigateToRole(userRole,userName,email);
-            } else {
-              setError("User role is not defined in the database.");
-            }
-          }else{
-            alert("The User is already connected from another device");
-          }
-        } else {
-          setError("No user found with this email.");
-        }
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        setError("An error occurred. Please try again.");
-      }
-    } else {
-      console.log("Signing up...");
-      try {
-      // Add user details to Firestore
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("email", "==", email));
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty){
-        alert("The email you entered is already exists");
-      }else{
-      await setDoc(doc(usersRef), {
-        fullName,
-        email,
-        password,
-        role,
-        specialInput: role === "Doctor" || role === "Instructor" ? specialInput : "Null",
-        connected : false
-      });
-    }
-      alert("Signup successful! Click OK to refresh.");
-      window.location.reload();
-      console.log("Signup successful");
-        setError("");
-      } catch (err) {
-        console.error("Error during signup:", err);
-        setError("An error occurred during signup. Please try again.");
-      }
-    }
-  };
-
-  const navigateToRole = (role,userName,email) => {
-    document.cookie = `userName=${userName}; path=/`;
-    document.cookie = `email=${email}; path=/`;
-
-    if (role === "Doctor") {
-        window.location.href = '/DoctorScreen';
-    } else if (role === "Patient") {
-        window.location.href = "/PatientScreen";
-     } else if (role === "Instructor") {
-        window.location.href = "/InstructorScreen";
-    } else {
-      console.log("Role not selected or invalid");
-    }
+    handleFormSubmit({
+      isLogin,
+      email,
+      password,
+      fullName,
+      role,
+      specialInput,
+      setError,
+      navigateToRole,
+    });
   };
 
   return (
@@ -113,7 +40,7 @@ const Login = () => {
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
         <div className="mt-8 w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={onSubmit}>
           {isLogin ? (
               <LoginForm 
                 email={email} 
