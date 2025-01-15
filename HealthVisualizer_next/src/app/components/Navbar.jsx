@@ -41,15 +41,26 @@ const Navbar = ({ links }) => {
                 <ul className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block md:block`}>
                     {links.map((link, index) => (
                         <li key={index}>
-                            <Link href={link.href} passHref>
-                                <span
+                            {link.onClick ? (
+                                <button
+                                    onClick={link.onClick}
                                     className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                         before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                         before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
                                 >
                                     {link.name}
-                                </span>
-                            </Link>
+                                </button>
+                            ) : (
+                                <Link href={link.href} passHref>
+                                    <span
+                                        className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                            before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                    >
+                                        {link.name}
+                                    </span>
+                                </Link>
+                            )}
                         </li>
                     ))}
                     <DarkMode />
@@ -61,15 +72,26 @@ const Navbar = ({ links }) => {
                         <ul className="flex flex-col items-center space-y-4 py-4">
                             {links.map((link, index) => (
                                 <li key={index}>
-                                    <Link href={link.href} passHref>
-                                        <span
+                                    {link.onClick ? (
+                                        <button
+                                            onClick={link.onClick}
                                             className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                                 before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
                                         >
                                             {link.name}
-                                        </span>
-                                    </Link>
+                                        </button>
+                                    ) : (
+                                        <Link href={link.href} passHref>
+                                            <span
+                                                className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                                    before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                                    before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                            >
+                                                {link.name}
+                                            </span>
+                                        </Link>
+                                    )}
                                 </li>
                             ))}
                             <DarkMode />

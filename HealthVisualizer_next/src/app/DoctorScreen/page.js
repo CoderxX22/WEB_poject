@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
+import { db } from "../functionality/firebase"; 
 import Overlay from '../components/Overlay.jsx';
 import Navbar from '../components/Navbar.jsx';
 
@@ -35,7 +36,7 @@ const DoctorScreen = () => {
         // Update the "connected" field to false
         await updateDoc(userDocRef, { connected: false });
         
-        window.location.href = "/app";
+        window.location.href = "/";
 
       }
   }catch (err) {
@@ -47,7 +48,7 @@ const DoctorScreen = () => {
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
     { href: "#name", name: `Dr.${userName}`},
-    { href: "#logout", name: "Logout",onClick: logOut },
+    { onClick: logOut, name: "Logout" },
   ];
 
   return (

@@ -36,7 +36,7 @@ const Login = () => {
           const userData = userDoc.data();
           const userRole = userData?.role;
           const userPass = userData?.password;
-          const userName = userData?.userName;
+          const userName = userData?.fullName;
           const userConn = userData?.connected;
 
           if(userPass != password){
