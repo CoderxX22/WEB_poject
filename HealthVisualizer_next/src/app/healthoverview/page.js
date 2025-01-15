@@ -1,15 +1,30 @@
 "use client";
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { getCookie, logOut } from '../functionality/loginlogic';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 
 const HealthOverview = () => {
 
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  
+  useEffect(() => {
+      // Fetch user info from cookies
+      const storedUserName = getCookie("userName");
+      const storedUserEmail = getCookie("email");
+      setUserName(storedUserName || "Guest");
+      setEmail(storedUserEmail || "");
+    }, []);
+  
+
   const links = [
-    { href: "/PatientScreen", name: "Dashboard" },
+    { href: "/PatientScreen", name: "Home" },
     { href: "/appointments", name: "My Appointments" },
     { href: "/health-overview", name: "Health Overview" },
-    { href: "#logout", name: "Logout" },
+    { href: "#name", name: userName},
+    { onClick: logOut, name: "Logout" },
   ];
 
   return (
@@ -21,7 +36,7 @@ const HealthOverview = () => {
       <Overlay
         backgroundImage="/waitingroom1.jpg"
         spanText1="Health Overview,"
-        spanText2="Patient"
+        spanText2={`${userName}`}
         paragraphText="Here you can see an overview of your current health metrics and progress."
       />
 
