@@ -1,15 +1,28 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 
 const PatientScreen = () => {
   
+  const [userName, setUserName] = useState("");
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+  useEffect(() => {
+    // Set the username from the cookie when the component mounts
+    const storedUserName = getCookie("userName");
+    setUserName(storedUserName);
+  }, []);
+
   const links = [
     { href: "/PatientScreen", name: "Home" },
     { href: "/patientappointments", name: "My Appointments" },
     { href: "/healthoverview", name: "Health Overview" },
-    { href: "#logout", name: "Logout" },
+    { href: "#name", name: userName},
+    { href: "#logout" , name: "Logout" }
   ];
 
   return (
@@ -21,7 +34,7 @@ const PatientScreen = () => {
       <Overlay
         backgroundImage="/waitingroom1.jpg"
         spanText1="Welcome, "
-        spanText2="Patient"
+        spanText2={`${userName}`}
         paragraphText="You can view your upcoming appointments, track your health status, and manage your personal information."
         buttonText="View Appointments"
         onClick={() => window.location.href = '/patientappointments'}

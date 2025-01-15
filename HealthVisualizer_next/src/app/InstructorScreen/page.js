@@ -1,14 +1,27 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 
 const InstructorsScreen = () => {
+  
+  const [userName, setUserName] = useState("");
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+  useEffect(() => {
+    // Set the username from the cookie when the component mounts
+    const storedUserName = getCookie("userName");
+    setUserName(storedUserName);
+  }, []);
 
   const links = [
     { href: "/home", name: "Dashboard" },
     { href: "instructorswithpatients", name: "Connect with Patients" },
     { href: "/courses", name: "Courses" },
+    { href: "#name", name: userName},
     { href: "#logout", name: "Logout" },
   ];
 
@@ -21,7 +34,7 @@ const InstructorsScreen = () => {
       <Overlay
         backgroundImage="/instructorbg.jpg"
         spanText1="Welcome,"
-        spanText2="Instructors"
+        spanText2={`${userName}`}
         paragraphText="Manage your courses, schedule, and communicate with your patients."
         buttonText=""
         onClick={null} // No button or action specified

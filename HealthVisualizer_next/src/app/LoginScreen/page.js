@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { db } from "../functionality/firebase"; // Correct relative path
-import { collection, getDocs, query, where , setDoc , doc } from "firebase/firestore";
+import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
 import SignupForm from "../components/SignupForm";
 import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
@@ -28,19 +28,30 @@ const Login = () => {
         const usersRef = collection(db, "users");
         const q = query(usersRef, where("email", "==", email));
         const querySnapshot = await getDocs(q);
-  
+        
         if (!querySnapshot.empty) {
           // User exists in Firestore
           console.log("User found in Firestore!");
           const userDoc = querySnapshot.docs[0];
           const userData = userDoc.data();
           const userRole = userData?.role;
-  
-          if (userRole) {
-            console.log(`User role: ${userRole}`);
-            navigateToRole(userRole);
-          } else {
-            setError("User role is not defined in the database.");
+          const userPass = userData?.password;
+          const userName = userData?.userName;
+          const userConn = userData?.connected;
+
+          if(userPass != password){
+            alert("The Password is incorrect");
+          }else if (!userConn){
+            const userDocRef = doc(db, "users", userDoc.id);
+            await updateDoc(userDocRef, { connected: true });
+            if (userRole) {
+              console.log(`User role: ${userRole}`);
+              navigateToRole(userRole,userName,email);
+            } else {
+              setError("User role is not defined in the database.");
+            }
+          }else{
+            alert("The User is already connected from another device");
           }
         } else {
           setError("No user found with this email.");
@@ -65,6 +76,7 @@ const Login = () => {
         password,
         role,
         specialInput: role === "Doctor" || role === "Instructor" ? specialInput : "Null",
+        connected : false
       });
     }
       alert("Signup successful! Click OK to refresh.");
@@ -78,11 +90,14 @@ const Login = () => {
     }
   };
 
-  const navigateToRole = (role) => {
+  const navigateToRole = (role,userName,email) => {
+    document.cookie = `userName=${userName}; path=/`;
+    document.cookie = `email=${email}; path=/`;
+
     if (role === "Doctor") {
-      window.location.href = "/DoctorScreen";
+        window.location.href = '/DoctorScreen';
     } else if (role === "Patient") {
-      window.location.href = "/PatientScreen";
+        window.location.href = "/PatientScreen";
      } else if (role === "Instructor") {
         window.location.href = "/InstructorScreen";
     } else {

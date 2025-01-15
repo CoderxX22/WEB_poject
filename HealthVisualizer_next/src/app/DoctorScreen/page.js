@@ -1,15 +1,53 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
 import Overlay from '../components/Overlay.jsx';
 import Navbar from '../components/Navbar.jsx';
 
 const DoctorScreen = () => {
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
 
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+  useEffect(() => {
+    // Set the username from the cookie when the component mounts
+    const storedUserName = getCookie("userName");
+    setUserName(storedUserName);
+    const storedUserEmail = getCookie("email");
+    setEmail(storedUserEmail);
+
+  }, []);
+  const logOut = async () =>{
+    try {
+      // Get the user's document from Firestore
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userDocRef = doc(db, "users", userDoc.id);
+
+        // Update the "connected" field to false
+        await updateDoc(userDocRef, { connected: false });
+        
+        window.location.href = "/app";
+
+      }
+  }catch (err) {
+    console.error("Error updating user's connected status:", err);
+  }
+};
   const links = [
     { href: "/DoctorScreen", name: "Dashboard" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "#logout", name: "Logout" },
+    { href: "#name", name: `Dr.${userName}`},
+    { href: "#logout", name: "Logout",onClick: logOut },
   ];
 
   return (
@@ -22,7 +60,7 @@ const DoctorScreen = () => {
           backgroundImage="/doctorbg.avif"
           paragraphText="You can manage patient appointments, track progress, and provide the best care for your patients."
           spanText1="Welcome,"
-          spanText2="Dr. Smith"
+          spanText2={`Dr. ${userName}`}
           buttonText="View Appointments"
           onClick={() => window.location.href = '/appointments'} // Pass the custom action here
       />
@@ -45,5 +83,7 @@ const DoctorScreen = () => {
     </div>
   );
 };
+
+
 
 export default DoctorScreen;
