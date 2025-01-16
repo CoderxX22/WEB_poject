@@ -1,4 +1,8 @@
+"use client";
 import React, { useState } from "react";
+import { db } from "../functionality/firebase"; // Correct relative path
+import { collection, addDoc } from "firebase/firestore";
+
 const phoneLogo = '/phone-call.png'; // Import the phone icon
 
 const Contact = () => {
@@ -6,9 +10,13 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
-        doctor: "",
-        phone: "",
+        email: "",
+        department: "",
+        message: "",
     });
+
+    const [error, setError] = useState(null); // To manage errors
+    const [success, setSuccess] = useState(null); // To manage success messages
 
     // Handle input changes and update the corresponding field in state
     const handleChange = (e) => {
@@ -19,10 +27,34 @@ const Contact = () => {
         }));
     };
 
-    // Handle form submission (currently logs the data to console)
-    const handleSubmit = (e) => {
+    // Handle form submission and send data to Firebase
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Data:", formData);
+
+        if (!formData.department) {
+            alert("Please select a doctor before submitting.");
+            setSuccess(null);
+            return; // Prevent further execution if validation fails
+        }
+
+        try {
+            const usersRef = collection(db, "messages");
+            await addDoc(usersRef, {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                department: formData.department,
+                message: formData.message,
+                timestamp: new Date(), // Optional: Add a timestamp
+            });
+            setSuccess("Message sent successfully!");
+            setError(null);
+            setFormData({ firstName: "", lastName: "", email: "", department: "", message: "" }); // Reset form
+        } catch (err) {
+            console.error("Error sending message:", err);
+            setError("Failed to send message. Please try again.");
+            setSuccess(null);
+        }
     };
 
     return (
@@ -37,11 +69,12 @@ const Contact = () => {
                         Contact Section
                     </h2>
                     <p className="text-gray-600 dark:text-gray-300 mt-4">
-                        {/* Brief message introducing the contact section */}
-                        <i>If you have any questions or need further assistance, feel free to get in touch with us.<br />
-                        We're here to help you with any inquiries you may have. Reach out to us via email<br />
-                        phone or through the contact form on our website, and we'll respond as soon as possible.<br /><br />
-                        Your feedback and questions are important to us!<br /></i>
+                        <i>
+                            If you have any questions or need further assistance, feel free to get in touch with us.<br />
+                            We're here to help you with any inquiries you may have. Reach out to us via email<br />
+                            phone or through the contact form on our website, and we'll respond as soon as possible.<br /><br />
+                            Your feedback and questions are important to us!<br />
+                        </i>
                     </p>
 
                     {/* Display phone logo and contact number */}
@@ -51,7 +84,7 @@ const Contact = () => {
                             alt="Phone Icon"
                             className="w-8 h-8 mr-2 filter invert dark:invert-1"
                         />
-                        <p className="text-gray-600 dark:text-gray-300"><strong>+1 (555) 123-4567</strong></p>
+                        <p className="text-gray-600 dark:text-gray-300"><strong>+972 (50) 123-4567</strong></p>
                     </div>
                 </div>
 
@@ -61,10 +94,7 @@ const Contact = () => {
                         {/* First Name and Last Name Inputs */}
                         <div className="flex gap-4 mb-4">
                             <div className="w-1/2">
-                                <label
-                                    htmlFor="firstName"
-                                    className="block text-gray-700 dark:text-gray-300"
-                                >
+                                <label htmlFor="firstName" className="block text-gray-700 dark:text-gray-300">
                                     First Name
                                 </label>
                                 <input
@@ -78,10 +108,7 @@ const Contact = () => {
                                 />
                             </div>
                             <div className="w-1/2">
-                                <label
-                                    htmlFor="lastName"
-                                    className="block text-gray-700 dark:text-gray-300"
-                                >
+                                <label htmlFor="lastName" className="block text-gray-700 dark:text-gray-300">
                                     Last Name
                                 </label>
                                 <input
@@ -98,10 +125,7 @@ const Contact = () => {
 
                         {/* Email Input */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="email"
-                                className="block text-gray-700 dark:text-gray-300"
-                            >
+                            <label htmlFor="email" className="block text-gray-700 dark:text-gray-300">
                                 Email
                             </label>
                             <input
@@ -117,32 +141,26 @@ const Contact = () => {
 
                         {/* Doctor Selection Dropdown */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="doctor"
-                                className="block text-gray-700 dark:text-gray-300"
-                            >
-                                Doctor to Contact
+                            <label htmlFor="doctor" className="block text-gray-700 dark:text-gray-300">
+                            Department to Contact
                             </label>
                             <select
-                                id="doctor"
-                                name="doctor"
-                                value={formData.doctor}
+                                id="department"
+                                name="department"
+                                value={formData.department}
                                 onChange={handleChange}
                                 className="w-full mt-2 px-2 py-2 border border-gray-300 rounded-md bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                <option value="">Select a doctor</option>
-                                <option value="drSmith">Dr. Smith</option>
-                                <option value="drJones">Dr. Doe</option>
-                                <option value="drTaylor">Dr. Brown</option>
+                                <option value="">Select a department</option>
+                                <option value="Administration">Administration</option>
+                                <option value="Instructors">Instructors</option>
+                                <option value="Doctors">Doctors</option>
                             </select>
                         </div>
 
                         {/* Message Text Area */}
                         <div className="mb-4">
-                            <label
-                                htmlFor="message"
-                                className="block text-gray-700 dark:text-gray-300"
-                            >
+                            <label htmlFor="message" className="block text-gray-700 dark:text-gray-300">
                                 Message
                             </label>
                             <textarea
@@ -164,6 +182,8 @@ const Contact = () => {
                             Send
                         </button>
                     </form>
+                    {error && <p className="text-red-500 mt-4">{error}</p>}
+                    {success && <p className="text-green-500 mt-4">{success}</p>}
                 </div>
             </div>
         </section>

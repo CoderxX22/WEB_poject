@@ -8,6 +8,7 @@ const DoctorScreen = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
 
+  
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -47,7 +48,7 @@ const DoctorScreen = () => {
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
     { href: "#name", name: `Dr.${userName}`},
-    { href: "#logout", name: "Logout",onClick: logOut },
+    { href: "#logout", name: "Logout", onClick: logOut }
   ];
 
   return (
