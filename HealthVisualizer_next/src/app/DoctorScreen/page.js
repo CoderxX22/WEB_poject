@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
+import { getCookie, logOut } from '../functionality/loginlogic';
 import Overlay from '../components/Overlay.jsx';
 import Navbar from '../components/Navbar.jsx';
 
@@ -8,47 +8,20 @@ const DoctorScreen = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
 
-  
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  };
   useEffect(() => {
-    // Set the username from the cookie when the component mounts
+    // Fetch user info from cookies
     const storedUserName = getCookie("userName");
-    setUserName(storedUserName);
     const storedUserEmail = getCookie("email");
-    setEmail(storedUserEmail);
-
+    setUserName(storedUserName || "Guest");
+    setEmail(storedUserEmail || "");
   }, []);
-  const logOut = async () =>{
-    try {
-      // Get the user's document from Firestore
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("email", "==", email));
-      const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
-        const userDocRef = doc(db, "users", userDoc.id);
-
-        // Update the "connected" field to false
-        await updateDoc(userDocRef, { connected: false });
-        
-        window.location.href = "/app";
-
-      }
-  }catch (err) {
-    console.error("Error updating user's connected status:", err);
-  }
-};
   const links = [
     { href: "/DoctorScreen", name: "Dashboard" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "#name", name: `Dr.${userName}`},
-    { href: "#logout", name: "Logout", onClick: logOut }
+    { href: "#name", name: `Dr. ${userName}` },
+    { onClick: logOut, name: "Logout" },
   ];
 
   return (
