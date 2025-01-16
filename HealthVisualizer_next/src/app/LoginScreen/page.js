@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
-import { handleFormSubmit, navigateToRole } from "../functionality/loginlogic";
+import { db } from "../functionality/firebase"; // Correct relative path
+import { collection, getDocs, query, where , setDoc , doc , updateDoc } from "firebase/firestore";
 import SignupForm from "../components/SignupForm";
 import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
@@ -18,7 +19,7 @@ const Login = () => {
     setIsLogin(!isLogin);
   };
 
-  const onSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
   
     if (isLogin) {
@@ -35,7 +36,7 @@ const Login = () => {
           const userData = userDoc.data();
           const userRole = userData?.role;
           const userPass = userData?.password;
-          const userName = userData?.userName;
+          const userName = userData?.fullName;
           const userConn = userData?.connected;
 
           if(userPass != password){
@@ -112,7 +113,7 @@ const Login = () => {
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
         <div className="mt-8 w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <form onSubmit={onSubmit}>
+          <form onSubmit={handleFormSubmit}>
           {isLogin ? (
               <LoginForm 
                 email={email} 
