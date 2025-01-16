@@ -1,16 +1,29 @@
 "use client";
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { getCookie, logOut } from '../functionality/loginlogic';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 
 const PatientsList= () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  
+  useEffect(() => {
+    // Fetch user info from cookies
+    const storedUserName = getCookie("userName");
+    const storedUserEmail = getCookie("email");
+    setUserName(storedUserName || "Guest");
+    setEmail(storedUserEmail || "");
+  }, []);
 
   const links = [
     { href: "/DoctorScreen", name: "Dashboard" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "/logout", name: "Logout" },
+    { href: "#name", name: `Dr. ${userName}`},
+    { onClick: logOut, name: "Logout" },
   ];
   
   const patients = [

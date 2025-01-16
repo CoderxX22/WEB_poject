@@ -1,28 +1,28 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { getCookie, logOut } from '../functionality/loginlogic';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 
 const InstructorsScreen = () => {
   
   const [userName, setUserName] = useState("");
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  };
+  const [email, setEmail] = useState("");
+  
   useEffect(() => {
-    // Set the username from the cookie when the component mounts
-    const storedUserName = getCookie("userName");
-    setUserName(storedUserName);
-  }, []);
+      // Fetch user info from cookies
+      const storedUserName = getCookie("userName");
+      const storedUserEmail = getCookie("email");
+      setUserName(storedUserName || "Guest");
+      setEmail(storedUserEmail || "");
+    }, []);
 
   const links = [
     { href: "/home", name: "Dashboard" },
     { href: "instructorswithpatients", name: "Connect with Patients" },
     { href: "/courses", name: "Courses" },
     { href: "#name", name: userName},
-    { href: "#logout", name: "Logout" },
+    { onClick: logOut, name: "Logout" },
   ];
 
   return (
