@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { getCookie, logOut } from '../functionality/loginlogic';
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
+import BMI_Claculator from '../components/BMI_Calculator';
 
 const PatientScreen = () => {
   
@@ -57,10 +58,7 @@ const PatientScreen = () => {
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Weight</h3>
             <p className="text-gray-600 dark:text-gray-400">75 kg</p>
           </div>
-          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">BMI</h3>
-            <p className="text-gray-600 dark:text-gray-400">23.1</p>
-          </div>
+            <BMI_Claculator/>
         </div>
       </section>
 
