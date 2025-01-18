@@ -72,6 +72,7 @@ export const handleFormSubmit = async ({
 export const navigateToRole = (role, userName, email) => {
   document.cookie = `userName=${userName}; path=/`;
   document.cookie = `email=${email}; path=/`;
+  document.cookie = `role=${role}; path=/`;
 
   if (role === "Doctor") {
     window.location.href = "/DoctorScreen";

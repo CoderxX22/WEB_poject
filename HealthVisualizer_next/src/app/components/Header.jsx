@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCookie, logOut, navigateToRole } from '../functionality/loginlogic';
 import DarkMode from './DarkMode';
 import Link from 'next/link';
 
@@ -20,6 +21,23 @@ const Header = () => {
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
+
+    const [dropdownOpen2, setDropdownOpen2] = useState(false);
+
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [userRole, setUserRole] = useState("");
+    
+
+    useEffect(() => {
+          // Fetch user info from cookies
+          const storedUserName = getCookie("userName");
+          const storedUserEmail = getCookie("email");
+          const storedUserRole = getCookie("role");
+          setUserName(storedUserName);
+          setEmail(storedUserEmail);
+          setUserRole(storedUserRole);
+        }, []);
 
     return (
         <nav className="bg-blue-600 dark:bg-gray-900 shadow-md relative z-50">
@@ -115,15 +133,39 @@ const Header = () => {
                         </ul>
                     </li>
                     {/* Login Link */}
-                    <li>
-                        <Link
-                            href="/LoginScreen"
-                            className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                    <li className="relative group">
+                        {userName ? (
+                            <>
+                                <button
+                                    onClick={() => setDropdownOpen2(!dropdownOpen2)}
+                                    className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                    before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                    before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                >
+                                    {userName} ▼
+                                </button>
+                                {dropdownOpen2 && (
+                                    <ul className="absolute mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg z-50">
+                                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                                            <button onClick={() => navigateToRole(userRole, userName, email)}
+                                             className="text-gray-100">
+                                                Your Profile
+                                            </button>
+                                        </li>
+                                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                                            <button onClick={logOut} className="text-gray-100">
+                                                Logout
+                                            </button>
+                                        </li>
+                                    </ul>
+                                )}
+                            </>
+                        ) : (
+                            <Link href="/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                 before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
-                        >
-                            Login
-                        </Link>
+                            >Login</Link>
+                        )}
                     </li>
                     {/* Dark Mode Toggle Switch */}
                     <DarkMode />

@@ -8,9 +8,17 @@ const Navbar = ({ links }) => {
     // State for the hamburger menu toggle
     const [menuOpen, setMenuOpen] = useState(false);
 
+    // State for managing dropdown visibility
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
     // Function to toggle the hamburger menu visibility
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
+    };
+
+    // Function to toggle dropdown visibility
+    const toggleDropdown = () => {
+        setDropdownOpen(!dropdownOpen);
     };
 
     return (
@@ -38,9 +46,9 @@ const Navbar = ({ links }) => {
                 </div>
 
                 {/* Navigation Links */}
-                <ul className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block md:block`}>
+                <ul className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'block'} lg:block md:block`}>
                     {links.map((link, index) => (
-                        <li key={index}>
+                        <li key={index} className="relative">
                             {link.onClick ? (
                                 <button
                                     onClick={link.onClick}
@@ -60,6 +68,31 @@ const Navbar = ({ links }) => {
                                         {link.name}
                                     </span>
                                 </Link>
+                            )}
+
+                            {/* Dropdown Button */}
+                            {link.dropdownItems && (
+                                <button
+                                    onClick={toggleDropdown}
+                                    className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200"
+                                >
+                                    {link.name}
+                                </button>
+                            )}
+
+                            {/* Dropdown Menu */}
+                            {dropdownOpen && link.dropdownItems && (
+                                <div className="absolute right-0 mt-2 bg-blue-600 dark:bg-gray-900 shadow-md z-50 py-2 w-40">
+                                    {link.dropdownItems.map((item, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={item.onClick}
+                                            className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 w-full text-left px-4 py-2"
+                                        >
+                                            {item.name}
+                                        </button>
+                                    ))}
+                                </div>
                             )}
                         </li>
                     ))}
