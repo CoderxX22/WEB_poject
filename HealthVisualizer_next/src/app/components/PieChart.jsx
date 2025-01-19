@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { db } from "../functionality/firebase"; // Correct relative path
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from "chart.js";
 
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale);
 
 const PieChart = () => {
-  const [asthmaCount, setAsthmaCount] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
+  const [asthmaCount, setAsthmaCount] = useState(null);
+  const [totalCount, setTotalCount] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Function to fetch data and count asthma patients
+  // Hardcoded values for asthma count and total count
+  const hardcodedAsthmaCount = 250; // example count of asthma patients
+  const hardcodedTotalCount = 10000; // example total patient count
+
+  // Function to simulate fetching data and set hardcoded values
   const handleDataToPie = async () => {
     try {
-      const healthdataRef = collection(db, "healthdata");
-      const q = query(healthdataRef, where("Medical_Condition", "==", 'Asthma'));
-      const querySnapshot = await getDocs(q);
-      console.log("Asthma query snapshot:", querySnapshot);
+      setLoading(true);
 
-      if (!querySnapshot.empty) {
-        // Count number of asthma patients
-        setAsthmaCount(querySnapshot.docs.length);
-        console.log("Number of asthma patients:", querySnapshot.docs.length);
-      } else {
-        setAsthmaCount(0);
-      }
+      // Set hardcoded values for asthma count and total count
+      setAsthmaCount(hardcodedAsthmaCount);
+      setTotalCount(hardcodedTotalCount);
 
-      // Get the total count of patients (all conditions)
-      const totalSnapshot = await getDocs(healthdataRef);
-      setTotalCount(totalSnapshot.size);
-      console.log("Total number of patients:", totalSnapshot.size);
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching healthdata:", err);
+      setLoading(false);
     }
   };
 
@@ -46,7 +40,7 @@ const PieChart = () => {
     labels: ["Asthma", "Other Conditions"],
     datasets: [
       {
-        data: [asthmaCount, totalCount - asthmaCount],
+        data: asthmaCount !== null && totalCount !== null ? [asthmaCount, totalCount - asthmaCount] : [0, 0],
         backgroundColor: ["lightsteelblue", "lightblue"],
         hoverBackgroundColor: ["steelblue", "dodgerblue"],
       },
@@ -71,7 +65,11 @@ const PieChart = () => {
   return (
     <div className="max-w-lg mx-auto p-4">
       <h2 className="text-xl text-black mb-4 text-center dark:text-white">2024 Medical Conditions Chart</h2>
-      <Pie data={data} options={options} />
+      {loading ? (
+        <p className="text-center text-gray-500">Loading chart...</p>
+      ) : (
+        <Pie data={data} options={options} />
+      )}
     </div>
   );
 };
