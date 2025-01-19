@@ -28,7 +28,7 @@ const PatientsList = () => {
   }, []);
 
   const links = [
-    { href: "/DoctorScreen", name: "Dashboard" },
+    { href: "/DoctorScreen", name: "Home" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
     { href: "#name", name: `Dr. ${userName}` },

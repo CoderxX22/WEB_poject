@@ -29,7 +29,7 @@ const Courses = () => {
   }, []);
 
   const links = [
-    { href: "/InstructorScreen", name: "Dashboard" },
+    { href: "/InstructorScreen", name: "Home" },
     { href: "/instructorswithpatients", name: "Connect with Patients" },
     { href: "/courses", name: "Courses" },
     { href: "#name", name: userName},
