@@ -145,7 +145,7 @@ const PatientsList = () => {
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all">
                   View Details
                 </button>
-                <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all">
+                <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100">
                   Remove Patient
                 </button>
               </div>
@@ -166,7 +166,7 @@ const PatientsList = () => {
             <div className="mt-4 flex justify-end">
               <button 
                 onClick={closeDetails} 
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all">
+                className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100">
                 Close
               </button>
             </div>
@@ -219,10 +219,10 @@ const PatientsList = () => {
                 ></textarea>
               </div>
               <div className="mt-4 flex justify-end space-x-4">
-                <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-800 transition-all">
+                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all">
                   Add Patient
                 </button>
-                <button onClick={closeAddPatient} className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition-all">
+                <button onClick={closeAddPatient} className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100">
                   Cancel
                 </button>
               </div>

@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { getCookie } from "../functionality/loginlogic";
-import { db } from "../functionality/firebase"; // Firebase initialization
-import { collection, doc, getDocs, addDoc } from "firebase/firestore";
+import { db } from "../functionality/firebase";
+import { collection, getDocs, addDoc, doc, query, where } from "firebase/firestore";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const PatientAppointments = () => {
+const Patient_Appointments = () => {
+  const [doctors, setDoctors] = useState([]);
+  const Specialty = [
+    { id: 1, name: "Cardiology" },
+    { id: 2, name: "Neorology" },
+    { id: 3, name: "Ancology" },
+  ];
+
+  const Locations = [
+    { id: 1, name: "Karmiel" },
+    { id: 2, name: "Haifa" },
+    { id: 3, name: "Tel Aviv" },
+  ];
+
   const [appointments, setAppointments] = useState([]);
   const [newAppointment, setNewAppointment] = useState({
     doctorName: "",
@@ -12,9 +27,43 @@ const PatientAppointments = () => {
     specialty: "",
     location: "",
   });
+  const [showAddAppointment, setShowAddAppointment] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isFormVisible, setIsFormVisible] = useState(false); // To manage the visibility of the form
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+
+  // Fetch doctors from Firestore
+  const fetchDoctors = async () => {
+    try {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+      
+      const doctorsList = querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          if (data.role && data.role == "Doctor") {
+            return {
+              id: doc.id,
+              name: "Dr." + data.fullName
+            };
+          }
+          return null;
+        })
+        .filter(doctor => doctor !== null); // Remove any null entries
+      
+      setDoctors(doctorsList);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setError("Failed to fetch doctors list");
+    }
+  };
+
+  // Fetch both appointments and doctors when the component mounts
+  useEffect(() => {
+    fetchAppointments();
+    fetchDoctors();
+  }, []);
 
   // Fetch appointments when the component is mounted
   useEffect(() => {
@@ -32,11 +81,10 @@ const PatientAppointments = () => {
       const patientRef = doc(db, "users", storedUserEmail);
       const appointmentsRef = collection(patientRef, "appointments");
 
-      // Get the appointments documents
       const querySnapshot = await getDocs(appointmentsRef);
-      const appointmentsData = querySnapshot.docs.map(doc => doc.data());
+      const appointmentsData = querySnapshot.docs.map((doc) => doc.data());
 
-      setAppointments(appointmentsData); // Set the appointments in the state
+      setAppointments(appointmentsData);
     } catch (err) {
       console.error("Error fetching appointments:", err);
     }
@@ -46,36 +94,51 @@ const PatientAppointments = () => {
   const handleCreateAppointment = async (e) => {
     e.preventDefault();
 
-    if (!newAppointment.doctorName || !newAppointment.date || !newAppointment.time || !newAppointment.specialty || !newAppointment.location) {
-      alert("Please fill in all fields.");
+    const missingFields = [];
+    if (!newAppointment.doctorName) missingFields.push("Doctor's Name");
+    if (!newAppointment.date) missingFields.push("Date");
+    if (!newAppointment.time) missingFields.push("Time");
+    if (!newAppointment.specialty) missingFields.push("Specialty");
+    if (!newAppointment.location) missingFields.push("Location");
+  
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
+      return;
+    }
+  
+    // Check if the chosen date is in the past
+    const selectedDate = new Date(newAppointment.date);
+    const now = new Date();
+  
+    // Remove time components from `now` for a pure date comparison
+    now.setHours(0, 0, 0, 0);
+  
+    if (selectedDate < now) {
+      alert("The chosen date cannot be in the past.");
       return;
     }
 
     try {
       setLoading(true);
       const storedUserEmail = getCookie("email");
-
       if (!storedUserEmail) {
         throw new Error("User email not found. Please log in.");
       }
 
-      // Reference to the user's document in Firestore
       const patientRef = doc(db, "users", storedUserEmail);
-
-      // Reference to the patient's appointments subcollection
       const appointmentsRef = collection(patientRef, "appointments");
 
-      // Add the new appointment to the appointments subcollection
       await addDoc(appointmentsRef, newAppointment);
 
-      setAppointments((prevAppointments) => [...prevAppointments, newAppointment]); // Update the local state with the new appointment
+      setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
       setNewAppointment({
         doctorName: "",
         date: "",
         time: "",
         specialty: "",
         location: "",
-      }); // Reset the form
+      });
+      setShowAddAppointment(false);
       alert("Appointment created successfully!");
     } catch (err) {
       console.error("Error creating appointment:", err);
@@ -85,90 +148,227 @@ const PatientAppointments = () => {
     }
   };
 
-  // Toggle the form visibility
-  const toggleFormVisibility = () => {
-    setIsFormVisible(!isFormVisible);
-  };
+  // Filter appointments by search query and date
+  const filteredAppointments = appointments.filter((appointment) => {
+    const matchesSearch = appointment.doctorName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesDate = filterDate ? appointment.date === filterDate : true;
+    return matchesSearch && matchesDate;
+  });
 
   return (
-    <div>
-      {/* Button to show/hide the form */}
-      <button
-        onClick={toggleFormVisibility}
-        className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-      >
-        {isFormVisible ? "Cancel" : "Add Appointment"}
-      </button>
-
-      {/* Render the existing appointments */}
-      <div>
-        {appointments.map((appointment, index) => (
-          <div  className="space-y-4" key={index}>
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{appointment.doctorName}</h3>
-            <p className="text-gray-600 dark:text-gray-400">{appointment.date} at {appointment.time}</p>
-            <p className="text-gray-600 dark:text-gray-400">Specialty: {appointment.specialty}</p>
-            <p className="text-gray-600 dark:text-gray-400">Location: {appointment.location}</p>
-            </div>
-          </div>
-        ))}
+    <div className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
+      {/* Title and Add Button */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
+          Upcoming Appointments
+        </h2>
+        <button
+          onClick={() => setShowAddAppointment(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500"
+        >
+          Add Appointment
+        </button>
       </div>
 
-      {/* Conditionally render the appointment creation form */}
-      {isFormVisible && (
-        <form onSubmit={handleCreateAppointment}>
-          <div className="space-y-4 mt-4">
-            <input
-              type="text"
-              placeholder="Doctor's Name"
-              value={newAppointment.doctorName}
-              onChange={(e) => setNewAppointment({ ...newAppointment, doctorName: e.target.value })}
-              className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
+      {/* Search and Filter */}
+      <div className="flex space-x-4 mb-6">
+        <input
+          type="text"
+          placeholder="Search by doctor..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-gray-100"
+        />
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-gray-100"
+        />
+      </div>
 
-            <input
-              type="date"
-              placeholder="Date"
-              value={newAppointment.date}
-              onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })}
-              className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
-
-            <input
-              type="time"
-              placeholder="Time"
-              value={newAppointment.time}
-              onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
-              className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
-
-            <input
-              type="text"
-              placeholder="Specialty"
-              value={newAppointment.specialty}
-              onChange={(e) => setNewAppointment({ ...newAppointment, specialty: e.target.value })}
-              className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
-
-            <input
-              type="text"
-              placeholder="Location"
-              value={newAppointment.location}
-              onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
-              className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-            />
-
-            <button
-              type="submit"
-              className="w-full mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+      {/* Appointment List */}
+      <div className="space-y-6">
+        {filteredAppointments.length > 0 ? (
+          filteredAppointments.map((appointment, index) => (
+            <div
+              key={index}
+              className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
             >
-              {loading ? "Creating..." : "Create Appointment"}
-            </button>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                {appointment.doctorName}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Date: {appointment.date}
+              </p>
+              <p className="text-gray-600 dark:text-gray-400">
+                Time: {appointment.time}
+              </p>
+              <p className="text-gray-600 dark:text-gray-400">
+                Specialty: {appointment.specialty}
+              </p>
+              <p className="text-gray-600 dark:text-gray-400">
+                Location: {appointment.location}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md text-center">
+            <p className="text-gray-600 dark:text-gray-400">
+              No appointments match your criteria.
+            </p>
           </div>
-        </form>
+        )}
+      </div>
+
+      {/* Add Appointment Popout */}
+        {showAddAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg w-96">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+              Add New Appointment
+            </h2>
+            <form onSubmit={handleCreateAppointment}>
+              <div className="mb-4">
+                <label htmlFor="doctor" className="block text-gray-700 dark:text-gray-200 mb-1">
+                  Select a Doctor
+                </label>
+                <select
+                  id="doctor"
+                  value={newAppointment.doctorName}
+                  onChange={(e) => setNewAppointment({ ...newAppointment, doctorName: e.target.value })}
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+                >
+                  <option value="" disabled>
+                    Choose a doctor
+                  </option>
+                  {doctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.name}>
+                      {doctor.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+              <label htmlFor="spetialty" className="block text-gray-700 dark:text-gray-200 mb-1">
+                Select a Specialty
+              </label>
+              <select
+                id="specialty"
+                value={newAppointment.specialty}
+                onChange={(e) => setNewAppointment({ ...newAppointment, specialty: e.target.value })}
+                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+              >
+                <option value="" disabled>
+                  Choose a Specialty
+                </option>
+                {Specialty.map((specialty) => (
+                  <option key={specialty.id} value={specialty.name}>
+                    {specialty.name}
+                  </option>
+                ))}
+              </select>
+              </div>
+              <div className="mb-4">
+              <label className="block text-gray-700 dark:text-gray-200 mb-1">
+                  Date
+              </label>
+              <DatePicker
+                selected={newAppointment.date ? new Date(newAppointment.date) : null}
+                onChange={(date) =>
+                  setNewAppointment({ ...newAppointment, date: date.toISOString().split('T')[0] })
+                }
+                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+                dateFormat="yyyy-MM-dd"
+                placeholderText="Select a date"
+              />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 dark:text-gray-200 mb-1">
+                  Time
+                </label>
+                <div className="flex space-x-2">
+                  {/* Hour Select */}
+                  <select
+                    value={newAppointment.time.split(":")[0]} // Get the hour from the time string
+                    onChange={(e) => {
+                      const newTime = e.target.value + ":" + newAppointment.time.split(":")[1];
+                      setNewAppointment({ ...newAppointment, time: newTime });
+                    }}
+                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+                  >
+                  {Array.from({ length: 10 }, (_, i) => {
+                          const hour = 8 + i; // Generate hours from 8 to 17
+                          return (
+                            <option key={hour} value={String(hour).padStart(2, "0")}>
+                              {String(hour).padStart(2, "0")}
+                            </option>
+                    );
+                  })}
+                  </select>
+
+                  {/* Minute Select */}
+                  <select
+                    value={newAppointment.time.split(":")[1]} // Get the minute from the time string
+                    onChange={(e) => {
+                      const newTime = newAppointment.time.split(":")[0] + ":" + e.target.value;
+                      setNewAppointment({ ...newAppointment, time: newTime });
+                    }}
+                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+                  >
+                  {Array.from({ length: 4 }, (_, i) => {
+                    const minute = i * 15; // Generate minutes: 0, 15, 30, 45
+                    return (
+                      <option key={minute} value={String(minute).padStart(2, "0")}>
+                        {String(minute).padStart(2, "0")}
+                      </option>
+                    );
+                  })}
+                  </select>
+                </div>
+              </div>
+              <div className="mb-4">
+              <label htmlFor="spetialty" className="block text-gray-700 dark:text-gray-200 mb-1">
+                Select a Location
+              </label>
+              <select
+                id="specialty"
+                value={newAppointment.location}
+                onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
+                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+              >
+                <option value="" disabled>
+                  Choose a Location
+                </option>
+                {Locations.map((location) => (
+                  <option key={location.id} value={location.name}>
+                    {location.name}
+                  </option>
+                ))}
+              </select>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setShowAddAppointment(false)}
+                  className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+          </div>
       )}
     </div>
-  );
+    );
 };
 
-export default PatientAppointments;
+export default Patient_Appointments;
