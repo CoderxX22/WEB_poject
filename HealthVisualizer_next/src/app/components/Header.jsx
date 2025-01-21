@@ -121,13 +121,13 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                <Link href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
-                                    Charts
-                                </Link>
-                            </li>
-                            <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                <Link href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
-                                    Update data
+                                <Link href="#articles" 
+                                    onClick={(e) => {
+                                            e.preventDefault();
+                                            document.getElementById('articles').scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                                    Articles
                                 </Link>
                             </li>
                         </ul>
@@ -237,13 +237,40 @@ const Header = () => {
                                     </ul>
                                 )}
                             </li>
-                            <li>
-                                <Link
-                                    href="/LoginScreen"
-                                    className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
-                                >
-                                    Login
-                                </Link>
+                            <li className="relative group">
+                                {userName ? (
+                                    <>
+                                        <button
+                                            onClick={() => setDropdownOpen2(!dropdownOpen2)}
+                                            className="relative flex justify-center w-full text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 
+                                            transition-transform duration-200 
+                                            before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                            before:transition-all before:duration-300"
+                                        >
+                                            {userName} {!dropdownOpen2 || !menuOpen ? '▼' : '▲'}
+                                        </button>
+                                        {dropdownOpen2 && (
+                                            <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-500 dark:bg-gray-800 transition-all duration-300 z-50">
+                                                <li className="px-5 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                                                    <button onClick={() => navigateToRole(userRole, userName, email)}
+                                                    className="text-gray-100">
+                                                        Your Profile
+                                                    </button>
+                                                </li>
+                                                <li className="px-9 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
+                                                    <button onClick={logOut} className="text-gray-100">
+                                                        Logout
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        )}
+                                    </>
+                                ) : (
+                                    <Link href="/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                        before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
+                                        before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                    >Login</Link>
+                                )}
                             </li>
                             <DarkMode />
                         </ul>
