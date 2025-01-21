@@ -22,7 +22,7 @@ const HealthOverview = () => {
 
   const links = [
     { href: "/PatientScreen", name: "Home" },
-    { href: "/patientappointments", name: "My Appointments" },
+    { href: "/patientappointments", name: "My Appointments" }
     { href: "/healthoverview", name: "Health Overview" },
     { href: "#name", name: userName },
     { onClick: logOut, name: "Logout" },
