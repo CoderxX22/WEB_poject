@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { getCookie, logOut, navigateToRole } from '../functionality/loginlogic';
 import DarkMode from './DarkMode';
 import Link from 'next/link';
+import { usePathname } from "next/navigation";
 
 const healthIcon = '/pngwing.com.png';
 
 const Header = () => {
+    const pathname = usePathname(); // Get the current path
+    const isLoginScreen = pathname === "/login"; // Check if on login page
     // State for the hamburger menu toggle
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -68,10 +71,14 @@ const Header = () => {
                     {/* Info Link */}
                     <li>
                         <Link
-                            href="#info"
+                            href={!isLoginScreen ? "#info" : "#"}
                             onClick={(e) => {
+                                if (isLoginScreen) {
+                                    e.preventDefault(); // Do nothing if on LoginScreen
+                                    return;
+                                }
                                 e.preventDefault();
-                                document.getElementById('info').scrollIntoView({ behavior: 'smooth' });
+                                document.getElementById("info")?.scrollIntoView({ behavior: "smooth" });
                             }}
                             className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
@@ -83,10 +90,14 @@ const Header = () => {
                     {/* Contact Link */}
                     <li>
                         <Link
-                            href="#contact"
+                            href={!isLoginScreen ? "#contact" : "#"}
                             onClick={(e) => {
+                                if (isLoginScreen) {
+                                    e.preventDefault(); // Do nothing if on LoginScreen
+                                    return;
+                                }
                                 e.preventDefault();
-                                document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                             }}
                             className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
@@ -110,10 +121,14 @@ const Header = () => {
                             className="absolute left-0 mt-2 w-40 bg-blue-600 dark:bg-gray-900 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50"
                         >
                             <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                <Link href="#statistics"
+                                <Link href={!isLoginScreen ? "#statistics" : "#"}
                                     onClick={(e) => {
+                                        if (isLoginScreen) {
+                                            e.preventDefault(); // Do nothing if on LoginScreen
+                                            return;
+                                        }
                                         e.preventDefault();
-                                        document.getElementById('statistics').scrollIntoView({ behavior: 'smooth' });
+                                        document.getElementById("statistics")?.scrollIntoView({ behavior: "smooth" });
                                     }}
                                     className="block text-gray-200 hover:text-blue-800 dark:text-gray-300"
                                 >
@@ -121,10 +136,14 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                <Link href="#articles" 
+                                <Link href={!isLoginScreen ? "#articles" : "#"} 
                                     onClick={(e) => {
-                                            e.preventDefault();
-                                            document.getElementById('articles').scrollIntoView({ behavior: 'smooth' });
+                                        if (isLoginScreen) {
+                                            e.preventDefault(); // Do nothing if on LoginScreen
+                                            return;
+                                        }
+                                        e.preventDefault();
+                                        document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
                                     }}
                                     className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                     Articles
@@ -177,10 +196,14 @@ const Header = () => {
                         <ul className="flex flex-col items-center space-y-4 py-4">
                             <li>
                                 <Link
-                                    href="#info"
+                                    href={!isLoginScreen ? "#info" : "#"}
                                     onClick={(e) => {
+                                        if (isLoginScreen) {
+                                            e.preventDefault(); // Do nothing if on LoginScreen
+                                            return;
+                                        }
                                         e.preventDefault();
-                                        document.getElementById('info').scrollIntoView({ behavior: 'smooth' });
+                                        document.getElementById("info")?.scrollIntoView({ behavior: "smooth" });
                                     }}
                                     className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                                 >
@@ -189,10 +212,14 @@ const Header = () => {
                             </li>
                             <li>
                                 <Link
-                                    href="#contact"
+                                    href={!isLoginScreen ? "#contact" : "#"}
                                     onClick={(e) => {
+                                        if (isLoginScreen) {
+                                            e.preventDefault(); // Do nothing if on LoginScreen
+                                            return;
+                                        }
                                         e.preventDefault();
-                                        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                                     }}
                                     className="text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-all"
                                 >
@@ -214,24 +241,31 @@ const Header = () => {
                                 {dropdownOpen && ( // Conditionally render the dropdown based on state
                                     <ul className="mt-2 flex flex-col items-center space-y-2 bg-blue-500 dark:bg-gray-800 transition-all duration-300 z-50">
                                         <li className="px-7 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                            <Link href="#option1"
+                                            <Link href={!isLoginScreen ? "#statistics" : "#"}
                                                 onClick={(e) => {
+                                                    if (isLoginScreen) {
+                                                        e.preventDefault(); // Do nothing if on LoginScreen
+                                                        return;
+                                                    }
                                                     e.preventDefault();
-                                                    document.getElementById('login').scrollIntoView({ behavior: 'smooth' });
+                                                    document.getElementById("statistics")?.scrollIntoView({ behavior: "smooth" });
                                                 }}
-                                                className="block text-gray-200 hover:text-blue-800 dark:text-gray-300"
-                                            >
+                                                className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
                                                 Statistics
                                             </Link>
                                         </li>
                                         <li className="px-9 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                            <Link href="#option2" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
-                                                Charts
-                                            </Link>
-                                        </li>
-                                        <li className="px-4 py-2 hover:bg-blue-200 hover:text-blue-800 dark:hover:bg-gray-700">
-                                            <Link href="#option3" className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
-                                                Update data
+                                            <Link href={!isLoginScreen ? "#articles" : "#"} 
+                                                onClick={(e) => {
+                                                    if (isLoginScreen) {
+                                                        e.preventDefault(); // Do nothing if on LoginScreen
+                                                        return;
+                                                    }
+                                                    e.preventDefault();
+                                                    document.getElementById("articles")?.scrollIntoView({ behavior: "smooth" });
+                                                }} 
+                                                className="block text-gray-200 hover:text-blue-800 dark:text-gray-300">
+                                                Articles
                                             </Link>
                                         </li>
                                     </ul>
