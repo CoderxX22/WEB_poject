@@ -46,7 +46,7 @@ const Navbar = ({ links }) => {
                 </div>
 
                 {/* Navigation Links */}
-                <ul className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'block'} lg:block md:block`}>
+                <ul className={`lg:flex md:flex items-center space-x-6 ${menuOpen ? 'hidden' : 'hidden'} lg:block md:block`}>
                     {links.map((link, index) => (
                         <li key={index} className="relative">
                             {link.onClick ? (
