@@ -40,7 +40,7 @@ const AppointmentsScreen = () => {
       />
 
       {/* Appointments List Component */}
-      <DoctorAppointments doctorName={`Dr. ${userName}`} />
+      <DoctorAppointments docName={`Dr. ${userName}`} />
     </div>
   );
 };

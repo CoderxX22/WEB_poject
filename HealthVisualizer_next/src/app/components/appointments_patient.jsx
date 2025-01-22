@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getCookie } from "../functionality/loginlogic";
 import { db } from "../functionality/firebase";
-import { collection, getDocs, addDoc, doc, query, where } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, getDoc, query, where } from "firebase/firestore";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -9,8 +9,8 @@ const Patient_Appointments = () => {
   const [doctors, setDoctors] = useState([]);
   const Specialty = [
     { id: 1, name: "Cardiology" },
-    { id: 2, name: "Neorology" },
-    { id: 3, name: "Ancology" },
+    { id: 2, name: "Neurology" },
+    { id: 3, name: "Oncology" },
   ];
 
   const Locations = [
@@ -42,10 +42,10 @@ const Patient_Appointments = () => {
       const doctorsList = querySnapshot.docs
         .map(doc => {
           const data = doc.data();
-          if (data.role && data.role == "Doctor") {
+          if (data.role && data.role === "Doctor") {
             return {
               id: doc.id,
-              name: "Dr." + data.fullName
+              name: "Dr." + data.fullName,
             };
           }
           return null;
@@ -74,85 +74,110 @@ const Patient_Appointments = () => {
   const fetchAppointments = async () => {
     try {
       const storedUserEmail = getCookie("email");
+      const storedUserName = getCookie("userName");
       if (!storedUserEmail) {
         throw new Error("User email not found.");
       }
 
-      const patientRef = doc(db, "users", storedUserEmail);
-      const appointmentsRef = collection(patientRef, "appointments");
-
+      const appointmentsRef = collection(db, "appointments");
       const querySnapshot = await getDocs(appointmentsRef);
-      const appointmentsData = querySnapshot.docs.map((doc) => doc.data());
+      
+      // Filter appointments for the current user
+      const userAppointments = querySnapshot.docs
+        .map((doc) => doc.data())
+        .filter((appointment) => appointment.userEmail === storedUserEmail);
 
-      setAppointments(appointmentsData);
+      setAppointments(userAppointments);
     } catch (err) {
       console.error("Error fetching appointments:", err);
     }
-  };
+};
 
-  // Handle appointment creation
-  const handleCreateAppointment = async (e) => {
-    e.preventDefault();
 
-    const missingFields = [];
-    if (!newAppointment.doctorName) missingFields.push("Doctor's Name");
-    if (!newAppointment.date) missingFields.push("Date");
-    if (!newAppointment.time) missingFields.push("Time");
-    if (!newAppointment.specialty) missingFields.push("Specialty");
-    if (!newAppointment.location) missingFields.push("Location");
-  
-    if (missingFields.length > 0) {
-      alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-      return;
+const handleCreateAppointment = async (e) => {
+  e.preventDefault();
+
+  const missingFields = [];
+  if (!newAppointment.doctorName) missingFields.push("Doctor's Name");
+  if (!newAppointment.date) missingFields.push("Date");
+  if (!newAppointment.time) missingFields.push("Time");
+  if (!newAppointment.specialty) missingFields.push("Specialty");
+  if (!newAppointment.location) missingFields.push("Location");
+
+  if (missingFields.length > 0) {
+    alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
+    return;
+  }
+
+  // Check if the chosen date is in the past
+  const selectedDate = new Date(newAppointment.date);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);  // Remove time components for pure date comparison
+
+  if (selectedDate < now) {
+    alert("The chosen date cannot be in the past.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const storedUserEmail = getCookie("email");
+    if (!storedUserEmail) {
+      throw new Error("User email not found. Please log in.");
     }
-  
-    // Check if the chosen date is in the past
-    const selectedDate = new Date(newAppointment.date);
-    const now = new Date();
-  
-    // Remove time components from `now` for a pure date comparison
-    now.setHours(0, 0, 0, 0);
-  
-    if (selectedDate < now) {
-      alert("The chosen date cannot be in the past.");
-      return;
+
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", storedUserEmail));
+    const userSnapshot = await getDocs(q);
+    
+    if (userSnapshot.empty) {
+      throw new Error("User not found.");
     }
 
-    try {
-      setLoading(true);
-      const storedUserEmail = getCookie("email");
-      if (!storedUserEmail) {
-        throw new Error("User email not found. Please log in.");
-      }
+    // Get the first document in the snapshot
+    const userDoc = userSnapshot.docs[0];
+    const userData = userDoc.data();
+    const fullName = userData.fullName;
+    
+    // Prepare the appointment data
+    const appointmentData = {
+      doctorName: newAppointment.doctorName,
+      date: newAppointment.date,
+      time: newAppointment.time,
+      specialty: newAppointment.specialty,
+      location: newAppointment.location,
+      patientName: fullName,  // Add user's full name
+      userEmail: storedUserEmail,  // Add user's email to track who created it
+    };
 
-      const patientRef = doc(db, "users", storedUserEmail);
-      const appointmentsRef = collection(patientRef, "appointments");
+    // Save the appointment in the global "appointments" collection
+    const appointmentsCollectionRef = collection(db, "appointments");
+    await addDoc(appointmentsCollectionRef, appointmentData);
 
-      await addDoc(appointmentsRef, newAppointment);
+    setAppointments((prevAppointments) => [...prevAppointments, appointmentData]);
+    setNewAppointment({
+      doctorName: "",
+      date: "",
+      time: "",
+      specialty: "",
+      location: "",
+    });
+    setShowAddAppointment(false);
+    alert("Appointment created successfully!");
+  } catch (err) {
+    console.error("Error creating appointment:", err);
+    setError("Failed to create appointment. Please try again later.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
-      setNewAppointment({
-        doctorName: "",
-        date: "",
-        time: "",
-        specialty: "",
-        location: "",
-      });
-      setShowAddAppointment(false);
-      alert("Appointment created successfully!");
-    } catch (err) {
-      console.error("Error creating appointment:", err);
-      setError("Failed to create appointment. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Filter appointments by search query and date
   const filteredAppointments = appointments.filter((appointment) => {
     const matchesSearch = appointment.doctorName
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+      ? appointment.doctorName.toLowerCase().includes(searchQuery.toLowerCase())
+      : false;
     const matchesDate = filterDate ? appointment.date === filterDate : true;
     return matchesSearch && matchesDate;
   });
@@ -201,7 +226,7 @@ const Patient_Appointments = () => {
                 {appointment.doctorName}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Date: {appointment.date}
+                Date: {appointment.date.toDate().toLocaleDateString()}
               </p>
               <p className="text-gray-600 dark:text-gray-400">
                 Time: {appointment.time}
@@ -224,7 +249,7 @@ const Patient_Appointments = () => {
       </div>
 
       {/* Add Appointment Popout */}
-        {showAddAppointment && (
+      {showAddAppointment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg w-96">
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
@@ -239,11 +264,9 @@ const Patient_Appointments = () => {
                   id="doctor"
                   value={newAppointment.doctorName}
                   onChange={(e) => setNewAppointment({ ...newAppointment, doctorName: e.target.value })}
-                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
                 >
-                  <option value="" disabled>
-                    Choose a doctor
-                  </option>
+                  <option value="">Select Doctor</option>
                   {doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.name}>
                       {doctor.name}
@@ -252,123 +275,87 @@ const Patient_Appointments = () => {
                 </select>
               </div>
               <div className="mb-4">
-              <label htmlFor="spetialty" className="block text-gray-700 dark:text-gray-200 mb-1">
-                Select a Specialty
-              </label>
-              <select
-                id="specialty"
-                value={newAppointment.specialty}
-                onChange={(e) => setNewAppointment({ ...newAppointment, specialty: e.target.value })}
-                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
-              >
-                <option value="" disabled>
-                  Choose a Specialty
-                </option>
-                {Specialty.map((specialty) => (
-                  <option key={specialty.id} value={specialty.name}>
-                    {specialty.name}
-                  </option>
-                ))}
-              </select>
-              </div>
-              <div className="mb-4">
-              <label className="block text-gray-700 dark:text-gray-200 mb-1">
+                <label htmlFor="date" className="block text-gray-700 dark:text-gray-200 mb-1">
                   Date
-              </label>
-              <DatePicker
-                selected={newAppointment.date ? new Date(newAppointment.date) : null}
-                onChange={(date) =>
-                  setNewAppointment({ ...newAppointment, date: date.toISOString().split('T')[0] })
-                }
-                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
-                dateFormat="yyyy-MM-dd"
-                placeholderText="Select a date"
-              />
+                </label>
+                <DatePicker
+                  selected={newAppointment.date ? new Date(newAppointment.date) : null}
+                  onChange={(date) => setNewAppointment({ ...newAppointment, date })}
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Select a date"
+                />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 dark:text-gray-200 mb-1">
+                <label htmlFor="time" className="block text-gray-700 dark:text-gray-200 mb-1">
                   Time
                 </label>
-                <div className="flex space-x-2">
-                  {/* Hour Select */}
-                  <select
-                    value={newAppointment.time.split(":")[0]} // Get the hour from the time string
-                    onChange={(e) => {
-                      const newTime = e.target.value + ":" + newAppointment.time.split(":")[1];
-                      setNewAppointment({ ...newAppointment, time: newTime });
-                    }}
-                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
-                  >
-                  {Array.from({ length: 10 }, (_, i) => {
-                          const hour = 8 + i; // Generate hours from 8 to 17
-                          return (
-                            <option key={hour} value={String(hour).padStart(2, "0")}>
-                              {String(hour).padStart(2, "0")}
-                            </option>
-                    );
-                  })}
-                  </select>
-
-                  {/* Minute Select */}
-                  <select
-                    value={newAppointment.time.split(":")[1]} // Get the minute from the time string
-                    onChange={(e) => {
-                      const newTime = newAppointment.time.split(":")[0] + ":" + e.target.value;
-                      setNewAppointment({ ...newAppointment, time: newTime });
-                    }}
-                    className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
-                  >
-                  {Array.from({ length: 4 }, (_, i) => {
-                    const minute = i * 15; // Generate minutes: 0, 15, 30, 45
-                    return (
-                      <option key={minute} value={String(minute).padStart(2, "0")}>
-                        {String(minute).padStart(2, "0")}
-                      </option>
-                    );
-                  })}
-                  </select>
-                </div>
+                <input
+                  type="time"
+                  id="time"
+                  value={newAppointment.time}
+                  onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
+                />
               </div>
               <div className="mb-4">
-              <label htmlFor="spetialty" className="block text-gray-700 dark:text-gray-200 mb-1">
-                Select a Location
-              </label>
-              <select
-                id="specialty"
-                value={newAppointment.location}
-                onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
-                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-1"
-              >
-                <option value="" disabled>
-                  Choose a Location
-                </option>
-                {Locations.map((location) => (
-                  <option key={location.id} value={location.name}>
-                    {location.name}
-                  </option>
-                ))}
-              </select>
-              </div>
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-500"
+                <label htmlFor="specialty" className="block text-gray-700 dark:text-gray-200 mb-1">
+                  Specialty
+                </label>
+                <select
+                  id="specialty"
+                  value={newAppointment.specialty}
+                  onChange={(e) => setNewAppointment({ ...newAppointment, specialty: e.target.value })}
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
                 >
-                  Save
-                </button>
+                  <option value="">Select Specialty</option>
+                  {Specialty.map((specialty) => (
+                    <option key={specialty.id} value={specialty.name}>
+                      {specialty.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="location" className="block text-gray-700 dark:text-gray-200 mb-1">
+                  Location
+                </label>
+                <select
+                  id="location"
+                  value={newAppointment.location}
+                  onChange={(e) => setNewAppointment({ ...newAppointment, location: e.target.value })}
+                  className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
+                >
+                  <option value="">Select Location</option>
+                  {Locations.map((location) => (
+                    <option key={location.id} value={location.name}>
+                      {location.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex justify-between">
                 <button
+                  type="button"
                   onClick={() => setShowAddAppointment(false)}
-                  className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
+                  className="px-4 py-2 bg-gray-400 text-white rounded-lg"
                 >
                   Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                  disabled={loading}
+                >
+                  {loading ? "Creating..." : "Create Appointment"}
                 </button>
               </div>
             </form>
           </div>
-          </div>
+        </div>
       )}
     </div>
-    );
+  );
 };
 
 export default Patient_Appointments;
