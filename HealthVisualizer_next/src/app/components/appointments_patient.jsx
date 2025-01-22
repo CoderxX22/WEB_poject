@@ -282,7 +282,7 @@ const handleCreateAppointment = async (e) => {
                   selected={newAppointment.date ? new Date(newAppointment.date) : null}
                   onChange={(date) => setNewAppointment({ ...newAppointment, date })}
                   className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
-                  dateFormat="yyyy-MM-dd"
+                  dateFormat="dd-MM-yyyy"
                   placeholderText="Select a date"
                 />
               </div>
@@ -296,6 +296,9 @@ const handleCreateAppointment = async (e) => {
                   value={newAppointment.time}
                   onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
                   className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
+                  min="08:00"
+                  max="17:00"
+                  step="1800"
                 />
               </div>
               <div className="mb-4">
