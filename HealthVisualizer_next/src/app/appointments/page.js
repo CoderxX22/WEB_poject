@@ -22,9 +22,14 @@ const AppointmentsScreen = () => {
     { href: "/DoctorScreen", name: "Home" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "#name", name: `Dr. ${userName}`},
-    { onClick: logOut, name: "Logout" },
+    {
+      name: `Dr. ${userName}`,
+      dropdownItems: [
+        { name: "Logout", onClick: logOut },
+      ],
+    },
   ];
+  
 
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">

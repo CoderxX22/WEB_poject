@@ -21,11 +21,15 @@ const HealthOverview = () => {
   }, []);
 
   const links = [
-    { href: "/PatientScreen", name: "Home" },
-    { href: "/patientappointments", name: "My Appointments" },
-    { href: "/healthoverview", name: "Health Overview" },
-    { href: "#name", name: userName },
-    { onClick: logOut, name: "Logout" },
+      { href: "/PatientScreen", name: "Home" },
+      { href: "/patientappointments", name: "My Appointments" },
+      { href: "/healthoverview", name: "Health Overview" },
+      { 
+          name: userName, 
+          dropdownItems: [
+              { onClick: logOut, name: "Logout" }
+          ] 
+      }
   ];
 
   const handleUpdateMetric = (metric, value) => {

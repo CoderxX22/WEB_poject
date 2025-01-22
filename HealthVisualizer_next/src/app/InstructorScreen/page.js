@@ -20,9 +20,14 @@ const InstructorsScreen = () => {
     { href: "/InstructorScreen", name: "Home" },
     { href: "instructorswithpatients", name: "Connect with Patients" },
     { href: "/courses", name: "Courses" },
-    { href: "#name", name: userName },
-    { onClick: logOut, name: "Logout" },
+    {
+      name: userName,
+      dropdownItems: [
+        { name: "Logout", onClick: logOut },
+      ],
+    },
   ];
+  
 
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">

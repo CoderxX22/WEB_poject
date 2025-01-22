@@ -31,9 +31,14 @@ const PatientsList = () => {
     { href: "/DoctorScreen", name: "Home" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "#name", name: `Dr. ${userName}` },
-    { onClick: logOut, name: "Logout" },
+    {
+      name: `Dr. ${userName}`,
+      dropdownItems: [
+        { name: "Logout", onClick: logOut },
+      ],
+    },
   ];
+  
 
   const patients = [
     { id: 1, name: 'John Doe', age: 30, condition: 'Flu', lastVisit: 'January 2, 2024', additionalInfo: 'Patient is recovering well with flu medication.' },

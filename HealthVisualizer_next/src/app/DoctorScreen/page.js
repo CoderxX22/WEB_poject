@@ -35,9 +35,14 @@ const DoctorScreen = () => {
     { href: "/DoctorScreen", name: "Home" },
     { href: "/appointments", name: "Appointments" },
     { href: "/patients", name: "Patients" },
-    { href: "#name", name: `Dr. ${userName}` },
-    { onClick: logOut, name: "Logout" },
+    {
+      name: `Dr. ${userName}`,
+      dropdownItems: [
+        { name: "Logout", onClick: logOut },
+      ],
+    },
   ];
+  
 
   const filteredAppointments = appointments.filter((appointment) =>
     appointment.name.toLowerCase().includes(searchTerm.toLowerCase())

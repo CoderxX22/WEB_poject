@@ -29,13 +29,17 @@ const PatientAppointments = () => {
     ]);
   }, []);
 
-  const links = [
-    { href: "/PatientScreen", name: "Home" },
-    { href: "/patientappointments", name: "My Appointments" },
-    { href: "/healthoverview", name: "Health Overview" },
-    { href: "#name", name: userName },
-    { onClick: logOut, name: "Logout" },
-  ];
+ const links = [
+     { href: "/PatientScreen", name: "Home" },
+     { href: "/patientappointments", name: "My Appointments" },
+     { href: "/healthoverview", name: "Health Overview" },
+     { 
+         name: userName, 
+         dropdownItems: [
+             { onClick: logOut, name: "Logout" }
+         ] 
+     }
+ ];
 
   const handleAddAppointment = () => {
     setAppointments([...appointments, newAppointment]);
