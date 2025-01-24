@@ -3,7 +3,6 @@ import { collection, getDocs, query, where, setDoc, doc, updateDoc } from "fireb
 
 export const handleFormSubmit = async ({
   isLogin,
-  isFirst,
   email,
   password,
   fullName,
@@ -21,7 +20,7 @@ export const handleFormSubmit = async ({
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const userDoc = querySnapshot.docs[0];
+        const userDoc = querySnapshot.docs[0]
         const userData = userDoc.data();
         const userRole = userData?.role;
         const userPass = userData?.password;
@@ -61,7 +60,7 @@ export const handleFormSubmit = async ({
           specialInput: role === "Doctor" || role === "Instructor" ? specialInput : "Null",
           connected: false,
           familyDoctor,
-          firstLogin: true,
+          firstLogin: role === "Doctor" || role === "Instructor"? false : true,
         });
         alert("Signup successful! Click OK to refresh.");
         window.location.reload();

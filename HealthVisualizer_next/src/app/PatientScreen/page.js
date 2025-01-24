@@ -4,26 +4,35 @@ import { getCookie, logOut } from "../functionality/loginlogic";
 import Overlay from "../components/Overlay";
 import Navbar from "../components/Navbar";
 import BMI_Claculator from "../components/BMI_Calculator";
-import { FaBirthdayCake,  FaCalendarCheck, FaVenusMars, FaSmoking, FaCoffee, FaHeartbeat, FaUserMd, FaWeight, FaRulerVertical } from "react-icons/fa";
+import { FaCalendarCheck, FaHeartbeat } from "react-icons/fa";
+import FirstFillForm from "../components/firstFillForm";
+import { patientData } from "../functionality/getPatientData";
 
 const PatientScreen = () => {
   const [userName, setUserName] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    age: "",
-    gender: "",
-    hight: "",
-    weight: "",
-    smoking: "",
-    coffee: "",
-    generalHealth: "",
-    allowDoctor: false,
-  });
+  const [userEmail, setUserEmail] = useState("");
+  const [allPatientData, setPatientData] = useState({}); // Set default state as an empty object
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
-   const storedUserName = getCookie("userName");
-   setUserName(storedUserName || "Guest");
+    const storedUserName = getCookie("userName");
+    const storedUserEmail = getCookie("email");
+    setUserEmail(storedUserEmail);
+    setUserName(storedUserName || "Guest");
   }, []);
+
+  useEffect(() => {
+    if (userEmail) {
+      const checkFirstLogin = async () => {
+        setLoading(true); // Set loading state to true while fetching
+        const result = await patientData(userEmail);
+        console.log("Fetched Patient Data: ", result); // Log the fetched data
+        setPatientData(result); // Update the state with the result
+        setLoading(false); // Set loading state to false once data is fetched
+      };
+      checkFirstLogin();
+    }
+  }, [userEmail]);
 
   const links = [
     { href: "/PatientScreen", name: "Home" },
@@ -35,20 +44,7 @@ const PatientScreen = () => {
             { onClick: logOut, name: "Logout" }
         ] 
     }
-];
-    const handleChange = (event) => {
-      const { name, value, type, checked } = event.target;
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: type === 'checkbox' ? checked : value, // אם זה checkbox, שמור את הערך של checked
-      }));
-    };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // כאן תוכל לשלוח את הנתונים או לבצע פעולה כלשהי
-    console.log("Form Data Submitted:", formData);
-  };
+  ];
 
   return (
     <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -64,185 +60,9 @@ const PatientScreen = () => {
         buttonText="View Appointments"
         onClick={() => window.location.href = "/patientappointments"}
       />
-      <button
-      onClick={() => setShowForm(!showForm)}
-      className="bg-blue-500 text-white p-2 rounded mt-4"
-      >
-        {showForm ? "Close Form" : "Fill Health Information"}
-      </button>
+      
+      <FirstFillForm storedUserEmail={userEmail} />
 
-      <div
-        className={`${
-          showForm ? "block" : "hidden"
-        } fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-gray-500 bg-opacity-50 z-50`}
-      >
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
-          <button
-            onClick={() => setShowForm(false)}
-            className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-          >
-            &times; 
-          </button>
-
-          <h3 className="text-xl text-blue-900 font-semibold text-center mb-6">Health Information Form</h3>
-      <form className="max-w-xl mx-auto my-4 space-y-6">
-
-        <div className="flex items-center justify-between">
-        <FaBirthdayCake className="mr-2 text-blue-500"/>
-          <label htmlFor="age" className="text-gray-700 font-semibold w-1/3">Age:</label>
-          <div className="w-2/3">
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              placeholder="Please enter your age"
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-        <FaVenusMars className="mr-2 text-blue-500"/>
-          <label htmlFor="gender" className="text-gray-700 font-semibold w-1/3">Gender:</label>
-          <div className="w-2/3">
-            <select
-              id="gender"
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-        <FaRulerVertical className="mr-2 text-blue-500"/>
-          <label htmlFor="hight" className="text-gray-700 font-semibold w-1/3">Hight:</label>
-          <div className="w-2/3">
-          <input
-              id="hight"
-              name="hight"
-              value={formData.hight}
-              onChange={handleChange}
-              placeholder="Please enter your hight"
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-        <FaWeight className="mr-2 text-blue-500"/>
-          <label htmlFor="weight" className="text-gray-700 font-semibold w-1/3">Weight:</label>
-          <div className="w-2/3">
-          <input
-              id="weight"
-              name="weight"
-              value={formData.hight}
-              onChange={handleChange}
-              placeholder="Please enter your weight"
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-        <FaSmoking className="mr-2 text-blue-500"/>
-          <label htmlFor="smoking" className="text-gray-700 font-semibold w-1/3">Do you smoke?</label>
-          <div className="w-2/3">
-            <select
-              id="smoking"
-              name="smoking"
-              value={formData.smoking}
-              onChange={handleChange}
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <label htmlFor="coffee" className="text-gray-700 font-semibold flex items-center">
-          <FaCoffee className="mr-2 text-blue-500 text-blue-500"/>
-          How many cups of coffee per day?
-          </label>
-          <div className="w-2/3">
-            <select
-              id="coffee"
-              name="coffee"
-              value={formData.coffee}
-              onChange={handleChange}
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select</option>
-              <option value="1-2">1-2</option>
-              <option value="3-6">3-6</option>
-              <option value="6+">6+</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <label htmlFor="generalHealth" className="text-gray-700 font-semibold w-1/3 flex items-center">
-          <FaHeartbeat className="mr-2 text-blue-500"/> General Health Status: 
-          </label>
-          <div className="w-2/3 flex items-center">
-            <textarea
-              id="generalHealth"
-              name="generalHealth"
-              value={formData.generalHealth}
-              onChange={handleChange}
-              placeholder="Please enter your general health status"
-              className="p-2 border border-gray-300 rounded w-full text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            ></textarea>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between text-grey-900">
-          <label htmlFor="allowDoctor" className="text-gray-700 font-semibold w-1/3 flex items-center">
-            <FaUserMd className="mr-2 text-blue-500" /> Allow Doctor to View Data:
-          </label>
-          <div className="w-2/3 flex items-center">
-            <input
-              type="checkbox"
-              id="allowDoctor"
-              name="allowDoctor"
-              checked={formData.allowDoctor}
-              onChange={handleChange}
-              className="form-checkbox h-5 w-5 text-blue-500"
-            />
-            <span className="ml-2 text-black">Yes, allow doctor to view my data</span>
-          </div>
-        </div>
-
-        <div className="flex space-x-4 justify-center">
-          <button
-            type="submit"
-            className="bg-blue-500 text-white border border-gray-500  p-2 rounded w-1/2 hover:bg-blue-600"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            className="bg-gray-200 text-gray-800 border border-blue-800 rounded p-2 w-1/2 hover:bg-gray-300"
-            onClick={() => setShowForm(false)}
-          >
-            Close Window
-          </button>
-        </div>
-      </form>
-              </div>
-            </div>
-            
       {/* Quick Actions */}
       <section className="py-6 px-4 bg-gray-100 dark:bg-gray-900">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6 text-center">
@@ -284,13 +104,13 @@ const PatientScreen = () => {
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               Height
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">180 cm</p>
+            <p className="text-gray-600 dark:text-gray-300">{loading ? "Loading..." : allPatientData.hight}</p>
           </div>
           <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               Weight
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">75 kg</p>
+            <p className="text-gray-600 dark:text-gray-300">{loading ? "Loading..." : allPatientData.weight}</p>
           </div>
           <div className="md:col-span-3">
             <BMI_Claculator />
