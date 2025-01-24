@@ -3,6 +3,7 @@ import { collection, getDocs, query, where, setDoc, doc, updateDoc } from "fireb
 
 export const handleFormSubmit = async ({
   isLogin,
+  isFirst,
   email,
   password,
   fullName,
@@ -10,6 +11,7 @@ export const handleFormSubmit = async ({
   specialInput,
   setError,
   navigateToRole,
+  familyDoctor,
 }) => {
   try {
     if (isLogin) {
@@ -58,6 +60,8 @@ export const handleFormSubmit = async ({
           role,
           specialInput: role === "Doctor" || role === "Instructor" ? specialInput : "Null",
           connected: false,
+          familyDoctor,
+          firstLogin: true,
         });
         alert("Signup successful! Click OK to refresh.");
         window.location.reload();
@@ -117,3 +121,29 @@ export const getCookie = (name) => {
       console.error("Error during logout:", err);
     }
   };
+
+  export const fetchDoctors = async () => {
+    try {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+  
+      const doctors = querySnapshot.docs
+        .map((doc) => {
+          const data = doc.data();
+          if (data.role && data.role === "Doctor") {
+            return {
+              id: doc.id,
+              name: "Dr." + data.fullName,
+            };
+          }
+          return null;
+        })
+        .filter((doctor) => doctor !== null); // Filter out non-doctor entries
+  
+      return doctors;
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      throw new Error("Failed to fetch doctors");
+    }
+  };
+  

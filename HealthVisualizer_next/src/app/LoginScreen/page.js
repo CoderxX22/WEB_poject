@@ -1,21 +1,40 @@
 "use client"
-import React, { useState } from "react";
-import { handleFormSubmit, navigateToRole } from "../functionality/loginlogic";
+import React, { useState, useEffect } from "react";
+import { handleFormSubmit, navigateToRole , fetchDoctors } from "../functionality/loginlogic";
 import SignupForm from "../components/SignupForm";
 import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isFirst,setIsFirst] = useState(false);
   const [role, setRole] = useState("");
   const [specialInput, setSpecialInput] = useState("");
+  const [familyDoctor, setFamilyDoctor] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState("");
+  const [doctorList, setDoctorList] = useState([]);
+
+
+  useEffect(() => {
+    const fetchAndSetDoctors = async () => {
+      try {
+        const doctors = await fetchDoctors();
+        setDoctorList(doctors);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch doctors.");
+      }
+    };
+    fetchAndSetDoctors();
+  }, []);
+
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setIsFirst(false);
   };
 
   const onSubmit = (e) => {
@@ -27,6 +46,7 @@ const Login = () => {
       fullName,
       role,
       specialInput,
+      familyDoctor,
       setError,
       navigateToRole,
     });
@@ -50,16 +70,19 @@ const Login = () => {
               />
             ) : (
               <SignupForm 
-                email={email} 
-                setEmail={setEmail} 
-                password={password} 
-                setPassword={setPassword} 
-                fullName={fullName} 
-                setFullName={setFullName} 
-                role={role} 
-                setRole={setRole} 
-                specialInput={specialInput} 
-                setSpecialInput={setSpecialInput} 
+                email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              fullName={fullName}
+              setFullName={setFullName}
+              role={role}
+              setRole={setRole}
+              specialInput={specialInput}
+              setSpecialInput={setSpecialInput}
+              familyDoctor={familyDoctor}
+              setFamilyDoctor={setFamilyDoctor}
+              doctorList={doctorList}
               />
             )}
             <button

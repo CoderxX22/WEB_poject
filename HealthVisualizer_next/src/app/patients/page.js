@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { getCookie, logOut } from '../functionality/loginlogic';
+import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -18,6 +19,7 @@ const PatientsList = () => {
     condition: '',
     additionalInfo: ''
   });
+  const [newPatientsList,setNewPatientsList] = useState([]);
   
   useEffect(() => {
     // Fetch user info from cookies
@@ -39,13 +41,6 @@ const PatientsList = () => {
     },
   ];
   
-
-  const patients = [
-    { id: 1, name: 'John Doe', age: 30, condition: 'Flu', lastVisit: 'January 2, 2024', additionalInfo: 'Patient is recovering well with flu medication.' },
-    { id: 2, name: 'Jane Smith', age: 25, condition: 'Back Pain', lastVisit: 'January 5, 2024', additionalInfo: 'Patient is undergoing physiotherapy.' },
-    { id: 3, name: 'Alice Johnson', age: 40, condition: 'Diabetes', lastVisit: 'December 20, 2023', additionalInfo: 'Patient is managing diabetes with insulin injections.' },
-    { id: 4, name: 'Bob Brown', age: 55, condition: 'Hypertension', lastVisit: 'January 3, 2024', additionalInfo: 'Patient is on medication for blood pressure.' },
-  ];
 
   const filteredPatients = patients.filter(patient => 
     patient.name.toLowerCase().includes(searchQuery.toLowerCase())

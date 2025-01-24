@@ -1,4 +1,17 @@
-const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullName, role, setRole, specialInput, setSpecialInput }) => {  
+import React, { useState, useEffect } from "react";
+import { fetchDoctors } from "../functionality/loginlogic";
+
+const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullName, role, setRole, specialInput, setSpecialInput ,familyDoctor, setFamilyDoctor }) => {  
+    const [doctorList, setDoctorList] = useState([]);
+
+    useEffect(() => {
+        const fetchAndSetDoctors = async () => {
+          const doctors = await fetchDoctors();
+          setDoctorList(doctors);
+        };
+        fetchAndSetDoctors();
+      }, []);
+
     return (
         <div>
             <div className="mb-4">
@@ -45,6 +58,8 @@ const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullN
                     className="w-full mt-2 px-4 py-2 border rounded-md dark:bg-gray-900 dark:text-gray-200 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                 />
+            </div>
+            <div className="mb-4">
                 <label htmlFor="role" className="block text-gray-700 dark:text-gray-300">Role</label>
                 <select
                     id="role"
@@ -58,6 +73,8 @@ const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullN
                     <option value="Instructor">Instructor</option>
                     <option value="Patient">Patient</option>
                 </select>
+            </div>
+            <div className="mb-4">
                 <label htmlFor="specialInput" className="block text-gray-700 dark:text-gray-300">Special Input</label>
                 <input
                     type="text"
@@ -77,6 +94,24 @@ const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullN
                     }
                     required
                 />
+            </div>
+            <div className="mb-4">
+                <label htmlFor="doctor" className="block text-gray-700 dark:text-gray-200 mb-1">
+                Select a Doctor
+                </label>
+                <select
+                id="doctor"
+                value={familyDoctor}
+                onChange={(e) => setFamilyDoctor(e.target.value)}
+                className="w-full p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg"
+                >
+                <option value="">Select Doctor</option>
+                {doctorList.map((doctor) => (
+                    <option key={doctor.id} value={doctor.name}>
+                    {doctor.name}
+                    </option>
+                ))}
+                </select>
             </div>
         </div>
     );
