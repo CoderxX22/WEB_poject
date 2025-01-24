@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from "chart.js";
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, elements } from "chart.js";
 
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale);
 
 const PieChart = () => {
   const [asthmaCount, setAsthmaCount] = useState(null);
+  const [diabetesCount, setDiabetesCount] = useState(null);
+  const [heartdiseaseCount, setHeartDiseaseCount] = useState(null);
+  const [kidneydiseaseCount, setKidneyDiseaseCount] = useState(null); // תיקון פה
+  const [lungdiseaseCount, setLungDiseaseCount] = useState(null); // תיקון פה
+  const [obesityCount, setObesityCount] = useState(null);
   const [totalCount, setTotalCount] = useState(null);
+  const [otherConditionsCount, setOtherConditionsCount] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  
   // Hardcoded values for asthma count and total count
-  const hardcodedAsthmaCount = 250; // example count of asthma patients
+  const hardcodedAsthmaCount = 1250; // example count of asthma patients
+  const hardcodedDiabetesCount = 1500;
+  const hardcodedHeartDiseaseCount = 1000;
+  const hardcodedKidneyDiseaseCount = 1720;
+  const hardcodedLungDiseaseCount = 700;
+  const hardcodedObesityCount = 2008;
   const hardcodedTotalCount = 10000; // example total patient count
 
   // Function to simulate fetching data and set hardcoded values
@@ -21,7 +32,15 @@ const PieChart = () => {
 
       // Set hardcoded values for asthma count and total count
       setAsthmaCount(hardcodedAsthmaCount);
+      setDiabetesCount(hardcodedDiabetesCount);
+      setHeartDiseaseCount(hardcodedHeartDiseaseCount);
+      setKidneyDiseaseCount(hardcodedKidneyDiseaseCount); // תיקון פה
+      setLungDiseaseCount(hardcodedLungDiseaseCount); // תיקון פה
+      setObesityCount(hardcodedObesityCount);
       setTotalCount(hardcodedTotalCount);
+
+      const hardcodedOtherConditions = hardcodedTotalCount - (hardcodedAsthmaCount + hardcodedDiabetesCount + hardcodedHeartDiseaseCount + hardcodedKidneyDiseaseCount + hardcodedLungDiseaseCount + hardcodedObesityCount);
+      setOtherConditionsCount(hardcodedOtherConditions);
 
       setLoading(false);
     } catch (err) {
@@ -37,12 +56,20 @@ const PieChart = () => {
 
   // Pie chart data
   const data = {
-    labels: ["Asthma", "Other Conditions"],
+    labels: ["Asthma", "Diabetes", "Heart Disease", "Kidney Disease", "Lung Disease", "Obesity", "Other Conditions"],
     datasets: [
       {
-        data: asthmaCount !== null && totalCount !== null ? [asthmaCount, totalCount - asthmaCount] : [0, 0],
-        backgroundColor: ["lightsteelblue", "lightblue"],
-        hoverBackgroundColor: ["steelblue", "dodgerblue"],
+        data: [
+          asthmaCount !== null ? asthmaCount : 0,
+          diabetesCount !== null ? diabetesCount : 0,
+          heartdiseaseCount !== null ? heartdiseaseCount : 0,
+          kidneydiseaseCount !== null ? kidneydiseaseCount : 0, // תיקון פה
+          lungdiseaseCount !== null ? lungdiseaseCount : 0, // תיקון פה
+          obesityCount !== null ? obesityCount : 0,
+          otherConditionsCount !== null ? otherConditionsCount : 0,
+        ],
+        backgroundColor: ["lightsteelblue", "lightblue", "lightskyblue", "cornflowerblue", "powderblue", "deepskyblue", "aliceblue"],
+        hoverBackgroundColor: ["mediumblue", "royalblue", "dodgerblue", "deepskyblue", "cornflowerblue", "lightseagreen", "turquoise", "steelblue"],
       },
     ],
   };
