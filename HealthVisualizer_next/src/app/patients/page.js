@@ -95,6 +95,40 @@ const PatientsList = () => {
     closeAddPatient();
   };
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedPatient, setEditedPatient] = useState(null);
+
+  // Update editedPatient whenever selectedPatient changes
+  useEffect(() => {
+    if (selectedPatient) {
+      setEditedPatient({ ...selectedPatient }); // Copy selectedPatient to editedPatient
+    }
+  }, [selectedPatient]);
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+    if (!isEditing) {
+      // If entering edit mode, set editedPatient to the current selectedPatient
+      setEditedPatient({ ...selectedPatient });
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedPatient({ ...editedPatient, [name]: value });
+  };
+
+  const handleSave = () => {
+    // Here you can handle saving the updated patient details (e.g., API call)
+    setIsEditing(false); // Exit edit mode
+  };
+
+  const handleCancel = () => {
+    // Cancel editing, revert back to selectedPatient
+    setIsEditing(false);
+    setEditedPatient({ ...selectedPatient });
+  };
+
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
       {/* Navbar Section */}
@@ -185,7 +219,7 @@ const PatientsList = () => {
                     onClick={() => openDetails(patient)}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all"
                   >
-                    View Details
+                    View full Details
                   </button>
                   <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100">
                     Remove Patient
@@ -199,19 +233,74 @@ const PatientsList = () => {
       {/* Modal/Pop-up for Patient Details */}
       {isOpen && selectedPatient && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">{selectedPatient.name} - Details</h2>
-            <p className="text-gray-600 dark:text-gray-400"><strong>Smoking:</strong> {selectedPatient.smoking}</p>
-            <p className="text-gray-600 dark:text-gray-400"><strong>General Health:</strong> {selectedPatient.generalHealth}</p>
-            <div className="mt-4 flex justify-end">
-              <button 
-                onClick={closeDetails} 
-                className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100">
-                Close
-              </button>
-            </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
+          <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
+            {selectedPatient.fullName} - Details
+          </h2>
+
+          <div className="space-y-3">
+            {/* Patient Details - Two Column Layout */}
+            {[
+              { label: "Smoking", name: "smoking" },
+              { label: "General Health", name: "generalHealth" },
+              { label: "Blood Pressure", name: "bloodPressure" },
+              { label: "Heart Rate", name: "heartRate" },
+              { label: "BMI", name: "bmi" },
+              { label: "Weight", name: "weight" },
+              { label: "Height", name: "height" }
+            ].map(({ label, name }) => (
+              <div key={name} className="flex items-center justify-between">
+                <span className="text-gray-700 dark:text-gray-300 font-medium">{label}:</span>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    name={name}
+                    value={editedPatient?.[name] || ""}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-2/3 text-black dark:text-white bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : (
+                  <span className="text-gray-600 dark:text-gray-400 w-2/3">{selectedPatient[name]}</span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 flex justify-end space-x-4">
+            {isEditing ? (
+              <>
+                <button
+                  onClick={handleSave}
+                  className="px-4 py-2 border border-green-600 text-green-600 rounded-lg shadow-md hover:bg-green-100"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleEditToggle}
+                  className="px-4 py-2 border bg-blue-600 text-blue-100 hover:text-blue-800 rounded-lg shadow-md hover:bg-blue-100"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={closeDetails}
+                  className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
+                >
+                  Close
+                </button>
+              </>
+            )}
           </div>
         </div>
+      </div>
       )}
 
       {/* Add Patient Pop-up */}

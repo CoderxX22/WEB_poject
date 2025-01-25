@@ -1,24 +1,41 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getCookie, logOut } from "../functionality/loginlogic";
+import { fetchPatientDetails } from "../functionality/fetchHealthMetrics";
 import Overlay from "../components/Overlay";
 import Navbar from "../components/Navbar";
 
 const HealthOverview = () => {
   const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [healthMetrics, setHealthMetrics] = useState({
-    bloodPressure: "120/80 mmHg",
-    height: "175 cm",
-    weight: "70 kg",
-    heartRate: "72 bpm",
-    bmi: "22.9 (Normal)",
+    bloodPressure: '120/80 mmHg',
+    height: '175 cm',
+    weight: '70 kg',
+    heartRate: '72 bpm',
+    bmi: '22.9'
   });
 
   useEffect(() => {
     // Fetch user info from cookies
     const storedUserName = getCookie("userName");
+    const storedUserEmail = getCookie("userEmail");
     setUserName(storedUserName || "Guest");
+    setUserEmail(storedUserEmail || "");
   }, []);
+    
+  useEffect(() => {
+    // Fetch the patient's health metrics if the email is available
+    if (userEmail) {
+      const fetchMetrics = async () => {
+        const metrics = await fetchPatientDetails("userEmail");
+        if (metrics) {
+          setHealthMetrics(metrics); // Set the fetched health data to the state
+        }
+      };
+      fetchMetrics();
+    }
+  }, [userEmail]);
 
   const links = [
       { href: "/PatientScreen", name: "Home" },
@@ -31,10 +48,6 @@ const HealthOverview = () => {
           ] 
       }
   ];
-
-  const handleUpdateMetric = (metric, value) => {
-    setHealthMetrics({ ...healthMetrics, [metric]: value });
-  };
 
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
@@ -81,10 +94,10 @@ const HealthOverview = () => {
           ))}
         </div>
 
-        {/* Update Metrics */}
+        {/* Update Metrics (Read-Only) */}
         <div className="mt-6">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-            Update Your Metrics
+            View Your Metrics
           </h2>
           <div className="space-y-4">
             {Object.keys(healthMetrics).map((key) => (
@@ -99,8 +112,8 @@ const HealthOverview = () => {
                   id={key}
                   type="text"
                   value={healthMetrics[key]}
-                  onChange={(e) => handleUpdateMetric(key, e.target.value)}
-                  className="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-gray-100"
+                  disabled
+                  className="flex-1 px-4 py-2 border rounded-lg text-gray-600 dark:bg-gray-700 dark:text-gray-100 bg-gray-200 cursor-not-allowed"
                 />
               </div>
             ))}

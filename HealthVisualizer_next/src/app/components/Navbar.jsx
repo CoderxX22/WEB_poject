@@ -39,7 +39,7 @@ const Navbar = ({ links }) => {
                                         onClick={toggleDropdown}
                                         className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                         before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                                        before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                        before:transition-all before:duration-300 hover:before:w-full"
                                     >
                                         {link.name} ▼
                                     </button>
@@ -49,7 +49,7 @@ const Navbar = ({ links }) => {
                                                 <button
                                                     key={idx}
                                                     onClick={item.onClick}
-                                                    className="block w-full text-gray-200 hover:bg-blue-700 dark:text-gray-300 dark:hover:bg-gray-800 px-4 py-2 text-left rounded-lg transition duration-150 ease-in-out"
+                                                    className="block w-full text-gray-200 hover:bg-blue-300 dark:text-gray-300 dark:hover:bg-gray-600 px-4 py-2 text-left rounded-lg transition duration-150 ease-in-out"
                                                 >
                                                     {item.name}
                                                 </button>
@@ -62,7 +62,7 @@ const Navbar = ({ links }) => {
                                     onClick={link.onClick}
                                     className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                         before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                                        before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
+                                        before:transition-all before:duration-300 hover:before:w-full"
                                 >
                                     {link.name}
                                 </button>
@@ -70,7 +70,7 @@ const Navbar = ({ links }) => {
                                 <Link href={link.href} passHref>
                                     <span className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                         before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
-                                        before:transition-all before:duration-300 hover:before:w-full hover:scale-105">
+                                        before:transition-all before:duration-300 hover:before:w-full">
                                         {link.name}
                                     </span>
                                 </Link>
@@ -104,7 +104,7 @@ const Navbar = ({ links }) => {
                                                             <button
                                                                 key={idx}
                                                                 onClick={item.onClick}
-                                                                className="block w-full text-gray-200 hover:bg-blue-700 dark:text-gray-300 dark:hover:bg-gray-800 px-4 py-2 text-left rounded-lg transition duration-150 ease-in-out"
+                                                                className="block w-full text-gray-200 hover:bg-blue-800 dark:text-gray-300 dark:hover:bg-gray-700 px-4 py-2 text-left rounded-lg transition duration-150 ease-in-out"
                                                             >
                                                                 {item.name}
                                                             </button>

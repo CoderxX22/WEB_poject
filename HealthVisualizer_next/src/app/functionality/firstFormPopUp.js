@@ -48,6 +48,9 @@ export const firstFormPopUpAfterSubmit = async (userEmail, formData) => {
                     userEmail: userEmail, // Include userEmail to link the data
                     fullName: userFullName,
                     createdAt: new Date(), // Optional: timestamp for the document
+                    BloodPressure: "N/A", // Optional: default values
+                    HeartRate: "N/A",
+                    BMI: "N/A",
                 });
 
                 console.log("Patient document created successfully with form data.");

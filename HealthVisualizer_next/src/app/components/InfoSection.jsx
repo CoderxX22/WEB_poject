@@ -31,7 +31,7 @@ const Info = () => {
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Dr. Jane Smith</h3>
+                        <h3 className="text-lg font-bold mb-2">Prof. Jane Smith</h3>
                         <p className="text-sm mb-4">Cardiologist</p>
                         <p className="text-sm">Contact: +1 555-123-4567</p>
                         <p className="text-sm">Email: jane.smith@example.com</p>
@@ -47,7 +47,7 @@ const Info = () => {
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Dr. John Doe</h3>
+                        <h3 className="text-lg font-bold mb-2">Prof. John Doe</h3>
                         <p className="text-sm mb-4">Pediatrician</p>
                         <p className="text-sm">Contact: +1 555-987-6543</p>
                         <p className="text-sm">Email: john.doe@example.com</p>
@@ -63,7 +63,7 @@ const Info = () => {
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Dr. Kenneth Brown</h3>
+                        <h3 className="text-lg font-bold mb-2">Prof. Kenneth Brown</h3>
                         <p className="text-sm mb-4">Dermatologist</p>
                         <p className="text-sm">Contact: +1 555-654-3210</p>
                         <p className="text-sm">Email: kenneth.brown@example.com</p>
