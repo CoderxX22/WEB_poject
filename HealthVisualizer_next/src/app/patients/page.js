@@ -15,12 +15,6 @@ const PatientsList = () => {
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [updatePatient, setUpdatePatient] = useState({}); // Add updatePatient state
-  const [newPatient, setNewPatient] = useState({
-    name: '',
-    age: '',
-    condition: '',
-    additionalInfo: ''
-  });
   const [newPatientsList, setNewPatientsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -106,10 +100,11 @@ const PatientsList = () => {
     }
   }, [selectedPatient]);
 
+ 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
     if (!isEditing) {
-      // If entering edit mode, set editedPatient to the current selectedPatient
+       // If entering edit mode, set editedPatient to the current selectedPatient
       setEditedPatient({ ...selectedPatient });
     }
   };
@@ -161,15 +156,6 @@ const PatientsList = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-        </div>
-        
-        {/* Add New Patient Button */}
-        <div className="text-right mb-6">
-          <button
-            onClick={openAddPatient}
-            className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-800 transition-all">
-            Add New Patient
-          </button>
         </div>
         
         {/* Patient List */}
@@ -245,70 +231,6 @@ const PatientsList = () => {
             ))}
         </div>
       </section>
-
-     
-      {/* Add Patient Pop-up */}
-      {isAddPatientOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Add New Patient</h2>
-            <form onSubmit={handleAddPatient}>
-              <div className="mb-4">
-                <label className="block text-gray-600 dark:text-gray-400">Name</label>
-                <input
-                  type="text"
-                  value={newPatient.name}
-                  onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-600 dark:text-gray-400">Age</label>
-                <input
-                  type="number"
-                  value={newPatient.age}
-                  onChange={(e) => setNewPatient({ ...newPatient, age: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-600 dark:text-gray-400">Condition</label>
-                <input
-                  type="text"
-                  value={newPatient.condition}
-                  onChange={(e) => setNewPatient({ ...newPatient, condition: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-600 dark:text-gray-400">Additional Info</label>
-                <textarea
-                  value={newPatient.additionalInfo}
-                  onChange={(e) => setNewPatient({ ...newPatient, additionalInfo: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300"
-                />
-              </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={closeAddPatient}
-                  className="px-4 py-2 border border-gray-600 text-gray-600 rounded-md"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all"
-                >
-                  Add Patient
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
