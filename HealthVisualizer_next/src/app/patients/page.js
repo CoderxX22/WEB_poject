@@ -15,12 +15,6 @@ const PatientsList = () => {
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [updatePatient, setUpdatePatient] = useState({}); // Add updatePatient state
-  const [newPatient, setNewPatient] = useState({
-    name: '',
-    age: '',
-    condition: '',
-    additionalInfo: ''
-  });
   const [newPatientsList, setNewPatientsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -128,10 +122,11 @@ const PatientsList = () => {
     }
   }, [selectedPatient]);
 
+ 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
     if (!isEditing) {
-      // If entering edit mode, set editedPatient to the current selectedPatient
+       // If entering edit mode, set editedPatient to the current selectedPatient
       setEditedPatient({ ...selectedPatient });
     }
   };
@@ -184,7 +179,7 @@ const PatientsList = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-                
+        
         {/* Patient List */}
         <div className="space-y-6">
           {/* Loading Indicator */}
