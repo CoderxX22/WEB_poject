@@ -1,5 +1,5 @@
 import { db } from "../functionality/firebase"; // Assuming firebase is set up correctly
-import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 
 // Function to fetch patient data for a single email
 export const patientData = async (userEmail) => {
@@ -52,6 +52,7 @@ export const patientDataForDoctor = async (userName) => {
         for (const email of emailArr) {
             const patientDocRef = doc(db, "patients", email);
             const patientDoc = await getDoc(patientDocRef);
+            console.log(patientDoc.data());
 
             if (patientDoc.exists()) {
                 patientDataArr.push(patientDoc.data());
@@ -66,4 +67,39 @@ export const patientDataForDoctor = async (userName) => {
         console.error("Error fetching patient data:", err);
         return []; // Return an empty array in case of an error
     }
+};
+
+export const deletePatientFromDoctor = async (patientEmail) => {
+  if (!patientEmail) {
+    console.error("deletePatientFromDoctor called with undefined email");
+    throw new Error("Patient email is undefined");
+  }
+
+  try {
+    const patientDocRef = collection(db, "users");
+
+    // Query to find all documents with "familyDoctor" matching "Dr.<patientEmail>"
+    const q = query(patientDocRef, where("email", "==", patientEmail ));
+
+    // Use getDocs to retrieve query results
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Iterate through the documents and update the "familyDoctor" field
+      for (const docSnapshot of querySnapshot.docs) {
+        const patientRef = doc(db, "users", docSnapshot.id); // Get the DocumentReference
+        await updateDoc(patientRef, { familyDoctor: "N/A" });
+      }
+      console.log("Successfully updated patients with family doctor:", patientEmail);
+    } else {
+      console.warn("No matching patients found for family doctor:", patientEmail);
+    }
+  } catch (error) {
+    console.error("Error in deletePatientFromDoctor:", error);
+    throw error;
+  }
+};
+
+export const updatePatientDetails = (patient) => {
+  
 };
