@@ -1,104 +1,114 @@
 import React, { useState, useEffect } from "react";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, elements } from "chart.js";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-// Register Chart.js components
-ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale);
-
-const PieChart = () => {
-  const [asthmaCount, setAsthmaCount] = useState(null);
-  const [diabetesCount, setDiabetesCount] = useState(null);
-  const [heartdiseaseCount, setHeartDiseaseCount] = useState(null);
-  const [kidneydiseaseCount, setKidneyDiseaseCount] = useState(null); // תיקון פה
-  const [lungdiseaseCount, setLungDiseaseCount] = useState(null); // תיקון פה
-  const [obesityCount, setObesityCount] = useState(null);
-  const [totalCount, setTotalCount] = useState(null);
-  const [otherConditionsCount, setOtherConditionsCount] = useState(null);
+const MedicalPieChart = ({ darkMode }) => {
+  const [data, setData] = useState([]);
+  const [totalOccurrences, setTotalOccurrences] = useState(0);
   const [loading, setLoading] = useState(true);
-  
-  // Hardcoded values for asthma count and total count
-  const hardcodedAsthmaCount = 1250; // example count of asthma patients
-  const hardcodedDiabetesCount = 1500;
-  const hardcodedHeartDiseaseCount = 1000;
-  const hardcodedKidneyDiseaseCount = 1720;
-  const hardcodedLungDiseaseCount = 700;
-  const hardcodedObesityCount = 2008;
-  const hardcodedTotalCount = 10000; // example total patient count
 
-  // Function to simulate fetching data and set hardcoded values
-  const handleDataToPie = async () => {
+  // Specified diseases to show individually
+  const SHOW_DISEASES = ["Asthma", "Osteoporosis", "Depression", "Migraine"];
+
+  // Colors for light and dark modes
+  const LIGHT_MODE_COLORS = ["#8884d8", "#83a6ed", "#8dd1e1", "#82ca9d", "#a4de6c"];
+  const DARK_MODE_COLORS = ["#4f46e5", "#2563eb", "#0ea5e9", "#22d3ee", "#34d399"];
+
+  // Function to fetch and parse JSON data
+  const handleJSONData = async () => {
     try {
       setLoading(true);
 
-      // Set hardcoded values for asthma count and total count
-      setAsthmaCount(hardcodedAsthmaCount);
-      setDiabetesCount(hardcodedDiabetesCount);
-      setHeartDiseaseCount(hardcodedHeartDiseaseCount);
-      setKidneyDiseaseCount(hardcodedKidneyDiseaseCount); // תיקון פה
-      setLungDiseaseCount(hardcodedLungDiseaseCount); // תיקון פה
-      setObesityCount(hardcodedObesityCount);
-      setTotalCount(hardcodedTotalCount);
+      // Fetch the JSON file
+      const response = await fetch('/medical_profiles.json');
+      const jsonData = await response.json();
 
-      const hardcodedOtherConditions = hardcodedTotalCount - (hardcodedAsthmaCount + hardcodedDiabetesCount + hardcodedHeartDiseaseCount + hardcodedKidneyDiseaseCount + hardcodedLungDiseaseCount + hardcodedObesityCount);
-      setOtherConditionsCount(hardcodedOtherConditions);
+      // Initialize counts
+      const counts = {
+        Asthma: 0,
+        Osteoporosis: 0,
+        Depression: 0,
+        Migraine: 0,
+        Other: 0
+      };
 
+      // Process each profile in the JSON data
+      jsonData.forEach(profile => {
+        if (SHOW_DISEASES.includes(profile.disease)) {
+          counts[profile.disease] += 1;
+        } else {
+          counts.Other += 1;
+        }
+      });
+
+      // Convert counts object to array format for Recharts
+      const chartData = Object.entries(counts).map(([name, value]) => ({
+        name,
+        value
+      }));
+
+      setData(chartData);
+      setTotalOccurrences(counts.Asthma);
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching healthdata:", err);
+      console.error("Error fetching or parsing JSON:", err);
       setLoading(false);
     }
   };
 
-  // Run handleDataToPie function on component mount
+  // Run handleJSONData function on component mount
   useEffect(() => {
-    handleDataToPie();
+    handleJSONData();
   }, []);
 
-  // Pie chart data
-  const data = {
-    labels: ["Asthma", "Diabetes", "Heart Disease", "Kidney Disease", "Lung Disease", "Obesity", "Other Conditions"],
-    datasets: [
-      {
-        data: [
-          asthmaCount !== null ? asthmaCount : 0,
-          diabetesCount !== null ? diabetesCount : 0,
-          heartdiseaseCount !== null ? heartdiseaseCount : 0,
-          kidneydiseaseCount !== null ? kidneydiseaseCount : 0, // תיקון פה
-          lungdiseaseCount !== null ? lungdiseaseCount : 0, // תיקון פה
-          obesityCount !== null ? obesityCount : 0,
-          otherConditionsCount !== null ? otherConditionsCount : 0,
-        ],
-        backgroundColor: ["lightsteelblue", "lightblue", "lightskyblue", "cornflowerblue", "powderblue", "deepskyblue", "aliceblue"],
-        hoverBackgroundColor: ["mediumblue", "royalblue", "dodgerblue", "deepskyblue", "cornflowerblue", "lightseagreen", "turquoise", "steelblue"],
-      },
-    ],
-  };
-
-  // Pie chart options
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.label}: ${context.raw}`, // Custom tooltip label format
-        },
-      },
-    },
+  // Custom tooltip component
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className={`p-2 border rounded shadow-sm ${darkMode ? "bg-gray-800 text-white" : "bg-white text-black"}`}>
+          <p className="text-sm font-medium">{payload[0].name}</p>
+          <p className="text-sm">{payload[0].value} patients</p>
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <h2 className="text-xl text-black mb-4 text-center dark:text-white">2025 Medical Conditions Chart</h2>
+    <div className="max-w-4xl mx-auto p-4">
+      <h2 className={`text-xl font-bold mb-4 text-center dark:text-white text-black`}>
+        Distribution of Selected Medical Conditions
+      </h2>
       {loading ? (
         <p className="text-center text-gray-500">Loading chart...</p>
       ) : (
-        <Pie data={data} options={options} />
+        <div className="space-y-4">
+          <div className={` p-7 h-96 dark:bg-gray-900 bg-white`}>
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius="80%"
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={darkMode ? DARK_MODE_COLORS[index % DARK_MODE_COLORS.length] : LIGHT_MODE_COLORS[index % LIGHT_MODE_COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-export default PieChart;
+export default MedicalPieChart;

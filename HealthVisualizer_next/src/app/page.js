@@ -39,7 +39,7 @@ const MainPage = () => {
       {/* Contact Section */}
       <Contact />
       {/* Login Section */}
-      <StatisticsSection />
+      <StatisticsSection darkMode={darkMode}/>
       {/* Article Section */}
       <ArticleSection />
     </>
