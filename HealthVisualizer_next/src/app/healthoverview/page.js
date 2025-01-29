@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getCookie, logOut } from "../functionality/loginlogic";
-import { fetchPatientDetails } from "../functionality/fetchHealthMetrics";
 import Overlay from "../components/Overlay";
 import Navbar from "../components/Navbar";
 import { patientData } from "../functionality/getPatientData";
@@ -47,6 +46,17 @@ const HealthOverview = () => {
       }
   ];
 
+  const fields = {
+    "Blood Pressure": "BloodPressure",
+    "Height": "hight",
+    "Weight": "weight",
+    "BMI": "BMI",
+    "Heart Rate": "HeartRate",
+    "Coffee Consumption": "coffee",
+    "General Health": "generalHealth",
+    "Smoking": "smoking",
+  };
+
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
       {/* Navbar Section */}
@@ -76,30 +86,18 @@ const HealthOverview = () => {
             <li>Regular exercise can help lower your BMI.</li>
           </ul>
         </div>
-      {/* Health Overview */}
+          {/* Health Overview */}
           <section id="health-overview" className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
-            <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
-              Health Overview
-            </h2>
+            <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Health Overview</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                  Blood Pressure
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">120/80 mmHg</p>
-              </div>
-              <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                  Height
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">{loading ? "Loading..." : healthMetrics.hight}</p>
-              </div>
-              <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                  Weight
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">{loading ? "Loading..." : healthMetrics.weight}</p>
-              </div>
+              {Object.entries(fields).map(([label, field]) => (
+                <div key={field} className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{label}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {loading ? "Loading..." : healthMetrics[field] || "N/A"}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
         </section>

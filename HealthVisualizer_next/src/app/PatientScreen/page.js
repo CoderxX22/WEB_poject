@@ -98,7 +98,7 @@ const PatientScreen = () => {
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               Blood Pressure
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">120/80 mmHg</p>
+            <p className="text-gray-600 dark:text-gray-300">{loading ? "Loading..." : allPatientData.BloodPressure}</p>
           </div>
           <div className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition">
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">

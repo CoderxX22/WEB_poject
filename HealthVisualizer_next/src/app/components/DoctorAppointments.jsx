@@ -111,9 +111,6 @@ const DoctorAppointments = ({ docName }) => {
                     Specialty: {appointment.specialty || "General"}
                   </p>
                 </div>
-                <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300">
-                  Reschedule
-                </button>
               </div>
             ))
           ) : (
@@ -145,9 +142,6 @@ const DoctorAppointments = ({ docName }) => {
                     Specialty: {appointment.specialty || "General"}
                   </p>
                 </div>
-                <button className="px-4 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-800 transition-all duration-300">
-                  View Details
-                </button>
               </div>
             ))
           ) : (

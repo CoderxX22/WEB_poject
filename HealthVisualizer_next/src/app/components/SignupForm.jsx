@@ -70,7 +70,6 @@ const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullN
                 >
                     <option value="">--Select a Role--</option>
                     <option value="Doctor">Doctor</option>
-                    <option value="Instructor">Instructor</option>
                     <option value="Patient">Patient</option>
                 </select>
             </div>

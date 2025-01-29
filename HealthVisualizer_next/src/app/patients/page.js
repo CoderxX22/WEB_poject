@@ -5,7 +5,8 @@ import { collection, getDocs, query, where, Timestamp } from "firebase/firestore
 import Overlay from '../components/Overlay';
 import Navbar from '../components/Navbar';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { patientDataForDoctor ,deletePatientFromDoctor, updatePatientDetails} from "../functionality/getPatientData";
+import { patientDataForDoctor ,deletePatientFromDoctor, updateHealthMetrics} from "../functionality/getPatientData";
+
 
 const PatientsList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,28 +60,28 @@ const PatientsList = () => {
 
   const currentDate = new Date().toLocaleDateString();
 
-  const openDetails = (patient) => {
-    setSelectedPatient(patient);
-    setIsOpen(true);
-  };
+  const handleSave = async (patient, editedPatient) => {
+    try {   
+      console.log("Patient Data: ", patient);
+      console.log("Edited Patient Data: ", editedPatient);
+  
+      if (!patient || !editedPatient) {
+        console.error("No patient or edited data available.");
+        return;
+      }
+  
+      await updateHealthMetrics(patient.userEmail, editedPatient);
+      console.log("Patient updated successfully!");
 
-  const closeDetails = () => {
-    setIsOpen(false);
-    setSelectedPatient(null);
-  };
+      const result = await patientDataForDoctor(userName); // Fetch data
+      setNewPatientsList(result); // Update state
+  
+      setIsEditing(false); // Exit edit mode
 
-  const openAddPatient = () => {
-    setIsAddPatientOpen(true);
-  };
-
-  const closeAddPatient = () => {
-    setIsAddPatientOpen(false);
-    setNewPatient({
-      name: '',
-      age: '',
-      condition: '',
-      additionalInfo: ''
-    });
+      alert("Patient updated successfully!");
+    } catch (error) {
+      console.error("Error updating patient:", error);
+    }
   };
 
   const handleRemovePatient = async (patient) => {
@@ -104,7 +105,6 @@ const PatientsList = () => {
     }
   };
   
-
   const handleAddPatient = (e) => {
     e.preventDefault();
     alert("New patient added!");
@@ -113,7 +113,9 @@ const PatientsList = () => {
   };
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editedPatient, setEditedPatient] = useState(null);
+  const [editingPatients, setEditingPatients] = useState({});
+  const [editedPatient, setEditedPatient] = useState({});
+  
 
   // Update editedPatient whenever selectedPatient changes
   useEffect(() => {
@@ -134,11 +136,6 @@ const PatientsList = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedPatient({ ...editedPatient, [name]: value });
-  };
-
-  const handleSave = () => {
-    // Here you can handle saving the updated patient details (e.g., API call)
-    setIsEditing(false); // Exit edit mode
   };
 
   const handleCancel = () => {
@@ -200,7 +197,7 @@ const PatientsList = () => {
           {!loading &&
             filteredPatients.map((patient, index) => (
               <div
-                key={patient.email || index} // Use a unique identifier as the key
+                key={patient.email || index}
                 className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all"
               >
                 <div className="flex items-center space-x-4">
@@ -211,50 +208,75 @@ const PatientsList = () => {
                     Age: {patient.age}
                   </div>
                 </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Height: <span className="font-semibold">{patient.hight}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Weight: <span className="font-semibold">{patient.weight}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Sex: <span className="font-semibold">{patient.gender}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Coffee Cups per day: <span className="font-semibold">{patient.coffee}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Smoking: <span className="font-semibold">{patient.smoking}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Blood Pressure: <span className="font-semibold">{patient.BloodPressure}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  Average Heart Rate: <span className="font-semibold">{patient.HeartRate}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  BMI: <span className="font-semibold">{patient.BMI}</span>
-                </div>
-                <div className="mt-2 text-gray-600 dark:text-gray-400">
-                  General Health: <span className="font-semibold">{patient.generalHealth}</span>
-                </div>
+
+                {/* Editable Fields (Other Fields Are Editable) */}
+                {[
+                  "hight",
+                  "weight",
+                  "gender",
+                  "coffee",
+                  "smoking",
+                  "BloodPressure",
+                  "HeartRate",
+                  "BMI",
+                  "generalHealth",
+                ].map((field) => (
+                  <div key={field} className="mt-2 text-gray-600 dark:text-gray-400">
+                    {field.replace(/([A-Z])/g, " $1")}:{" "}
+                    {isEditing && selectedPatient === patient ? (
+                      <input
+                        type="text"
+                        name={field}
+                        value={editedPatient[field] || ""}  // Ensure it's never undefined
+                        onChange={handleInputChange}
+                        className="px-2 py-1 border rounded-md border-gray-300 text-gray-800 dark:text-white dark:bg-gray-700 bg-white"
+                      />
+                    ) : (
+                      <span className="font-semibold">{patient[field]}</span>
+                    )}
+                  </div>
+                ))}
+
+                {/* Edit, Save & Remove Buttons */}
                 <div className="mt-4 flex justify-end space-x-4">
-                  <button
-                    onClick={() => openDetails(patient)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all"
-                  >
-                    Edit Patient
-                  </button>
-                  <button
-                    onClick={() => handleRemovePatient(patient)}
-                    className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
-                  >
-                    Remove Patient
-                  </button>
+                  {isEditing && selectedPatient === patient ? (
+                    <>
+                      <button
+                        onClick={() => handleSave(patient, editedPatient)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancel}
+                        className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-600 transition-all"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setSelectedPatient(patient);
+                          handleEditToggle(); // Open the edit mode for the selected patient
+                        }}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-800 transition-all"
+                      >
+                        Edit Patient
+                      </button>
+                      <button
+                        onClick={() => handleRemovePatient(patient)}
+                        className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg shadow-md hover:bg-blue-100"
+                      >
+                        Remove Patient
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
-        </div>
+          </div>
       </section>
     </div>
   );

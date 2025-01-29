@@ -100,6 +100,30 @@ export const deletePatientFromDoctor = async (patientEmail) => {
   }
 };
 
-export const updatePatientDetails = (patient) => {
-  
+export const updateHealthMetrics = async (userEmail, updatedFields) => {
+  try {
+    const patientRef = doc(db, "patients", userEmail); 
+
+    await updateDoc(patientRef, updatedFields); 
+
+    console.log("Health metrics updated successfully");
+  } catch (error) {
+    console.error("Error updating health metrics:", error);
+    throw error;
+  }
+};
+
+export const UpdateBMI = async (userEmail, updatedBMI) => {
+  try {
+    const patientRef = doc(db, "patients", userEmail); 
+
+    await updateDoc(patientRef, {
+      BMI: updatedBMI, // Adjust 'bmi' to the actual field name in your Firestore document
+    });
+
+    console.log("BMI updated successfully");
+  } catch (error) {
+    console.error("Error updating BMI:", error);
+    throw error;
+  }
 };
