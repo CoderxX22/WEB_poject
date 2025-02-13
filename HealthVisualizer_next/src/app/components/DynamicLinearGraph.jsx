@@ -11,12 +11,12 @@ const DynamicGraph = () => {
       try {
         const response = await fetch("/flu_data_2023_2025.json");
         const jsonData = await response.json();
-        
+
         const formattedData = jsonData.map(item => ({
-          date: `${item.month} ${item.year}`,
+          date: `${item.month.substring(0, 3)} '${item.year.toString().slice(-2)}`, // מקצר את התאריך
           cases: item.flu_cases
         }));
-        
+
         setData(formattedData);
         setLoading(false);
       } catch (error) {
@@ -64,7 +64,7 @@ const DynamicGraph = () => {
                 top: 20,
                 right: 40,
                 left: 40,
-                bottom: 65
+                bottom: 120, // יותר מקום לכיתוב
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -72,9 +72,13 @@ const DynamicGraph = () => {
                 dataKey="date"
                 angle={-45}
                 textAnchor="end"
-                height={60}
-                tick={{ fill: 'rgb(75, 85, 99)' }}
-                interval={0}
+                height={90} // גובה מספיק לכיתוב
+                tick={{
+                  fill: 'rgb(75, 85, 99)',
+                  fontSize: window.innerWidth < 768 ? 10 : 12, // קטן יותר במובייל
+                }}
+                dy={10} // מוריד טיפה למטה למניעת חפיפה
+                interval="preserveStartEnd" // מציג פחות תוויות לפי הצורך
               />
               <YAxis
                 tick={{ fill: 'rgb(75, 85, 99)' }}
@@ -87,7 +91,6 @@ const DynamicGraph = () => {
                 type="monotone"
                 dataKey="cases"
                 name="Flu Cases"
-                className="text-2xl font-bold mb-6 text-center dark:stroke-blue-400"
                 strokeWidth={3}
                 dot={{ r: 4, fill: "#4DB6AC" }}
                 activeDot={{ r: 8 }}
