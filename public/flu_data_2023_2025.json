@@ -1,0 +1,234 @@
+[
+    {
+        "year": 2023,
+        "month": "January",
+        "country": "USA",
+        "flu_cases": 12503,
+        "hospitalizations": 1706,
+        "deaths": 276
+    },
+    {
+        "year": 2023,
+        "month": "February",
+        "country": "USA",
+        "flu_cases": 22751,
+        "hospitalizations": 207,
+        "deaths": 381
+    },
+    {
+        "year": 2023,
+        "month": "March",
+        "country": "USA",
+        "flu_cases": 14653,
+        "hospitalizations": 1692,
+        "deaths": 219
+    },
+    {
+        "year": 2023,
+        "month": "April",
+        "country": "USA",
+        "flu_cases": 36218,
+        "hospitalizations": 497,
+        "deaths": 436
+    },
+    {
+        "year": 2023,
+        "month": "May",
+        "country": "USA",
+        "flu_cases": 46934,
+        "hospitalizations": 293,
+        "deaths": 129
+    },
+    {
+        "year": 2023,
+        "month": "June",
+        "country": "USA",
+        "flu_cases": 27126,
+        "hospitalizations": 1205,
+        "deaths": 321
+    },
+    {
+        "year": 2023,
+        "month": "July",
+        "country": "USA",
+        "flu_cases": 29350,
+        "hospitalizations": 868,
+        "deaths": 266
+    },
+    {
+        "year": 2023,
+        "month": "August",
+        "country": "USA",
+        "flu_cases": 23558,
+        "hospitalizations": 78,
+        "deaths": 6
+    },
+    {
+        "year": 2023,
+        "month": "September",
+        "country": "USA",
+        "flu_cases": 37713,
+        "hospitalizations": 1278,
+        "deaths": 451
+    },
+    {
+        "year": 2023,
+        "month": "October",
+        "country": "USA",
+        "flu_cases": 40283,
+        "hospitalizations": 523,
+        "deaths": 245
+    },
+    {
+        "year": 2023,
+        "month": "November",
+        "country": "USA",
+        "flu_cases": 39684,
+        "hospitalizations": 1554,
+        "deaths": 329
+    },
+    {
+        "year": 2023,
+        "month": "December",
+        "country": "USA",
+        "flu_cases": 43197,
+        "hospitalizations": 542,
+        "deaths": 71
+    },
+    {
+        "year": 2024,
+        "month": "January",
+        "country": "USA",
+        "flu_cases": 22572,
+        "hospitalizations": 1285,
+        "deaths": 381
+    },
+    {
+        "year": 2024,
+        "month": "February",
+        "country": "USA",
+        "flu_cases": 28295,
+        "hospitalizations": 819,
+        "deaths": 278
+    },
+    {
+        "year": 2024,
+        "month": "March",
+        "country": "USA",
+        "flu_cases": 33056,
+        "hospitalizations": 1683,
+        "deaths": 451
+    },
+    {
+        "year": 2024,
+        "month": "April",
+        "country": "USA",
+        "flu_cases": 37338,
+        "hospitalizations": 504,
+        "deaths": 463
+    },
+    {
+        "year": 2024,
+        "month": "May",
+        "country": "USA",
+        "flu_cases": 22064,
+        "hospitalizations": 992,
+        "deaths": 210
+    },
+    {
+        "year": 2024,
+        "month": "June",
+        "country": "USA",
+        "flu_cases": 49635,
+        "hospitalizations": 1300,
+        "deaths": 126
+    },
+    {
+        "year": 2024,
+        "month": "July",
+        "country": "USA",
+        "flu_cases": 41429,
+        "hospitalizations": 1201,
+        "deaths": 329
+    },
+    {
+        "year": 2024,
+        "month": "August",
+        "country": "USA",
+        "flu_cases": 15554,
+        "hospitalizations": 1272,
+        "deaths": 187
+    },
+    {
+        "year": 2024,
+        "month": "September",
+        "country": "USA",
+        "flu_cases": 10599,
+        "hospitalizations": 782,
+        "deaths": 476
+    },
+    {
+        "year": 2024,
+        "month": "October",
+        "country": "USA",
+        "flu_cases": 48847,
+        "hospitalizations": 1601,
+        "deaths": 186
+    },
+    {
+        "year": 2024,
+        "month": "November",
+        "country": "USA",
+        "flu_cases": 45952,
+        "hospitalizations": 1149,
+        "deaths": 125
+    },
+    {
+        "year": 2024,
+        "month": "December",
+        "country": "USA",
+        "flu_cases": 14559,
+        "hospitalizations": 1719,
+        "deaths": 282
+    },
+    {
+        "year": 2025,
+        "month": "January",
+        "country": "USA",
+        "flu_cases": 45119,
+        "hospitalizations": 745,
+        "deaths": 462
+    },
+    {
+        "year": 2025,
+        "month": "February",
+        "country": "USA",
+        "flu_cases": 11255,
+        "hospitalizations": 311,
+        "deaths": 23
+    },
+    {
+        "year": 2025,
+        "month": "March",
+        "country": "USA",
+        "flu_cases": 14660,
+        "hospitalizations": 420,
+        "deaths": 482
+    },
+    {
+        "year": 2025,
+        "month": "April",
+        "country": "USA",
+        "flu_cases": 23485,
+        "hospitalizations": 1784,
+        "deaths": 286
+    },
+    {
+        "year": 2025,
+        "month": "May",
+        "country": "USA",
+        "flu_cases": 45480,
+        "hospitalizations": 1767,
+        "deaths": 160
+    }
+]
