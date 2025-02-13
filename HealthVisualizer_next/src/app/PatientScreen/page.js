@@ -18,7 +18,7 @@ const PatientScreen = () => {
     const storedUserName = getCookie("userName");
     const storedUserEmail = getCookie("email");
     setUserEmail(storedUserEmail);
-    setUserName(storedUserName || "Guest");
+    setUserName(storedUserName || "Guest"); //storedUserName
   }, []);
 
   useEffect(() => {
