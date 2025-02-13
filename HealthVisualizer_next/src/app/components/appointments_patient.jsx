@@ -226,7 +226,7 @@ const handleCreateAppointment = async (e) => {
                 {appointment.doctorName}
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Date: {appointment.date.toDate().toLocaleDateString()}
+              Date: {appointment.date?.toDate ? appointment.date.toDate().toLocaleDateString() : new Date(appointment.date).toLocaleDateString()}
               </p>
               <p className="text-gray-600 dark:text-gray-400">
                 Time: {appointment.time}
