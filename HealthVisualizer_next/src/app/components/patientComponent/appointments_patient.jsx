@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCookie } from "../../functionality/loginlogic";
 import { db } from "../../functionality/firebase";
 import { collection, getDocs, addDoc, doc, getDoc, query, where } from "firebase/firestore";
+import { fetchDoctors } from "../../functionality/appointmentLogic";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -33,36 +34,18 @@ const Patient_Appointments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
-  // Fetch doctors from Firestore
-  const fetchDoctors = async () => {
-    try {
-      const usersRef = collection(db, "users");
-      const querySnapshot = await getDocs(usersRef);
-      
-      const doctorsList = querySnapshot.docs
-        .map(doc => {
-          const data = doc.data();
-          if (data.role && data.role === "Doctor") {
-            return {
-              id: doc.id,
-              name: "Dr." + data.fullName,
-            };
-          }
-          return null;
-        })
-        .filter(doctor => doctor !== null); // Remove any null entries
-      
-      setDoctors(doctorsList);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-      setError("Failed to fetch doctors list");
-    }
-  };
+  useEffect(() => {
+    const getDoctors = async () => {
+      const data = await fetchDoctors();
+      setDoctors(data);
+    };
+
+    getDoctors();
+  }, []);
 
   // Fetch both appointments and doctors when the component mounts
   useEffect(() => {
     fetchAppointments();
-    fetchDoctors();
   }, []);
 
   // Fetch appointments when the component is mounted

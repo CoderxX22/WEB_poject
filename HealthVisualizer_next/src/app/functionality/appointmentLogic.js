@@ -50,3 +50,29 @@ export const fetchAppointments = async (doctorName, setUpcomingAppointments, set
     console.error("Error fetching appointments:", error);
   }
 };
+
+// Fetch doctors from Firestore
+export const fetchDoctors = async () => {
+    try {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+      
+      const doctorsList = querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          if (data.role && data.role === "Doctor") {
+            return {
+              id: doc.id,
+              name: "Dr." + data.fullName,
+            };
+          }
+          return null;
+        })
+        .filter(doctor => doctor !== null); // Remove any null entries
+      
+        return doctorsList;
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setError("Failed to fetch doctors list");
+    }
+  };

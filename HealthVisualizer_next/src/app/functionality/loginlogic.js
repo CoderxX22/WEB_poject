@@ -57,10 +57,10 @@ export const handleFormSubmit = async ({
           email,
           password,
           role,
-          specialInput: role === "Doctor" || role === "Instructor" ? specialInput : "Null",
+          specialInput: role === "Doctor" ? specialInput : "Null",
           connected: false,
           familyDoctor,
-          firstLogin: role === "Doctor" || role === "Instructor"? false : true,
+          firstLogin: role === "Doctor" ? false : true,
         });
         alert("Signup successful! Click OK to refresh.");
         window.location.reload();
@@ -81,8 +81,6 @@ export const navigateToRole = (role, userName, email) => {
     window.location.href = "/pages/DoctorScreen";
   } else if (role === "Patient") {
     window.location.href = "/pages/PatientScreen";
-  } else if (role === "Instructor") {
-    window.location.href = "/pages/InstructorScreen";
   } else {
     console.log("Role not selected or invalid");
   }
