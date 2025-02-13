@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getCookie, logOut } from "../functionality/loginlogic";
-import Overlay from "../components/Overlay";
-import Navbar from "../components/Navbar";
-import BMI_Claculator from "../components/BMI_Calculator";
+import { getCookie, logOut } from "../../functionality/loginlogic";
+import Overlay from "../../components/mainComponent/Overlay";
+import Navbar from "../../components/mainComponent/Navbar";
+import BMI_Claculator from "../../components/patientComponent/BMI_Calculator";
 import { FaCalendarCheck, FaHeartbeat } from "react-icons/fa";
-import FirstFillForm from "../components/firstFillForm";
-import { patientData } from "../functionality/getPatientData";
+import FirstFillForm from "../../components/patientComponent/firstFillForm";
+import { patientData } from "../../functionality/getPatientData";
 
 const PatientScreen = () => {
   const [userName, setUserName] = useState("");
@@ -35,9 +35,9 @@ const PatientScreen = () => {
   }, [userEmail]);
 
   const links = [
-    { href: "/PatientScreen", name: "Home" },
-    { href: "/patientappointments", name: "My Appointments" },
-    { href: "/healthoverview", name: "Health Overview" },
+    { href: "/pages/PatientScreen", name: "Home" },
+    { href: "/pages/patientappointments", name: "My Appointments" },
+    { href: "/pages/healthoverview", name: "Health Overview" },
     { 
         name: userName, 
         dropdownItems: [
@@ -58,7 +58,7 @@ const PatientScreen = () => {
         spanText2={`${userName}`}
         paragraphText="Easily manage your health, appointments, and personal information."
         buttonText="View Appointments"
-        onClick={() => window.location.href = "/patientappointments"}
+        onClick={() => window.location.href = "/pages/patientappointments"}
       />
       
       <FirstFillForm storedUserEmail={userEmail} />
@@ -71,7 +71,7 @@ const PatientScreen = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div
             className="p-6 bg-blue-500 text-white rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-pointer"
-            onClick={() => window.location.href = "/healthoverview"}
+            onClick={() => window.location.href = "/pages/healthoverview"}
           >
             <FaHeartbeat className="text-3xl mb-4" />
             <h3 className="text-xl font-semibold">Check Health Status</h3>
@@ -79,7 +79,7 @@ const PatientScreen = () => {
           </div>
           <div
             className="p-6 bg-blue-400 text-white rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-pointer"
-            onClick={() => window.location.href = "/patientappointments"}
+            onClick={() => window.location.href = "/pages/patientappointments"}
           >
             <FaCalendarCheck className="text-3xl mb-4" />
             <h3 className="text-xl font-semibold">Upcoming Appointments</h3>

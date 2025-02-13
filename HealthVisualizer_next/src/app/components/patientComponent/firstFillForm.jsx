@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaBirthdayCake, FaVenusMars, FaSmoking, FaCoffee, FaHeartbeat, FaUserMd, FaWeight, FaRulerVertical } from "react-icons/fa";
-import { firstFormPopUp, firstFormPopUpAfterSubmit } from "../functionality/firstFormPopUp";
+import { firstFormPopUp, firstFormPopUpAfterSubmit } from "../../functionality/firstFormPopUp";
 
 const FirstFillForm = ({ storedUserEmail }) => {
     const [showForm, setShowForm] = useState(false); // Initially, the form is hidden

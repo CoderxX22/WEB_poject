@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import PieChart from "../components/PieChart";
+import PieChart from "../../components/mainComponent/PieChart";
 import DynamicGraph from "./DynamicLinearGraph";
 
 const StatisticsSection = (darkMode) => {

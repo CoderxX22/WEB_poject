@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getCookie, logOut } from "../functionality/loginlogic";
-import Overlay from "../components/Overlay.jsx";
-import Navbar from "../components/Navbar.jsx";
+import { getCookie, logOut } from "../../functionality/loginlogic";
+import Overlay from "../../components/mainComponent/Overlay.jsx";
+import Navbar from "../../components/mainComponent/Navbar.jsx";
 import { FaBell, FaRegCalendarAlt, FaSearch } from "react-icons/fa";
 
 const DoctorScreen = () => {
@@ -32,9 +32,9 @@ const DoctorScreen = () => {
   }, []);
 
   const links = [
-    { href: "/DoctorScreen", name: "Home" },
-    { href: "/appointments", name: "Appointments" },
-    { href: "/patients", name: "Patients" },
+    { href: "/pages/DoctorScreen", name: "Home" },
+    { href: "/pages/appointments", name: "Appointments" },
+    { href: "/pages/patients", name: "Patients" },
     {
       name: `Dr. ${userName}`,
       dropdownItems: [
@@ -62,7 +62,7 @@ const DoctorScreen = () => {
         spanText1="Welcome,"
         spanText2={`Dr. ${userName}`}
         buttonText="View Appointments"
-        onClick={() => window.location.href = "/appointments"}
+        onClick={() => window.location.href = "/pages/appointments"}
       />
 
       {/* Today's Date and Notifications */}
@@ -100,7 +100,7 @@ const DoctorScreen = () => {
               View and manage your upcoming appointments.
             </p>
             <button
-              onClick={() => window.location.href = "/appointments"}
+              onClick={() => window.location.href = "/pages/appointments"}
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
             >
               Go to Appointments
@@ -112,7 +112,7 @@ const DoctorScreen = () => {
               View patient details and track progress.
             </p>
             <button
-              onClick={() => window.location.href = "/patients"}
+              onClick={() => window.location.href = "/pages/patients"}
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
             >
               Go to Patients

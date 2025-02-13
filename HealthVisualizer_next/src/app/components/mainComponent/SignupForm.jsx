@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchDoctors } from "../functionality/loginlogic";
+import { fetchDoctors } from "../../functionality/loginlogic";
 
 const SignupForm = ({ email, setEmail, password, setPassword, fullName, setFullName, role, setRole, specialInput, setSpecialInput ,familyDoctor, setFamilyDoctor }) => {  
     const [doctorList, setDoctorList] = useState([]);

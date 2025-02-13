@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCookie, logOut, navigateToRole } from '../functionality/loginlogic';
+import { getCookie, logOut, navigateToRole } from '../../functionality/loginlogic';
 import DarkMode from './DarkMode';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
@@ -180,7 +180,7 @@ const Header = () => {
                                 )}
                             </>
                         ) : (
-                            <Link href="/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                            <Link href="/pages/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                 before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
                             >Login</Link>
@@ -300,7 +300,7 @@ const Header = () => {
                                         )}
                                     </>
                                 ) : (
-                                    <Link href="/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
+                                    <Link href="/pages/LoginScreen" className="relative text-gray-100 dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400 transition-transform duration-200 
                                         before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-blue-200 dark:before:bg-blue-400 
                                         before:transition-all before:duration-300 hover:before:w-full hover:scale-105"
                                     >Login</Link>

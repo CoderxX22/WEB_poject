@@ -1,9 +1,9 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { handleFormSubmit, navigateToRole , fetchDoctors } from "../functionality/loginlogic";
-import SignupForm from "../components/SignupForm";
-import LoginForm from "../components/LoginForm";
-import Header from "../components/Header";
+import { handleFormSubmit, navigateToRole , fetchDoctors } from "../../functionality/loginlogic";
+import SignupForm from "../../components/mainComponent/SignupForm";
+import LoginForm from "../../components/mainComponent/LoginForm";
+import Header from "../../components/mainComponent/Header";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);

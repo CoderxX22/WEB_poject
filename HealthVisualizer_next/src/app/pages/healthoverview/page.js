@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { getCookie, logOut } from "../functionality/loginlogic";
-import Overlay from "../components/Overlay";
-import Navbar from "../components/Navbar";
-import { patientData } from "../functionality/getPatientData";
+import { getCookie, logOut } from "../../functionality/loginlogic";
+import Overlay from "../../components/mainComponent/Overlay";
+import Navbar from "../../components/mainComponent/Navbar";
+import { patientData } from "../../functionality/getPatientData";
 
 const HealthOverview = () => {
   const [userName, setUserName] = useState("");
@@ -35,9 +35,9 @@ const HealthOverview = () => {
     }, [userEmail]);
 
   const links = [
-      { href: "/PatientScreen", name: "Home" },
-      { href: "/patientappointments", name: "My Appointments" },
-      { href: "/healthoverview", name: "Health Overview" },
+      { href: "/pages/PatientScreen", name: "Home" },
+      { href: "/pages/patientappointments", name: "My Appointments" },
+      { href: "/pages/healthoverview", name: "Health Overview" },
       { 
           name: userName, 
           dropdownItems: [

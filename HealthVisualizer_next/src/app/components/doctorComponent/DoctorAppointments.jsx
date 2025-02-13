@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { db } from "../functionality/firebase";
+import { db } from "../../functionality/firebase";
 import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
-import { getCookie } from "../functionality/loginlogic";  // Assuming this function gets the logged-in user's email
+import { getCookie } from "../../functionality/loginlogic";  // Assuming this function gets the logged-in user's email
 
 const DoctorAppointments = ({ docName }) => {
   // Ensure that docName is safely handled and formatted

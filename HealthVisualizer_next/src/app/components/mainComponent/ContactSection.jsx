@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { db } from "../functionality/firebase"; // Correct relative path
+import { db } from "../../functionality/firebase"; // Correct relative path
 import { collection, addDoc } from "firebase/firestore";
 
 const phoneLogo = '/phone-call.png'; // Import the phone icon

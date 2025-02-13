@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getCookie } from "../functionality/loginlogic";
-import { db } from "../functionality/firebase";
+import { getCookie } from "../../functionality/loginlogic";
+import { db } from "../../functionality/firebase";
 import { collection, getDocs, addDoc, doc, getDoc, query, where } from "firebase/firestore";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

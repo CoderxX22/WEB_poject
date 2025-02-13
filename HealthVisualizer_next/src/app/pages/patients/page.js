@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { getCookie, logOut } from '../functionality/loginlogic';
+import { getCookie, logOut } from '../../functionality/loginlogic';
 import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
-import Overlay from '../components/Overlay';
-import Navbar from '../components/Navbar';
+import Overlay from '../../components/mainComponent/Overlay';
+import Navbar from '../../components/mainComponent/Navbar';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { patientDataForDoctor ,deletePatientFromDoctor, updateHealthMetrics} from "../functionality/getPatientData";
+import { patientDataForDoctor ,deletePatientFromDoctor, updateHealthMetrics} from "../../functionality/getPatientData";
 
 
 const PatientsList = () => {
@@ -40,9 +40,9 @@ const PatientsList = () => {
   }, [userName]);
 
   const links = [
-    { href: "/DoctorScreen", name: "Home" },
-    { href: "/appointments", name: "Appointments" },
-    { href: "/patients", name: "Patients" },
+    { href: "/pages/DoctorScreen", name: "Home" },
+    { href: "/pages/appointments", name: "Appointments" },
+    { href: "/pages/patients", name: "Patients" },
     {
       name: `Dr. ${userName}`,
       dropdownItems: [

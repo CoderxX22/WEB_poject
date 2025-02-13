@@ -78,11 +78,11 @@ export const navigateToRole = (role, userName, email) => {
   document.cookie = `role=${role}; path=/`;
 
   if (role === "Doctor") {
-    window.location.href = "/DoctorScreen";
+    window.location.href = "/pages/DoctorScreen";
   } else if (role === "Patient") {
-    window.location.href = "/PatientScreen";
+    window.location.href = "/pages/PatientScreen";
   } else if (role === "Instructor") {
-    window.location.href = "/InstructorScreen";
+    window.location.href = "/pages/InstructorScreen";
   } else {
     console.log("Role not selected or invalid");
   }

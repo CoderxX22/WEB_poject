@@ -1,11 +1,11 @@
 "use client"
 import React, { useState } from 'react';
-import Info from './components/InfoSection.jsx';
-import Contact from './components/ContactSection.jsx';
-import StatisticsSection from './components/StatisticsSection.jsx';
-import ArticleSection from './components/ArticleSection.jsx';
-import Header from './components/Header.jsx';
-import Overlay from './components/Overlay.jsx';
+import Info from './components/mainComponent/InfoSection.jsx';
+import Contact from './components/mainComponent/ContactSection.jsx';
+import StatisticsSection from './components/mainComponent/StatisticsSection.jsx';
+import ArticleSection from './components/mainComponent/ArticleSection.jsx';
+import Header from './components/mainComponent/Header.jsx';
+import Overlay from './components/mainComponent/Overlay.jsx';
 const healthImage = '/Statuscope.jpg';
 
 const MainPage = () => {

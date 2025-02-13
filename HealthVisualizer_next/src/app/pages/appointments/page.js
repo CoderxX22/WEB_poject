@@ -1,10 +1,10 @@
 "use client";
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { getCookie, logOut } from '../functionality/loginlogic';
-import Overlay from '../components/Overlay';
-import Navbar from '../components/Navbar';
-import DoctorAppointments from '../components/DoctorAppointments';
+import { getCookie, logOut } from '../../functionality/loginlogic';
+import Overlay from '../../components/mainComponent/Overlay';
+import Navbar from '../../components/mainComponent/Navbar';
+import DoctorAppointments from '../../components/doctorComponent/DoctorAppointments';
 
 const AppointmentsScreen = () => {
   const [userName, setUserName] = useState("");
@@ -19,9 +19,9 @@ const AppointmentsScreen = () => {
   }, []);
   
   const links = [
-    { href: "/DoctorScreen", name: "Home" },
-    { href: "/appointments", name: "Appointments" },
-    { href: "/patients", name: "Patients" },
+    { href: "/pages/DoctorScreen", name: "Home" },
+    { href: "/pages/appointments", name: "Appointments" },
+    { href: "/pages/patients", name: "Patients" },
     {
       name: `Dr. ${userName}`,
       dropdownItems: [

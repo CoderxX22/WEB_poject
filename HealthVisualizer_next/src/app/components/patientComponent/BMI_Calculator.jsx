@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
-import { UpdateBMI } from "../functionality/getPatientData";
-import { getCookie } from "../functionality/loginlogic";
+import { UpdateBMI } from "../../functionality/getPatientData";
+import { getCookie } from "../../functionality/loginlogic";
 import { useEffect } from "react";
 
 const BMI_Claculator = () => {
