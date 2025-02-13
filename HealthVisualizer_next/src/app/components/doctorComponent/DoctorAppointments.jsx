@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { db } from "../../functionality/firebase";
-import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
-import { getCookie } from "../../functionality/loginlogic";  // Assuming this function gets the logged-in user's email
+import { fetchAppointments } from "../../functionality/appointmentLogic";
 
 const DoctorAppointments = ({ docName }) => {
   // Ensure that docName is safely handled and formatted
@@ -12,66 +10,9 @@ const DoctorAppointments = ({ docName }) => {
 
   useEffect(() => {
     if (doctorName) {
-      fetchAppointments(doctorName);
+      fetchAppointments(doctorName, setUpcomingAppointments, setPastAppointments);
     }
   }, [doctorName]);
-
-  const fetchAppointments = async (doctorName) => {
-    try {
-      const appointmentsRef = collection(db, "appointments");
-      
-      // Get the logged-in user's email
-      const userEmail = getCookie("email");
-  
-      // Query to fetch appointments where doctorName matches the specified doctor's name and patientEmail matches the logged-in user's email
-      const q = query(
-        appointmentsRef,
-        where("doctorName", "==", doctorName)
-      );
-  
-      const appointmentsSnapshot = await getDocs(q);
-  
-      const currentDate = new Date();
-      const upcoming = [];
-      const past = [];
-  
-      appointmentsSnapshot.forEach((doc) => {
-        const appointment = doc.data();
-  
-        if (appointment.date && appointment.time) {
-            const timeStamp = appointment.data;
-            const appointmentDate = new Date(timeStamp); // Use UTC time
-            console.log(appointment.date);
-          const appointmentWithId = {
-            id: doc.id,
-            ...appointment,
-          };
-  
-          // Use only the date (without time) for the comparison, so that appointments are considered upcoming if the date is in the future
-          const currentDateWithoutTime = new Date(currentDate);  // Reset time to 00:00
-          const ToTimeStamp = Timestamp.fromDate(currentDateWithoutTime);
-          console.log(currentDateWithoutTime);
-          if (appointment.date >= ToTimeStamp) {
-            upcoming.push(appointmentWithId);
-          } else {
-            past.push(appointmentWithId);
-          }
-        }
-      });
-  
-      // Sort the appointments by date and time
-      const sortByDateTime = (a, b) => {
-        const dateTimeA = new Date(`${a.date}T${a.time}`);
-        const dateTimeB = new Date(`${b.date}T${b.time}`);
-        return dateTimeA - dateTimeB;
-      };
-  
-      setUpcomingAppointments(upcoming.sort(sortByDateTime));
-      setPastAppointments(past.sort(sortByDateTime).reverse());
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-    }
-  };
 
   const formatDateTime = (date, time) => {
     // Combine the date and time into a single string
