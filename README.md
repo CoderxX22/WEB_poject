@@ -40,4 +40,4 @@ Our team web project called healthvisualizer which illustrates dynamic health da
 allows doctor-patient communication, editing and watching health metrices, viewing medical data
 and scheduling appointments. 
 
-Our team members:
+Our team members: Daniel Ayash,
