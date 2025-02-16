@@ -38,6 +38,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## HealthVisualizer WEB project
 Our team web project called healthvisualizer which illustrates dynamic health data visualizer.
 allows doctor-patient communication, editing and watching health metrics, viewing medical data
-and scheduling appointments. 
+that includes articles,graph and piechart and scheduling appointments. 
 
 **Our team members:** Daniel Ayash, Nir Froimovich, Maor Siboni, Bar Harush.
