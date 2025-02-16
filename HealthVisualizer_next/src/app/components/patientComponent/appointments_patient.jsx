@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCookie } from "../../functionality/loginlogic";
 import { db } from "../../functionality/firebase";
 import { collection, getDocs, addDoc, doc, getDoc, query, where } from "firebase/firestore";
-import { fetchDoctors } from "../../functionality/appointmentLogic";
+import { fetchDoctors, fetchAppointmentsForPatient } from "../../functionality/appointmentLogic";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -34,48 +34,26 @@ const Patient_Appointments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
+  // Fetch doctors from Firestore
   useEffect(() => {
     const getDoctors = async () => {
-      const data = await fetchDoctors();
-      setDoctors(data);
+      const doctorData = await fetchDoctors();
+      setDoctors(doctorData);
     };
 
     getDoctors();
   }, []);
 
-  // Fetch both appointments and doctors when the component mounts
+  // Fetch appointments for the logged-in patient
   useEffect(() => {
-    fetchAppointments();
+    const storedUserEmail = getCookie("email");
+    const loadAppointments = async () => {
+      const appointmentsData = await fetchAppointmentsForPatient(storedUserEmail);
+      setAppointments(appointmentsData);
+    };
+
+    loadAppointments();
   }, []);
-
-  // Fetch appointments when the component is mounted
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
-  // Fetch appointments from Firestore
-  const fetchAppointments = async () => {
-    try {
-      const storedUserEmail = getCookie("email");
-      const storedUserName = getCookie("userName");
-      if (!storedUserEmail) {
-        throw new Error("User email not found.");
-      }
-
-      const appointmentsRef = collection(db, "appointments");
-      const querySnapshot = await getDocs(appointmentsRef);
-      
-      // Filter appointments for the current user
-      const userAppointments = querySnapshot.docs
-        .map((doc) => doc.data())
-        .filter((appointment) => appointment.userEmail === storedUserEmail);
-
-      setAppointments(userAppointments);
-    } catch (err) {
-      console.error("Error fetching appointments:", err);
-    }
-};
-
 
 const handleCreateAppointment = async (e) => {
   e.preventDefault();

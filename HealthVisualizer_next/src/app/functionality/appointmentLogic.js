@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where, Timestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-export const fetchAppointments = async (doctorName, setUpcomingAppointments, setPastAppointments) => {
+export const fetchAppointmentsForDoctor = async (doctorName, setUpcomingAppointments, setPastAppointments) => {
   try {
     const appointmentsRef = collection(db, "appointments");
 
@@ -76,3 +76,24 @@ export const fetchDoctors = async () => {
       setError("Failed to fetch doctors list");
     }
   };
+
+// Fetch appointments from Firestore
+export const fetchAppointmentsForPatient = async (storedUserEmail) => {
+  try {
+    if (!storedUserEmail) {
+      throw new Error("User email not found.");
+    }
+
+    const appointmentsRef = collection(db, "appointments");
+    const querySnapshot = await getDocs(appointmentsRef);
+    
+    // Filter appointments for the current user
+    const userAppointments = querySnapshot.docs
+      .map((doc) => doc.data())
+      .filter((appointment) => appointment.userEmail === storedUserEmail);
+
+    return userAppointments;
+  } catch (err) {
+    console.error("Error fetching appointments:", err);
+  }
+};

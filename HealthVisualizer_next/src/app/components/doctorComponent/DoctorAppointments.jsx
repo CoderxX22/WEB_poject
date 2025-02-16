@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { fetchAppointments } from "../../functionality/appointmentLogic";
+import { fetchAppointmentsForDoctor } from "../../functionality/appointmentLogic";
 
 const DoctorAppointments = ({ docName }) => {
   // Ensure that docName is safely handled and formatted
@@ -10,7 +10,7 @@ const DoctorAppointments = ({ docName }) => {
 
   useEffect(() => {
     if (doctorName) {
-      fetchAppointments(doctorName, setUpcomingAppointments, setPastAppointments);
+      fetchAppointmentsForDoctor(doctorName, setUpcomingAppointments, setPastAppointments);
     }
   }, [doctorName]);
 
