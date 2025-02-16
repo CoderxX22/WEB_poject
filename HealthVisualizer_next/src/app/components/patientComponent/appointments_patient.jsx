@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCookie } from "../../functionality/loginlogic";
 import { db } from "../../functionality/firebase";
 import { collection, getDocs, addDoc, doc, getDoc, query, where } from "firebase/firestore";
-import { fetchDoctors, fetchAppointmentsForPatient } from "../../functionality/appointmentLogic";
+import { fetchDoctors, fetchAppointmentsForPatient, handleCreateAppointment } from "../../functionality/appointmentLogic";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -55,84 +55,6 @@ const Patient_Appointments = () => {
     loadAppointments();
   }, []);
 
-const handleCreateAppointment = async (e) => {
-  e.preventDefault();
-
-  const missingFields = [];
-  if (!newAppointment.doctorName) missingFields.push("Doctor's Name");
-  if (!newAppointment.date) missingFields.push("Date");
-  if (!newAppointment.time) missingFields.push("Time");
-  if (!newAppointment.specialty) missingFields.push("Specialty");
-  if (!newAppointment.location) missingFields.push("Location");
-
-  if (missingFields.length > 0) {
-    alert(`Please fill in the following fields: ${missingFields.join(", ")}`);
-    return;
-  }
-
-  // Check if the chosen date is in the past
-  const selectedDate = new Date(newAppointment.date);
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);  // Remove time components for pure date comparison
-
-  if (selectedDate < now) {
-    alert("The chosen date cannot be in the past.");
-    return;
-  }
-
-  try {
-    setLoading(true);
-    const storedUserEmail = getCookie("email");
-    if (!storedUserEmail) {
-      throw new Error("User email not found. Please log in.");
-    }
-
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", storedUserEmail));
-    const userSnapshot = await getDocs(q);
-    
-    if (userSnapshot.empty) {
-      throw new Error("User not found.");
-    }
-
-    // Get the first document in the snapshot
-    const userDoc = userSnapshot.docs[0];
-    const userData = userDoc.data();
-    const fullName = userData.fullName;
-    
-    // Prepare the appointment data
-    const appointmentData = {
-      doctorName: newAppointment.doctorName,
-      date: newAppointment.date,
-      time: newAppointment.time,
-      specialty: newAppointment.specialty,
-      location: newAppointment.location,
-      patientName: fullName,  // Add user's full name
-      userEmail: storedUserEmail,  // Add user's email to track who created it
-    };
-
-    // Save the appointment in the global "appointments" collection
-    const appointmentsCollectionRef = collection(db, "appointments");
-    await addDoc(appointmentsCollectionRef, appointmentData);
-
-    setAppointments((prevAppointments) => [...prevAppointments, appointmentData]);
-    setNewAppointment({
-      doctorName: "",
-      date: "",
-      time: "",
-      specialty: "",
-      location: "",
-    });
-    setShowAddAppointment(false);
-    alert("Appointment created successfully!");
-  } catch (err) {
-    console.error("Error creating appointment:", err);
-    setError("Failed to create appointment. Please try again later.");
-  } finally {
-    setLoading(false);
-  }
-};
-
 
   // Filter appointments by search query and date
   const filteredAppointments = appointments.filter((appointment) => {
@@ -148,7 +70,7 @@ const handleCreateAppointment = async (e) => {
       {/* Title and Add Button */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-          Upcoming Appointments
+          Appointments
         </h2>
         <button
           onClick={() => setShowAddAppointment(true)}
@@ -156,23 +78,6 @@ const handleCreateAppointment = async (e) => {
         >
           Add Appointment
         </button>
-      </div>
-
-      {/* Search and Filter */}
-      <div className="flex space-x-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search by doctor..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-1 px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-gray-100"
-        />
-        <input
-          type="date"
-          value={filterDate}
-          onChange={(e) => setFilterDate(e.target.value)}
-          className="px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-gray-100"
-        />
       </div>
 
       {/* Appointment List */}
@@ -216,7 +121,16 @@ const handleCreateAppointment = async (e) => {
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
               Add New Appointment
             </h2>
-            <form onSubmit={handleCreateAppointment}>
+            <form onSubmit={(e) => handleCreateAppointment(
+                e,
+                newAppointment,
+                setNewAppointment,
+                setAppointments,
+                setShowAddAppointment,
+                setLoading,
+                setError
+              )}>
+
               <div className="mb-4">
                 <label htmlFor="doctor" className="block text-gray-700 dark:text-gray-200 mb-1">
                   Select a Doctor

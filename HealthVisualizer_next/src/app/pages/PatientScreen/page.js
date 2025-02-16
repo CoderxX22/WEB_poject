@@ -65,9 +65,6 @@ const PatientScreen = () => {
 
       {/* Quick Actions */}
       <section className="py-6 px-4 bg-gray-100 dark:bg-gray-900">
-        <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6 text-center">
-          Quick Actions
-        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div
             className="p-6 bg-blue-500 text-white rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-pointer"
@@ -114,31 +111,6 @@ const PatientScreen = () => {
           </div>
           <div className="md:col-span-3">
             <BMI_Claculator />
-          </div>
-        </div>
-      </section>
-
-      {/* Appointments Section */}
-      <section id="appointments" className="py-12 px-4 bg-gray-100 dark:bg-gray-900">
-        <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
-          Upcoming Appointments
-        </h2>
-        <div className="space-y-4">
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              Dr. Smith
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              Scheduled: January 2, 2024 at 10:00 AM
-            </p>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              Dr. Lee
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              Scheduled: January 3, 2024 at 2:00 PM
-            </p>
           </div>
         </div>
       </section>

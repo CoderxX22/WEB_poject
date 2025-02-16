@@ -4,25 +4,21 @@ import { getCookie, logOut } from "../../functionality/loginlogic";
 import Overlay from "../../components/mainComponent/Overlay.jsx";
 import Navbar from "../../components/mainComponent/Navbar.jsx";
 import { FaBell, FaRegCalendarAlt, FaSearch } from "react-icons/fa";
+import { fetchAppointmentsForDoctor } from "@/app/functionality/appointmentLogic";
 
 const DoctorScreen = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [appointments, setAppointments] = useState([
-    {
-      name: "John Doe",
-      date: "January 2, 2024 at 10:00 AM",
-    },
-    {
-      name: "Jane Smith",
-      date: "January 3, 2024 at 2:00 PM",
-    },
-  ]);
+
   const [notifications, setNotifications] = useState([
     "You have a new appointment scheduled.",
     "Patient John Doe needs a follow-up.",
   ]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [pastAppointments, setPastAppointments] = useState([]);
+
+
 
   useEffect(() => {
     const storedUserName = getCookie("userName");
@@ -30,6 +26,14 @@ const DoctorScreen = () => {
     setUserName(storedUserName || "Guest");
     setEmail(storedUserEmail || "");
   }, []);
+
+  const doctorName = "Dr."+userName;
+
+  useEffect(() => {
+    if (doctorName) {
+      fetchAppointmentsForDoctor("Dr."+userName, setUpcomingAppointments, setPastAppointments);
+    }
+  }, [doctorName]);
 
   const links = [
     { href: "/pages/DoctorScreen", name: "Home" },
@@ -44,12 +48,20 @@ const DoctorScreen = () => {
   ];
   
 
-  const filteredAppointments = appointments.filter((appointment) =>
-    appointment.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const currentDate = new Date().toLocaleDateString();
-
+  const formatDateTime = (date, time) => {
+    // Combine the date and time into a single string
+    const appointmentDate = new Date(date.toDate());
+    console.log(appointmentDate);
+    // Use toLocaleString to match the required format
+    return appointmentDate.toLocaleString("en-US", {
+      weekday: "long", // For full weekday name (e.g., "Monday")
+      year: "numeric",
+      month: "long",   // Full month name (e.g., "January")
+      day: "numeric",  // Day of the month
+    });
+  };
+  
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-gray-800">
       {/* Navbar Section */}
@@ -126,36 +138,29 @@ const DoctorScreen = () => {
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
           Upcoming Appointments
         </h2>
-        {/* Search Bar */}
-        <div className="mb-6 flex justify-end">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search Appointments"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-64 px-4 py-2 rounded-md bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <FaSearch className="absolute top-3 right-3 text-gray-500 dark:text-gray-400" />
-          </div>
-        </div>
-
         {/* Filtered Appointments */}
-        <div className="space-y-4">
-          {filteredAppointments.length > 0 ? (
-            filteredAppointments.map((appointment, index) => (
-              <div
-                key={index}
-                className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-              >
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                  {appointment.name}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">{appointment.date}</p>
+        <div className="space-y-6">
+          {upcomingAppointments.length > 0 ? (
+            upcomingAppointments.map((appointment) => (
+              <div key={appointment.id} className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                    Patient: {appointment.patientName || "Unknown"}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Scheduled: {formatDateTime(appointment.date, appointment.time)+" at "+ appointment.time}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Location: {appointment.location || "Not specified"}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Specialty: {appointment.specialty || "General"}
+                  </p>
+                </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-600 dark:text-gray-400">No appointments found.</p>
+            <p className="text-gray-600 dark:text-gray-400">No upcoming appointments</p>
           )}
         </div>
       </section>

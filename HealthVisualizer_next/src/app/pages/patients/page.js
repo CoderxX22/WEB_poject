@@ -167,14 +167,6 @@ const PatientsList = () => {
       <section className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">Patient Details</h2>
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder="Search patients..."
-            className="px-4 py-2 border rounded-md bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
         </div>
         
         {/* Patient List */}
