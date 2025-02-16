@@ -38,4 +38,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## HealthVisualizer WEB project
 Our team web project called healthvisualizer which illustrates dynamic health data visualizer.
 allows doctor-patient communication, editing and watching health metrices, viewing medical data
-and scheduling appointments.
+and scheduling appointments. 
+
+Our
