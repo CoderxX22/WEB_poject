@@ -1,7 +1,9 @@
 import React from "react";
-const doctor1 = "/doctor1.jpeg";  // Doctor 1 image
-const doctor2 = "/doctor2.jpg";   // Doctor 2 image
-const doctor3 = "/doctor3.jpeg";  // Doctor 3 image
+const Maor = "/Maor.png";  // Doctor 1 image
+const Nir = "/Nir.png";   // Doctor 2 image
+const Daniel = "/Daniel.png";  // Doctor 3 image
+const Bar = "/Bar.png";  // Doctor 3 image
+
 
 const Info = () => {
     return (
@@ -21,54 +23,67 @@ const Info = () => {
             </p>
 
             {/* Cards displaying doctor information */}
-            <div className="relative lg:2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {/* Card 1: Dr. Jane Smith */}
+            <div className="relative lg:2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                {/* Card 1: Maor Siboni */}
                 <div className="relative group">
                     <img
-                        src={doctor1} // Replace with the correct image path
-                        alt="Doctor 1"
+                        src={Maor} // Replace with the correct image path
+                        alt="Maor"
                         className="w-full h-64 object-cover rounded-lg shadow-lg"
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Prof. Jane Smith</h3>
-                        <p className="text-sm mb-4">Cardiologist</p>
-                        <p className="text-sm">Contact: +1 555-123-4567</p>
-                        <p className="text-sm">Email: jane.smith@example.com</p>
+                        <h3 className="text-lg font-bold mb-2">Maor Siboni</h3>
+                        <p className="text-sm mb-4">UI Developer</p>
+                        <p className="text-sm">Email: Maor.Siboni@e.braude.ac.il</p>
                     </div>
                 </div>
 
-                {/* Card 2: Dr. John Doe */}
+                {/* Card 2: Nir Froimovich */}
                 <div className="relative group">
                     <img
-                        src={doctor2} // Replace with the correct image path
-                        alt="Doctor 2"
+                        src={Nir} // Replace with the correct image path
+                        alt="Nir"
                         className="w-full h-64 object-cover rounded-lg shadow-lg"
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Prof. John Doe</h3>
-                        <p className="text-sm mb-4">Pediatrician</p>
-                        <p className="text-sm">Contact: +1 555-987-6543</p>
-                        <p className="text-sm">Email: john.doe@example.com</p>
+                        <h3 className="text-lg font-bold mb-2">Nir Froimovich</h3>
+                        <p className="text-sm mb-4">Backend developer</p>
+                        <p className="text-sm">Email: Nir.Froimovich@e.braude.ac.il</p>
                     </div>
                 </div>
 
-                {/* Card 3: Dr. Kenneth Brown */}
+                {/* Card 3: Daniel Ayash */}
                 <div className="relative group">
                     <img
-                        src={doctor3} // Replace with the correct image path
-                        alt="Doctor 3"
+                        src={Daniel} // Replace with the correct image path
+                        alt="Daniel"
                         className="w-full h-64 object-cover rounded-lg shadow-lg"
                     />
                     {/* Overlay with information */}
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold mb-2">Prof. Kenneth Brown</h3>
-                        <p className="text-sm mb-4">Dermatologist</p>
-                        <p className="text-sm">Contact: +1 555-654-3210</p>
-                        <p className="text-sm">Email: kenneth.brown@example.com</p>
+                        <h3 className="text-lg font-bold mb-2">Daniel Ayash</h3>
+                        <p className="text-sm mb-4">Fullstack Developer</p>
+                        <p className="text-sm">Email: Daniel.Ayash@e.braude.ac.il</p>
                     </div>
                 </div>
+
+                {/* Card 4: Bar Harush */}
+                <div className="relative group">
+                    <img
+                        src={Bar} // Replace with the correct image path
+                        alt="Bar"
+                        className="w-full h-64 object-cover rounded-lg shadow-lg"
+                    />
+                    {/* Overlay with information */}
+                    <div className="absolute inset-0 bg-blue-500 bg-opacity-80 dark:bg-gray-900 dark:bg-opacity-80 text-white flex flex-col justify-center items-center rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="text-lg font-bold mb-2">Bar Harush</h3>
+                        <p className="text-sm mb-4">QA Developer</p>
+                        <p className="text-sm">Email: Bar.Harush@e.braude.ac.il</p>
+                    </div>
+                </div>
+
             </div>
         </section>
     );
